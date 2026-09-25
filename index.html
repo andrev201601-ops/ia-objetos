@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>IA de Objetos - iPad</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#111;color:#fff}
+  .wrap{max-width:900px;margin:auto;padding:18px}
+  h1{text-align:center;margin:6px 0 4px;font-size:28px}
+  .sub{text-align:center;color:#bbb;margin:0 0 16px}
+  video{width:100%;max-height:52vh;object-fit:cover;border-radius:18px;background:#222;display:block}
+  .panel{background:#1d1d1f;border-radius:18px;padding:16px;margin-top:14px}
+  input{width:100%;padding:14px;border-radius:12px;border:1px solid #555;background:#2b2b2e;color:#fff;font-size:17px}
+  button{border:0;border-radius:14px;padding:15px 18px;font-size:17px;font-weight:700;cursor:pointer}
+  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .primary{background:#0a84ff;color:#fff;flex:1}
+  .green{background:#30d158;color:#071a0b;flex:1;min-height:68px}
+  .red{background:#ff453a;color:#fff}
+  .gray{background:#3a3a3c;color:#fff}
+  button:disabled{opacity:.45}
+  #result{font-size:32px;font-weight:800;text-align:center;margin-top:12px;min-height:42px}
+  #status{text-align:center;color:#aaa;margin:10px 0}
+  .count{font-size:15px;color:#ccc}
+  .bar{height:10px;background:#333;border-radius:10px;overflow:hidden;margin-top:8px}
+  #progress{height:100%;width:0;background:#30d158}
+  .small{font-size:13px;color:#aaa;line-height:1.4}
+  .classbox{border:1px solid #444;border-radius:14px;padding:12px;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🤖 IA de Objetos</h1>
+  <p class="sub">Entrena la IA con la cámara y después reconoce lo que pongas enfrente.</p>
+
+  <video id="video" autoplay playsinline muted></video>
+
+  <div class="panel">
+    <h2>1. Cámara</h2>
+    <div class="row">
+      <button id="start" class="primary">📷 Activar cámara</button>
+      <button id="flip" class="gray">🔄 Cambiar cámara</button>
+    </div>
+    <p id="status">Pulsa “Activar cámara” y acepta el permiso.</p>
+  </div>
+
+  <div class="panel">
+    <h2>2. Muestras</h2>
+    <input id="label" placeholder="Nombre del objeto, por ejemplo: botella">
+    <div class="row">
+      <button id="hold" class="green" disabled>✋ MANTÉN PRESIONADO PARA TOMAR MUESTRAS</button>
+    </div>
+    <div class="count" id="count">Muestras de esta clase: 0</div>
+    <div class="bar"><div id="progress"></div></div>
+    <div id="classes"></div>
+    <p class="small">Crea al menos 2 clases. Para cada objeto, escribe su nombre y mantén el botón presionado mientras lo muestras a la cámara desde varios ángulos.</p>
+  </div>
+
+  <div class="panel">
+    <h2>3. Entrenar</h2>
+    <div class="row">
+      <button id="train" class="primary" disabled>🧠 SUBMIT / ENTRENAR IA</button>
+      <button id="clear" class="red">🗑️ Borrar muestras</button>
+    </div>
+    <p id="trainStatus">Todavía no hay un modelo entrenado.</p><button id="shareLink" class="gray" disabled>🔗 Generar enlace de mi IA</button><p id="shareStatus" class="small"></p>
+  </div>
+
+  <div class="panel">
+    <h2>4. Reconocimiento</h2>
+    <div id="result">—</div>
+    <p id="confidence" style="text-align:center;color:#aaa"></p>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+<script>
+const video=document.getElementById('video');
+const start=document.getElementById('start');
+const flip=document.getElementById('flip');
+const hold=document.getElementById('hold');
+const train=document.getElementById('train');
+const clear=document.getElementById('clear');
+const label=document.getElementById('label');
+const status=document.getElementById('status');
+const countEl=document.getElementById('count');
+const classesEl=document.getElementById('classes');
+const trainStatus=document.getElementById('trainStatus');
+const shareLink=document.getElementById('shareLink');
+const shareStatus=document.getElementById('shareStatus');
+const result=document.getElementById('result');
+const confidence=document.getElementById('confidence');
+const progress=document.getElementById('progress');
+
+let stream=null, facing='environment', net=null;
+let collecting=false, timer=null, currentLabel='';
+let data=[]; // {x: Float32Array, y: classIndex}
+let labels=[];
+let classifier=null;
+let lastAccuracy=null;
+let trainedAt=null;
+let collectingCount=0;
+
+async function startCamera(){
+  if(stream) stream.getTracks().forEach(t=>t.stop());
+  try{
+    stream=await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}},
+      audio:false
+    });
+    video.srcObject=stream;
+    await video.play();
+    hold.disabled=false;
+    status.textContent='Cámara lista. Ya puedes tomar muestras.';
+  }catch(e){
+    status.textContent='No se pudo abrir la cámara. Revisa el permiso de cámara en Safari.';
+    console.error(e);
+  }
+}
+start.onclick=startCamera;
+flip.onclick=async()=>{facing=facing==='environment'?'user':'environment';await startCamera()};
+
+async function loadNet(){
+  if(net) return;
+  status.textContent='Cargando IA base…';
+  net=await mobilenet.load({version:2,alpha:1.0});
+  status.textContent='IA base lista.';
+}
+function getLabel(){
+  return label.value.trim();
+}
+function updateUI(){
+  countEl.textContent=`Muestras de esta clase: ${collectingCount}`;
+  classesEl.innerHTML=labels.map((x,i)=>{
+    const n=data.filter(d=>d.y===i).length;
+    return `<div class="classbox">🏷️ <b>${escapeHtml(x)}</b> — ${n} muestras</div>`;
+  }).join('');
+  train.disabled=labels.length<2 || data.length<20;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+
+async function capture(){
+  if(!net || video.readyState<2) return;
+  const activation=tf.tidy(()=>{
+    const img=tf.browser.fromPixels(video);
+    return net.infer(img,'conv_preds');
+  });
+  const arr=await activation.data();
+  activation.dispose();
+  data.push({x:new Float32Array(arr),y:labels.indexOf(currentLabel)});
+  collectingCount++;
+  if(collectingCount%2===0) updateUI();
+  progress.style.width=Math.min(100,(collectingCount/80)*100)+'%';
+}
+function begin(){
+  currentLabel=getLabel();
+  if(!currentLabel){status.textContent='Escribe primero el nombre del objeto.';return;}
+  if(!labels.includes(currentLabel)) labels.push(currentLabel);
+  collectingCount=0;
+  collecting=true;
+  hold.textContent='🟢 GRABANDO… SUELTA PARA PARAR';
+  currentLabel=getLabel();
+  timer=setInterval(capture,120);
+}
+function end(){
+  if(!collecting)return;
+  collecting=false;
+  clearInterval(timer);timer=null;
+  hold.textContent='✋ MANTÉN PRESIONADO PARA TOMAR MUESTRAS';
+  updateUI();
+}
+hold.addEventListener('pointerdown',async(e)=>{e.preventDefault();await loadNet();begin()});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>hold.addEventListener(ev,end));
+
+function makeModel(inputSize,classes){
+  const m=tf.sequential();
+  m.add(tf.layers.dense({inputShape:[inputSize],units:128,activation:'relu'}));
+  m.add(tf.layers.dropout({rate:.2}));
+  m.add(tf.layers.dense({units:classes,activation:'softmax'}));
+  m.compile({optimizer:tf.train.adam(.001),loss:'sparseCategoricalCrossentropy',metrics:['accuracy']});
+  return m;
+}
+async function doTrain(){
+  if(labels.length<2){trainStatus.textContent='Necesitas al menos 2 objetos/clases.';return;}
+  if(data.length<20){trainStatus.textContent='Toma más muestras primero (mínimo 20).';return;}
+  train.disabled=true;
+  trainStatus.textContent='Entrenando… no cierres esta página.';
+  await tf.nextFrame();
+  const xs=tf.tensor2d(data.map(d=>Array.from(d.x)));
+  const ys=tf.tensor1d(data.map(d=>d.y),'int32');
+  classifier=makeModel(xs.shape[1],labels.length);
+  await classifier.fit(xs,ys,{
+    epochs:20,
+    batchSize:16,
+    shuffle:true,
+    callbacks:{
+      onEpochEnd:(epoch,logs)=>{
+        lastAccuracy=logs.acc;
+        trainStatus.textContent=`Entrenando… ${epoch+1}/20 — precisión ${(logs.acc*100).toFixed(1)}%`;
+      }
+    }
+  });
+  xs.dispose();ys.dispose();
+  trainedAt=new Date().toLocaleString();
+  trainStatus.textContent='✅ IA entrenada. Pon un objeto enfrente de la cámara.';
+  train.disabled=false;
+  shareLink.disabled=false;
+  recognize();
+}
+train.onclick=doTrain;
+
+function makeShareUrl(){
+  const info={title:'Mi IA de objetos',labels:[...labels],totalSamples:data.length,
+    samplesByClass:labels.map((name,i)=>({name:name,count:data.filter(d=>d.y===i).length})),
+    accuracy:lastAccuracy,trainedAt:trainedAt||new Date().toLocaleString(),
+    note:'Este enlace comparte el resumen del entrenamiento. El modelo queda en el dispositivo.'};
+  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(info))));
+  return location.href.split('#')[0]+'#report='+encoded;
+}
+function showReportFromHash(){
+  const hash=location.hash;
+  if(!hash.startsWith('#report=')) return;
+  try{
+    const info=JSON.parse(decodeURIComponent(escape(atob(hash.slice(8)))));
+    document.querySelector('.wrap').innerHTML='<h1>🤖 '+escapeHtml(info.title||'Mi IA de objetos')+'</h1>'+
+      '<p class="sub">Resumen del entrenamiento compartido</p><div class="panel"><h2>Objetos aprendidos</h2>'+ 
+      (info.samplesByClass||[]).map(x=>'<div class="classbox">🏷️ <b>'+escapeHtml(x.name)+'</b> — '+x.count+' muestras</div>').join('')+
+      '<p><b>Total de muestras:</b> '+(info.totalSamples||0)+'</p>'+
+      '<p><b>Precisión final:</b> '+(info.accuracy==null?'No disponible':(info.accuracy*100).toFixed(1)+'%')+'</p>'+
+      '<p><b>Entrenado:</b> '+escapeHtml(info.trainedAt||'')+'</p><p class="small">'+escapeHtml(info.note||'')+'</p>'+ 
+      '<button class="primary" onclick="location.href=location.href.split(\'#\')[0]">📷 Abrir la IA</button></div>';
+  }catch(e){console.warn(e)}
+}
+shareLink.onclick=async()=>{
+  const url=makeShareUrl();
+  try{await navigator.clipboard.writeText(url);shareStatus.textContent='✅ Enlace generado y copiado.'}
+  catch(e){shareStatus.innerHTML='Enlace generado: <a href="'+url+'">Abrir enlace</a>'}
+  if(navigator.share){try{await navigator.share({title:'Mi IA de objetos',text:'Mira mi IA entrenada',url:url})}catch(e){}}
+};
+
+
+let recognizing=false;
+async function recognize(){
+  if(recognizing)return;
+  recognizing=true;
+  while(classifier && video.readyState>=2){
+    const pred=tf.tidy(()=>{
+      const img=tf.browser.fromPixels(video);
+      const emb=net.infer(img,'conv_preds');
+      return classifier.predict(emb);
+    });
+    const vals=await pred.data();
+    pred.dispose();
+    let best=0;
+    for(let i=1;i<vals.length;i++) if(vals[i]>vals[best]) best=i;
+    result.textContent=labels[best] || '—';
+    confidence.textContent=`Confianza: ${(vals[best]*100).toFixed(1)}%`;
+    await new Promise(r=>setTimeout(r,150));
+  }
+  recognizing=false;
+}
+clear.onclick=()=>{
+  data=[];labels=[];classifier=null;collectingCount=0;
+  classesEl.innerHTML='';countEl.textContent='Muestras de esta clase: 0';
+  trainStatus.textContent='Muestras borradas.';
+  result.textContent='—';confidence.textContent='';progress.style.width='0%';
+  train.disabled=true;
+};
+window.addEventListener('load',async()=>{showReportFromHash();if(location.hash.startsWith('#report='))return;try{await loadNet()}catch(e){status.textContent='No se pudo cargar la IA. Necesitas internet para esta versión.'}});
+</script>
+</body>
+</html>

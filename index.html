@@ -1,34 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
 
 <meta
   name="viewport"
-  content="width=device-width,
-  initial-scale=1.0,
-  maximum-scale=1.0,
-  user-scalable=no"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 
 <meta name="theme-color" content="#111827">
 
 <title>IA-Objetos</title>
 
-
 <!-- TensorFlow.js -->
-<script
-  src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js">
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
 
 <!-- MobileNet -->
-<script
-  src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1">
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
 
 <style>
 
@@ -45,23 +33,27 @@ html,
 body {
   margin: 0;
   padding: 0;
-
-  width: 100%;
   min-height: 100%;
-
   font-family:
     -apple-system,
     BlinkMacSystemFont,
     "Segoe UI",
     Arial,
     sans-serif;
-
   background: #f5f7fb;
   color: #202124;
 }
 
-button {
+body {
+  overflow-x: hidden;
+}
+
+button,
+input {
   font-family: inherit;
+}
+
+button {
   cursor: pointer;
 }
 
@@ -75,171 +67,104 @@ button {
 ===================================================== */
 
 #desktop {
-
   min-height: 100vh;
-
 }
 
 .desktop-header {
-
   height: 65px;
-
   background: white;
-
-  border-bottom:
-    1px solid #ddd;
-
+  border-bottom: 1px solid #ddd;
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   padding: 0 20px;
-
 }
 
 .logo {
-
   font-size: 22px;
-
   font-weight: 800;
-
 }
 
 .logo span {
-
   color: #4285f4;
-
 }
 
 .desktop-content {
-
   max-width: 700px;
-
   margin: auto;
-
-  padding: 40px 20px;
-
+  padding: 45px 20px;
   text-align: center;
-
 }
 
 .robot {
-
   font-size: 75px;
-
 }
 
 .desktop-content h1 {
-
   font-size: 40px;
-
   margin: 10px 0;
-
 }
 
 .desktop-content p {
-
   color: #666;
-
   font-size: 17px;
-
   line-height: 1.5;
-
 }
 
 .desktop-button {
-
   width: 100%;
-
   min-height: 62px;
-
   border: 0;
-
   border-radius: 18px;
-
   margin-top: 12px;
-
   font-size: 17px;
-
   font-weight: 700;
-
 }
 
 .blue {
-
   background: #4285f4;
-
   color: white;
-
 }
 
 .green {
-
   background: #34a853;
-
   color: white;
-
 }
 
 .gray {
-
   background: #e8eaed;
-
   color: #202124;
-
 }
 
 .red {
-
   background: #ea4335;
-
   color: white;
-
 }
 
 .mobile-entry {
-
   width: 100%;
-
   min-height: 95px;
-
   margin-top: 30px;
-
   border: 0;
-
   border-radius: 25px;
-
   background:
     linear-gradient(
       135deg,
       #4285f4,
       #7c4dff
     );
-
   color: white;
-
   font-size: 22px;
-
   font-weight: 800;
-
   box-shadow:
-    0 10px 30px
-    rgba(66,133,244,.25);
-
+    0 10px 30px rgba(66,133,244,.25);
 }
 
 .mobile-entry small {
-
   display: block;
-
   margin-top: 6px;
-
   font-size: 13px;
-
   font-weight: 500;
-
 }
 
 
@@ -248,180 +173,116 @@ button {
 ===================================================== */
 
 #mobile {
-
   display: none;
-
   min-height: 100vh;
-
   background:
     linear-gradient(
       180deg,
-      #111827,
-      #1f2937
+      #0b1020,
+      #182235
     );
-
   color: white;
-
 }
 
-
-/* HEADER */
-
 .mobile-header {
-
   height: 68px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: space-between;
-
   padding: 0 14px;
-
-  background:
-    rgba(0,0,0,.35);
-
+  background: rgba(0,0,0,.35);
   position: sticky;
-
   top: 0;
-
   z-index: 100;
-
-  backdrop-filter: blur(12px);
-
+  backdrop-filter: blur(15px);
 }
 
 .mobile-title {
-
   font-size: 20px;
-
   font-weight: 800;
-
 }
 
 .back {
-
   border: 0;
-
-  background:
-    rgba(255,255,255,.1);
-
+  background: rgba(255,255,255,.1);
   color: white;
-
   border-radius: 13px;
-
   padding: 11px 15px;
-
   font-weight: 700;
-
 }
-
-
-/* PÁGINAS */
 
 .mobile-page {
-
-  padding:
-    20px 15px 50px;
-
+  padding: 20px 15px 55px;
   max-width: 700px;
-
   margin: auto;
-
 }
 
-
-/* HERO */
-
 .mobile-hero {
-
   text-align: center;
-
-  padding:
-    25px 10px;
-
+  padding: 28px 10px;
 }
 
 .mobile-hero-icon {
-
   font-size: 70px;
-
 }
 
 .mobile-hero h1 {
-
   font-size: 36px;
-
   margin: 8px 0;
-
 }
 
 .mobile-hero p {
-
   color: #aeb6c2;
-
   line-height: 1.5;
-
 }
 
-
-/* BOTONES */
-
 .mobile-button {
-
   width: 100%;
-
   min-height: 60px;
-
   border: 0;
-
   border-radius: 17px;
-
   margin-top: 11px;
-
   font-size: 16px;
-
   font-weight: 800;
+}
 
+.mobile-button:disabled {
+  opacity: .5;
 }
 
 .mobile-button small {
-
   display: block;
-
   margin-top: 4px;
-
   opacity: .75;
-
   font-size: 12px;
-
 }
 
-
-/* TARJETA */
-
 .card {
-
-  background:
-    rgba(255,255,255,.08);
-
-  border:
-    1px solid
-    rgba(255,255,255,.1);
-
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.1);
   border-radius: 22px;
-
   padding: 18px;
-
   margin-bottom: 15px;
-
 }
 
 .card h2 {
-
   margin-top: 0;
+}
 
+
+/* =====================================================
+   INPUT
+===================================================== */
+
+.input {
+  width: 100%;
+  height: 54px;
+  border: 0;
+  border-radius: 14px;
+  padding: 0 14px;
+  font-size: 16px;
+  outline: none;
+  margin-top: 8px;
 }
 
 
@@ -430,149 +291,167 @@ button {
 ===================================================== */
 
 .class-item {
-
   display: flex;
-
   align-items: center;
-
   gap: 12px;
-
-  padding: 13px;
-
-  background:
-    rgba(255,255,255,.07);
-
+  padding: 14px;
+  background: rgba(255,255,255,.07);
   border-radius: 15px;
-
   margin-top: 10px;
+  transition: .15s;
+}
 
+.class-item:active {
+  transform: scale(.98);
 }
 
 .class-color {
-
   width: 12px;
-
   height: 12px;
-
   border-radius: 50%;
-
   background: #4285f4;
-
 }
 
 .class-info {
-
   flex: 1;
-
 }
 
 .class-name {
-
   font-weight: 800;
-
 }
 
 .class-count {
-
   color: #9ca3af;
-
   font-size: 12px;
-
   margin-top: 3px;
-
 }
 
 .delete-class {
-
   border: 0;
-
-  background:
-    rgba(234,67,53,.15);
-
+  background: rgba(234,67,53,.15);
   color: #ff6b6b;
-
   border-radius: 10px;
-
   padding: 9px;
-
-}
-
-
-/* INPUT */
-
-.input {
-
-  width: 100%;
-
-  height: 54px;
-
-  border: 0;
-
-  border-radius: 14px;
-
-  padding: 0 14px;
-
-  font-size: 16px;
-
-  outline: none;
-
-  margin-top: 8px;
-
 }
 
 
 /* =====================================================
-   CÁMARA
+   CÁMARA TIPO APP
 ===================================================== */
 
-.camera {
-
+.camera-app {
   width: 100%;
-
   aspect-ratio: 3 / 4;
-
   background: #000;
-
-  border-radius: 22px;
-
+  border-radius: 28px;
   overflow: hidden;
-
   position: relative;
-
-  margin-top: 12px;
-
+  box-shadow:
+    0 15px 45px rgba(0,0,0,.45);
 }
 
-#video {
-
+.camera-app video {
   width: 100%;
-
   height: 100%;
-
   object-fit: cover;
-
   display: none;
+}
 
+.camera-app::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0,0,0,.6),
+      transparent 25%,
+      transparent 65%,
+      rgba(0,0,0,.75)
+    );
+}
+
+.camera-top {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.camera-pill {
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(12px);
+  color: white;
+  padding: 9px 13px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.camera-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+}
+
+.camera-small {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 0;
+  background: rgba(0,0,0,.68);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 23px;
+  box-shadow:
+    0 5px 20px rgba(0,0,0,.3);
+}
+
+.camera-small:active {
+  transform: scale(.9);
+}
+
+.camera-capture {
+  width: 82px;
+  height: 82px;
+  border-radius: 50%;
+  border: 6px solid white;
+  background: #4285f4;
+  color: white;
+  font-size: 30px;
+  box-shadow:
+    0 5px 25px rgba(0,0,0,.4);
+}
+
+.camera-capture:active {
+  transform: scale(.88);
 }
 
 .camera-placeholder {
-
   position: absolute;
-
   inset: 0;
-
+  z-index: 2;
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   text-align: center;
+  color: #aaa;
+  font-size: 17px;
+}
 
-  padding: 30px;
-
-  color: #9ca3af;
-
+.camera-actions {
+  margin-top: 12px;
 }
 
 
@@ -581,170 +460,9 @@ button {
 ===================================================== */
 
 .capture-counter {
-
   position: absolute;
-
   top: 15px;
-
-  left: 15px;
-
-  background:
-    rgba(0,0,0,.7);
-
-  padding:
-    8px 12px;
-
-  border-radius: 12px;
-
-  font-weight: 800;
-
-}
-
-
-/* =====================================================
-   PROGRESO
-===================================================== */
-
-.progress {
-
-  width: 100%;
-
-  height: 12px;
-
-  background:
-    rgba(255,255,255,.1);
-
-  border-radius: 20px;
-
-  overflow: hidden;
-
-  margin-top: 12px;
-
-}
-
-.progress-bar {
-
-  height: 100%;
-
-  width: 0%;
-
-  background: #4285f4;
-
-  transition:
-    width .2s;
-
-}
-
-
-/* =====================================================
-   RESULTADO
-===================================================== */
-
-.result {
-
-  background:
-    rgba(255,255,255,.08);
-
-  border-radius: 20px;
-
-  padding: 18px;
-
-  margin-top: 15px;
-
-}
-
-.result-label {
-
-  color: #9ca3af;
-
-  font-size: 12px;
-
-  text-transform: uppercase;
-
-}
-
-.result-name {
-
-  font-size: 30px;
-
-  font-weight: 900;
-
-  margin-top: 5px;
-
-}
-
-.result-confidence {
-
-  color: #aeb6c2;
-
-  margin-top: 4px;
-
-}
-
-
-/* =====================================================
-   PREDICCIONES
-===================================================== */
-
-.prediction {
-
-  margin-top: 13px;
-
-}
-
-.prediction-top {
-
-  display: flex;
-
-  justify-content: space-between;
-
-  font-size: 14px;
-
-}
-
-.prediction-track {
-
-  height: 8px;
-
-  background:
-    rgba(255,255,255,.1);
-
-  border-radius: 20px;
-
-  overflow: hidden;
-
-  margin-top: 5px;
-
-}
-
-.prediction-fill {
-
-  height: 100%;
-
-  width: 0%;
-
-  background: #4285f4;
-
-  transition:
-    width .15s;
-
-}
-
-
-/* =====================================================
-   ESTADO
-===================================================== */
-
-.status {
-
-  text-align: center;
-
-  color: #9ca3af;
-
-  font-size: 13px;
-
-  padding: 10px;
-
+  right: 15px;
 }
 
 
@@ -753,60 +471,255 @@ button {
 ===================================================== */
 
 .training-title {
-
   text-align: center;
-
 }
 
 .epoch {
-
   text-align: center;
-
   font-size: 30px;
-
   font-weight: 900;
-
   margin: 15px;
+}
 
+.progress {
+  width: 100%;
+  height: 12px;
+  background: rgba(255,255,255,.1);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #4285f4;
+  transition: width .2s;
 }
 
 .training-log {
-
   max-height: 180px;
-
   overflow-y: auto;
-
-  background: #0b0f16;
-
+  background: #080c13;
   border-radius: 14px;
-
   padding: 12px;
-
   font-family: monospace;
-
   font-size: 11px;
-
   color: #8fffa7;
+  margin-top: 15px;
+}
+
+
+/* =====================================================
+   RESULTADO
+===================================================== */
+
+.result {
+  background: rgba(255,255,255,.08);
+  border-radius: 20px;
+  padding: 18px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.result-label {
+  color: #9ca3af;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.result-name {
+  font-size: 32px;
+  font-weight: 900;
+  margin-top: 5px;
+}
+
+.result-confidence {
+  color: #aeb6c2;
+  margin-top: 4px;
+}
+
+
+/* =====================================================
+   PREDICCIONES
+===================================================== */
+
+.prediction {
+  margin-top: 15px;
+}
+
+.prediction-top {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.prediction-track {
+  height: 9px;
+  background: rgba(255,255,255,.1);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.prediction-fill {
+  height: 100%;
+  width: 0%;
+  background: #4285f4;
+  transition: width .15s;
+}
+
+
+/* =====================================================
+   RECONOCIMIENTO
+===================================================== */
+
+.recognition-camera {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background: #000;
+  border-radius: 28px;
+  overflow: hidden;
+  position: relative;
+}
+
+.recognition-camera video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.recognition-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border: 2px solid rgba(66,133,244,.3);
+  border-radius: 28px;
+}
+
+.recognition-top {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recognition-pill {
+  padding: 9px 13px;
+  border-radius: 13px;
+  background: rgba(0,0,0,.65);
+  backdrop-filter: blur(10px);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.recognition-controls {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  z-index: 5;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+  padding: 12px;
+}
+
+
+/* =====================================================
+   CARGANDO
+===================================================== */
+
+.loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #0b1020;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+}
+
+.loading-icon {
+  font-size: 65px;
+  animation: pulse 1.2s infinite;
+}
+
+.loading-text {
+  margin-top: 15px;
+  color: #aeb6c2;
+}
+
+@keyframes pulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 
 }
 
 
 /* =====================================================
-   PC
+   RESPONSIVE
 ===================================================== */
 
 @media (min-width: 800px) {
 
   #desktop {
-
     display: block !important;
+  }
 
+}
+
+
+/* =====================================================
+   PANTALLAS PEQUEÑAS
+===================================================== */
+
+@media (max-width: 380px) {
+
+  .mobile-page {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .camera-controls {
+    gap: 17px;
+  }
+
+  .camera-capture {
+    width: 74px;
+    height: 74px;
   }
 
 }
 
 </style>
-
 </head>
 
 
@@ -814,7 +727,26 @@ button {
 
 
 <!-- =====================================================
-     INTERFAZ ORIGINAL
+     PANTALLA DE CARGA
+===================================================== -->
+
+<div
+  id="loadingScreen"
+  class="loading-screen">
+
+  <div class="loading-icon">
+    🤖
+  </div>
+
+  <div class="loading-text">
+    Cargando IA-Objetos...
+  </div>
+
+</div>
+
+
+<!-- =====================================================
+     ESCRITORIO
 ===================================================== -->
 
 <div id="desktop">
@@ -875,7 +807,7 @@ button {
       📱 MODO MÓVIL
 
       <small>
-        Crear y entrenar IA directamente desde tu dispositivo
+        Crea y entrena tu IA desde tu dispositivo
       </small>
 
     </button>
@@ -885,218 +817,290 @@ button {
 </div>
 
 
-
 <!-- =====================================================
-     MODO MÓVIL
+     MÓVIL
 ===================================================== -->
 
 <div id="mobile">
 
 
-  <header class="mobile-header">
+<header class="mobile-header">
 
-    <button
-      class="back"
-      onclick="salirMovil()">
+  <button
+    class="back"
+    onclick="salirMovil()">
 
-      ← Volver
+    ← Volver
 
-    </button>
+  </button>
 
-    <div class="mobile-title">
-      📱 IA-Objetos
-    </div>
+  <div class="mobile-title">
+    📱 IA-Objetos
+  </div>
 
-    <div>
+  <div>
+    🤖
+  </div>
+
+</header>
+
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section
+  id="pageHome"
+  class="mobile-page">
+
+  <div class="mobile-hero">
+
+    <div class="mobile-hero-icon">
       🤖
     </div>
 
-  </header>
+    <h1>
+      IA-Objetos
+    </h1>
+
+    <p>
+      Crea y entrena tu propia inteligencia
+      artificial directamente desde tu móvil.
+    </p>
+
+  </div>
 
 
+  <button
+    class="mobile-button blue"
+    onclick="abrirEntrenador()">
 
-  <!-- =================================================
-       INICIO
-  ================================================== -->
+    🧠 Crear mi IA
 
-  <section
-    id="pageHome"
-    class="mobile-page">
+    <small>
+      Crea clases y toma ejemplos
+    </small>
 
-    <div class="mobile-hero">
+  </button>
 
-      <div class="mobile-hero-icon">
-        🤖
-      </div>
 
-      <h1>
-        IA-Objetos
-      </h1>
+  <button
+    class="mobile-button green"
+    onclick="abrirPrueba()">
 
-      <p>
-        Crea y entrena tu propia IA
-        directamente desde tu móvil.
-      </p>
+    🎯 Probar mi IA
 
-    </div>
+    <small>
+      Reconoce objetos con tu cámara
+    </small>
+
+  </button>
+
+
+  <button
+    class="mobile-button gray"
+    onclick="cargarGuardado()">
+
+    💾 Modelo guardado
+
+    <small>
+      Abrir una IA guardada
+    </small>
+
+  </button>
+
+</section>
+
+
+<!-- =====================================================
+     ENTRENADOR
+===================================================== -->
+
+<section
+  id="pageTrainer"
+  class="mobile-page hidden">
+
+
+  <button
+    class="back"
+    onclick="volverHome()">
+
+    ← Inicio
+
+  </button>
+
+
+  <!-- CREAR CLASE -->
+
+  <div class="card">
+
+    <h2>
+      🧠 Crear IA
+    </h2>
+
+    <p style="color:#aeb6c2">
+
+      Crea una clase para cada objeto.
+
+      <br><br>
+
+      Ejemplo:
+
+      <b>Botella</b>,
+      <b>Lápiz</b>,
+      <b>Teléfono</b>.
+
+    </p>
+
+
+    <input
+      id="className"
+      class="input"
+      placeholder="Nombre del objeto..."
+      maxlength="30"
+    >
 
 
     <button
       class="mobile-button blue"
-      onclick="abrirEntrenador()">
+      onclick="crearClase()">
 
-      🧠 Crear mi IA
-
-      <small>
-        Crear clases y tomar ejemplos
-      </small>
+      ➕ Crear clase
 
     </button>
 
-
-    <button
-      class="mobile-button green"
-      onclick="abrirPrueba()">
-
-      🎯 Probar mi IA
-
-      <small>
-        Reconocer objetos
-      </small>
-
-    </button>
+  </div>
 
 
-    <button
-      class="mobile-button gray"
-      onclick="cargarGuardado()">
+  <!-- CLASES -->
 
-      💾 Modelo guardado
+  <div
+    id="classesCard"
+    class="card hidden">
 
-      <small>
-        Cargar una IA de este dispositivo
-      </small>
+    <h2>
+      📚 Mis clases
+    </h2>
 
-    </button>
+    <div id="classList"></div>
 
-  </section>
-
-
-
-  <!-- =================================================
-       ENTRENADOR
-  ================================================== -->
-
-  <section
-    id="pageTrainer"
-    class="mobile-page hidden">
-
-    <button
-      class="back"
-      onclick="volverHome()">
-
-      ← Inicio
-
-    </button>
+  </div>
 
 
-    <div class="card">
+  <!-- CÁMARA DE ENTRENAMIENTO -->
 
-      <h2>
-        🧠 Crear IA
-      </h2>
+  <div
+    id="captureCard"
+    class="card hidden">
 
-      <p style="color:#aeb6c2">
-
-        Primero crea una clase.
-        Por ejemplo: Botella.
-
-      </p>
+    <h2>
+      📸 Añadir ejemplos
+    </h2>
 
 
-      <input
-        id="className"
-        class="input"
-        placeholder="Nombre de la clase"
-        maxlength="30"
-      >
+    <p
+      style="
+      color:#aeb6c2;
+      font-size:14px;
+      ">
+
+      Selecciona una clase y muestra el objeto
+      a la cámara.
+
+    </p>
 
 
-      <button
-        class="mobile-button blue"
-        onclick="crearClase()">
-
-        ➕ Crear clase
-
-      </button>
-
-    </div>
+    <div class="camera-app">
 
 
-
-    <div
-      id="classesCard"
-      class="card hidden">
-
-      <h2>
-        📚 Mis clases
-      </h2>
-
-      <div
-        id="classList">
-      </div>
-
-    </div>
-
-
-
-    <div
-      id="captureCard"
-      class="card hidden">
-
-      <h2>
-        📸 Añadir ejemplos
-      </h2>
+      <video
+        id="video"
+        autoplay
+        muted
+        playsinline>
+      </video>
 
 
       <div
-        id="currentClass"
-        style="
-        font-weight:800;
-        font-size:18px;
-        ">
+        id="cameraPlaceholder"
+        class="camera-placeholder">
+
+        📷<br><br>
+        Pulsa "Abrir cámara"
 
       </div>
 
 
-      <div class="camera">
+      <div class="camera-top">
 
-        <video
-          id="video"
-          autoplay
-          muted
-          playsinline>
-        </video>
+        <div class="camera-pill">
 
+          🧠
 
-        <div
-          id="cameraPlaceholder"
-          class="camera-placeholder">
-
-          Pulsa "Abrir cámara".
+          <span id="currentClass">
+            Sin clase
+          </span>
 
         </div>
 
 
         <div
-          id="captureCounter"
-          class="capture-counter">
+          class="camera-pill"
+          id="captureCounter">
 
           0 ejemplos
 
         </div>
 
       </div>
+
+
+      <div class="camera-controls">
+
+
+        <!-- GIRAR -->
+
+        <button
+          class="camera-small"
+          onclick="girarCamaraEntrenamiento()"
+          title="Girar cámara">
+
+          🔄
+
+        </button>
+
+
+        <!-- CAPTURAR -->
+
+        <button
+          class="camera-capture"
+          onclick="capturarEjemplo()"
+          title="Capturar">
+
+          📸
+
+        </button>
+
+
+        <!-- RÁFAGA -->
+
+        <button
+          id="burstButton"
+          class="camera-small"
+          onclick="capturarRafaga()"
+          title="Capturar 10">
+
+          ⚡
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="camera-actions">
 
 
       <button
@@ -1109,249 +1113,289 @@ button {
 
 
       <button
-        class="mobile-button green"
-        onclick="capturarEjemplo()">
-
-        📸 Capturar ejemplo
-
-      </button>
-
-
-      <button
-        class="mobile-button gray"
-        onclick="capturarRafaga()">
-
-        ⚡ Capturar 10 ejemplos
-
-      </button>
-
-
-      <button
         class="mobile-button red"
         onclick="detenerCamara()">
 
-        ⏹ Detener cámara
+        ⏹ Cerrar cámara
 
       </button>
 
+
     </div>
 
+  </div>
+
+
+  <!-- ENTRENAMIENTO -->
+
+  <div
+    id="trainCard"
+    class="card hidden">
+
+    <h2>
+      🚀 Entrenar
+    </h2>
+
+    <p style="color:#aeb6c2">
+
+      Cuando tengas ejemplos en todas las clases,
+      entrena tu IA.
+
+    </p>
 
 
     <div
-      id="trainCard"
-      class="card hidden">
-
-      <h2>
-        🚀 Entrenar
-      </h2>
-
-      <p style="color:#aeb6c2">
-
-        Cuando tengas ejemplos en todas
-        las clases, puedes entrenar.
-
-      </p>
-
-
-      <div
-        id="dataSummary"
-        style="
-        color:#aaa;
-        margin:10px 0;
-        ">
-
-      </div>
-
-
-      <button
-        class="mobile-button green"
-        onclick="entrenarModelo()">
-
-        🧠 ENTRENAR IA
-
-      </button>
+      id="dataSummary"
+      style="
+      color:#aaa;
+      margin:10px 0;
+      ">
 
     </div>
 
-  </section>
+
+    <button
+      class="mobile-button green"
+      onclick="entrenarModelo()">
+
+      🧠 ENTRENAR IA
+
+    </button>
+
+  </div>
+
+</section>
 
 
+<!-- =====================================================
+     ENTRENANDO
+===================================================== -->
 
-  <!-- =================================================
-       ENTRENANDO
-  ================================================== -->
+<section
+  id="pageTraining"
+  class="mobile-page hidden">
 
-  <section
-    id="pageTraining"
-    class="mobile-page hidden">
 
-    <div class="card">
+  <div class="card">
 
-      <div class="training-title">
+    <div class="training-title">
 
-        <h2>
-          🧠 Entrenando...
-        </h2>
+      <h2>
+        🧠 Entrenando...
+      </h2>
 
-        <p
-          id="trainingStatus"
-          style="color:#aaa">
+      <p
+        id="trainingStatus"
+        style="color:#aaa">
 
-          Preparando datos...
+        Preparando IA...
 
-        </p>
+      </p>
+
+    </div>
+
+
+    <div
+      class="epoch"
+      id="epoch">
+
+      0%
+
+    </div>
+
+
+    <div class="progress">
+
+      <div
+        id="trainingProgress"
+        class="progress-bar">
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="trainingLog"
+      class="training-log">
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PRUEBA
+===================================================== -->
+
+<section
+  id="pageTest"
+  class="mobile-page hidden">
+
+
+  <button
+    class="back"
+    onclick="volverHome()">
+
+    ← Inicio
+
+  </button>
+
+
+  <div class="card">
+
+    <h2>
+      🎯 Probar mi IA
+    </h2>
+
+
+    <div class="recognition-camera">
+
+
+      <video
+        id="testVideo"
+        autoplay
+        muted
+        playsinline>
+      </video>
+
+
+      <div
+        id="testPlaceholder"
+        class="camera-placeholder">
+
+        🎯<br><br>
+        Pulsa iniciar reconocimiento
 
       </div>
 
 
+      <div class="recognition-overlay"></div>
+
+
+      <div class="recognition-top">
+
+        <div class="recognition-pill">
+          🧠 IA-Objetos
+        </div>
+
+        <div
+          class="recognition-pill"
+          id="liveCameraLabel">
+
+          📷
+
+        </div>
+
+      </div>
+
+
+      <div class="recognition-controls">
+
+
+        <button
+          class="camera-small"
+          onclick="cambiarCamaraPrueba()">
+
+          🔄
+
+        </button>
+
+
+        <button
+          class="camera-capture"
+          onclick="iniciarPrueba()">
+
+          ▶️
+
+        </button>
+
+
+        <button
+          class="camera-small"
+          onclick="detenerPrueba()">
+
+          ⏹
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="result">
+
+      <div class="result-label">
+        Objeto detectado
+      </div>
+
       <div
-        class="epoch"
-        id="epoch">
+        id="resultName"
+        class="result-name">
+
+        Esperando...
+
+      </div>
+
+      <div
+        id="resultConfidence"
+        class="result-confidence">
 
         0%
 
       </div>
 
-
-      <div class="progress">
-
-        <div
-          id="trainingProgress"
-          class="progress-bar">
-        </div>
-
-      </div>
-
-
-      <div
-        id="trainingLog"
-        class="training-log">
-
-      </div>
-
     </div>
 
-  </section>
 
+    <div id="predictions"></div>
 
-
-  <!-- =================================================
-       PRUEBA
-  ================================================== -->
-
-  <section
-    id="pageTest"
-    class="mobile-page hidden">
 
     <button
-      class="back"
-      onclick="volverHome()">
+      class="mobile-button blue"
+      onclick="iniciarPrueba()">
 
-      ← Inicio
+      📷 Iniciar reconocimiento
 
     </button>
 
 
-    <div class="card">
+    <button
+      class="mobile-button gray"
+      onclick="cambiarCamaraPrueba()">
 
-      <h2>
-        🎯 Probar IA
-      </h2>
+      🔄 Cambiar cámara
 
-
-      <div class="camera">
-
-        <video
-          id="testVideo"
-          autoplay
-          muted
-          playsinline>
-        </video>
+    </button>
 
 
-        <div
-          id="testPlaceholder"
-          class="camera-placeholder">
+    <button
+      class="mobile-button red"
+      onclick="detenerPrueba()">
 
-          Pulsa iniciar cámara.
+      ⏹ Detener
 
-        </div>
+    </button>
 
-      </div>
-
-
-      <button
-        class="mobile-button blue"
-        onclick="iniciarPrueba()">
-
-        📷 Iniciar reconocimiento
-
-      </button>
+  </div>
 
 
-      <button
-        class="mobile-button gray"
-        onclick="cambiarCamaraPrueba()">
+  <div
+    id="testStatus"
+    class="status">
 
-        🔄 Cambiar cámara
+    Sin modelo cargado.
 
-      </button>
+  </div>
 
+</section>
 
-      <button
-        class="mobile-button red"
-        onclick="detenerPrueba()">
-
-        ⏹ Detener
-
-      </button>
-
-
-      <div class="result">
-
-        <div class="result-label">
-          Objeto detectado
-        </div>
-
-        <div
-          id="resultName"
-          class="result-name">
-
-          Esperando...
-
-        </div>
-
-        <div
-          id="resultConfidence"
-          class="result-confidence">
-
-          0%
-
-        </div>
-
-      </div>
-
-
-      <div
-        id="predictions">
-      </div>
-
-    </div>
-
-
-    <div
-      id="testStatus"
-      class="status">
-
-      Sin modelo cargado.
-
-    </div>
-
-  </section>
 
 </div>
-
 
 
 <script>
@@ -1376,9 +1420,9 @@ let testStream = null;
 
 let testRunning = false;
 
-let testFacingMode = "environment";
+let trainingFacingMode = "environment";
 
-let embeddingSize = 0;
+let testFacingMode = "environment";
 
 
 /* =====================================================
@@ -1467,7 +1511,7 @@ function abrirPrueba() {
 
 
 /* =====================================================
-   BOTONES ORIGINALES
+   BOTONES PRINCIPALES
 ===================================================== */
 
 function crearIA() {
@@ -1489,24 +1533,28 @@ function abrirModelo() {
 
 
 /* =====================================================
-   CARGAR MOBILENET
+   MOBILENET
 ===================================================== */
 
 async function cargarMobileNet() {
 
   if (mobileNet) {
-
     return;
-
   }
 
 
   const status =
-    document.getElementById("trainingStatus");
+    document.getElementById(
+      "trainingStatus"
+    );
 
 
-  status.textContent =
-    "⏳ Cargando cerebro base de IA...";
+  if (status) {
+
+    status.textContent =
+      "⏳ Cargando cerebro base de IA...";
+
+  }
 
 
   mobileNet =
@@ -1519,8 +1567,12 @@ async function cargarMobileNet() {
     });
 
 
-  status.textContent =
-    "✅ Cerebro base listo.";
+  if (status) {
+
+    status.textContent =
+      "✅ Cerebro base listo.";
+
+  }
 
 }
 
@@ -1532,7 +1584,9 @@ async function cargarMobileNet() {
 async function crearClase() {
 
   const input =
-    document.getElementById("className");
+    document.getElementById(
+      "className"
+    );
 
 
   const name =
@@ -1567,23 +1621,15 @@ async function crearClase() {
   }
 
 
-  const newClass = {
+  classes.push({
 
-    id:
-      Date.now(),
+    id: Date.now(),
 
-    name:
-      name,
+    name: name,
 
-    count:
-      0
+    count: 0
 
-  };
-
-
-  classes.push(
-    newClass
-  );
+  });
 
 
   trainingData.push([]);
@@ -1593,6 +1639,7 @@ async function crearClase() {
 
 
   actualizarInterfazClases();
+
 
   seleccionarClase(
     classes.length - 1
@@ -1620,14 +1667,18 @@ function actualizarInterfazClases() {
 
   if (classes.length === 0) {
 
-    card.classList.add("hidden");
+    card.classList.add(
+      "hidden"
+    );
 
     return;
 
   }
 
 
-  card.classList.remove("hidden");
+  card.classList.remove(
+    "hidden"
+  );
 
 
   list.innerHTML = "";
@@ -1673,21 +1724,20 @@ function actualizarInterfazClases() {
       `;
 
 
-      div.onclick = function(event) {
+      div.addEventListener(
+        "click",
+        function(event) {
 
-        if (
-          event.target.tagName ===
-          "BUTTON"
-        ) {
+          if (
+            event.target.closest("button")
+          ) {
+            return;
+          }
 
-          return;
+          seleccionarClase(index);
 
         }
-
-
-        seleccionarClase(index);
-
-      };
+      );
 
 
       list.appendChild(div);
@@ -1713,13 +1763,14 @@ function seleccionarClase(index) {
 
   document.getElementById(
     "captureCard"
-  ).classList.remove("hidden");
+  ).classList.remove(
+    "hidden"
+  );
 
 
   document.getElementById(
     "currentClass"
   ).textContent =
-    "Clase: " +
     classes[index].name;
 
 
@@ -1756,29 +1807,15 @@ function eliminarClase(index) {
   );
 
 
-  if (
-    currentClass === index
-  ) {
-
-    currentClass =
-      null;
-
-    document.getElementById(
-      "captureCard"
-    ).classList.add("hidden");
-
-  }
+  currentClass =
+    null;
 
 
-  if (
-    currentClass !== null &&
-    currentClass >= classes.length
-  ) {
-
-    currentClass =
-      null;
-
-  }
+  document.getElementById(
+    "captureCard"
+  ).classList.add(
+    "hidden"
+  );
 
 
   actualizarInterfazClases();
@@ -1787,7 +1824,7 @@ function eliminarClase(index) {
 
 
 /* =====================================================
-   ABRIR CÁMARA DE ENTRENAMIENTO
+   ABRIR CÁMARA
 ===================================================== */
 
 async function abrirCamaraEntrenamiento() {
@@ -1798,6 +1835,20 @@ async function abrirCamaraEntrenamiento() {
 
     alert(
       "Selecciona una clase primero."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+
+    alert(
+      "Tu navegador no permite usar la cámara aquí. Abre IA-Objetos mediante HTTPS."
     );
 
     return;
@@ -1817,7 +1868,7 @@ async function abrirCamaraEntrenamiento() {
           video: {
 
             facingMode:
-              "environment",
+              trainingFacingMode,
 
             width: {
               ideal: 640
@@ -1854,14 +1905,14 @@ async function abrirCamaraEntrenamiento() {
       "none";
 
 
+    video.muted =
+      true;
+
+
     video.setAttribute(
       "playsinline",
       ""
     );
-
-
-    video.muted =
-      true;
 
 
     await video.play();
@@ -1869,12 +1920,43 @@ async function abrirCamaraEntrenamiento() {
 
   } catch(error) {
 
+    console.error(error);
+
+
+    cameraStream =
+      null;
+
+
     alert(
-      "No se pudo abrir la cámara: " +
+      "No se pudo abrir la cámara.\n\n" +
       error.message
     );
 
   }
+
+}
+
+
+/* =====================================================
+   GIRAR CÁMARA DE ENTRENAMIENTO
+===================================================== */
+
+async function girarCamaraEntrenamiento() {
+
+  trainingFacingMode =
+    trainingFacingMode === "environment"
+      ? "user"
+      : "environment";
+
+
+  if (!cameraStream) {
+
+    return;
+
+  }
+
+
+  await abrirCamaraEntrenamiento();
 
 }
 
@@ -1960,13 +2042,13 @@ async function capturarEjemplo() {
 
     vibrar();
 
-
   } catch(error) {
 
     console.error(error);
 
+
     alert(
-      "Error capturando ejemplo: " +
+      "Error capturando ejemplo:\n" +
       error.message
     );
 
@@ -1976,7 +2058,7 @@ async function capturarEjemplo() {
 
 
 /* =====================================================
-   CAPTURAR RÁFAGA
+   RÁFAGA
 ===================================================== */
 
 async function capturarRafaga() {
@@ -2014,19 +2096,14 @@ async function capturarRafaga() {
   }
 
 
-  await cargarMobileNet();
-
-
   const button =
-    event?.currentTarget;
+    document.getElementById(
+      "burstButton"
+    );
 
 
-  if (button) {
-
-    button.disabled =
-      true;
-
-  }
+  button.disabled =
+    true;
 
 
   try {
@@ -2039,18 +2116,14 @@ async function capturarRafaga() {
 
       await capturarEjemplo();
 
-      await sleep(100);
+      await sleep(120);
 
     }
 
   } finally {
 
-    if (button) {
-
-      button.disabled =
-        false;
-
-    }
+    button.disabled =
+      false;
 
   }
 
@@ -2164,7 +2237,7 @@ async function entrenarModelo() {
       );
 
 
-    embeddingSize =
+    const embeddingSize =
       xs.shape[1];
 
 
@@ -2180,17 +2253,16 @@ async function entrenarModelo() {
 
             units: 128,
 
-            activation: "relu"
+            activation:
+              "relu"
 
           }),
-
 
           tf.layers.dropout({
 
-            rate: 0.2
+            rate: .2
 
           }),
-
 
           tf.layers.dense({
 
@@ -2210,7 +2282,7 @@ async function entrenarModelo() {
     classifier.compile({
 
       optimizer:
-        tf.train.adam(0.001),
+        tf.train.adam(.001),
 
       loss:
         "categoricalCrossentropy",
@@ -2221,7 +2293,7 @@ async function entrenarModelo() {
     });
 
 
-    const totalEpochs =
+    const epochs =
       25;
 
 
@@ -2241,15 +2313,18 @@ async function entrenarModelo() {
       {
 
         epochs:
-          totalEpochs,
+
+          epochs,
 
         batchSize:
+
           Math.min(
             16,
             xs.shape[0]
           ),
 
         shuffle:
+
           true,
 
         callbacks: {
@@ -2264,7 +2339,7 @@ async function entrenarModelo() {
                 Math.round(
                   (
                     (epoch + 1) /
-                    totalEpochs
+                    epochs
                   ) * 100
                 );
 
@@ -2281,23 +2356,36 @@ async function entrenarModelo() {
                 percent + "%";
 
 
-              document.getElementById(
-                "trainingStatus"
-              ).textContent =
-                "Entrenando...";
+              let accuracy =
+                logs.accuracy;
+
+
+              if (
+                accuracy === undefined
+              ) {
+
+                accuracy =
+                  logs.acc;
+
+              }
+
+
+              if (
+                accuracy === undefined
+              ) {
+
+                accuracy = 0;
+
+              }
 
 
               log.innerHTML +=
                 "Época " +
                 (epoch + 1) +
-                ": pérdida " +
+                " — pérdida: " +
                 logs.loss.toFixed(4) +
-                " | precisión " +
-                (
-                  logs.acc ??
-                  logs.accuracy ??
-                  0
-                ).toFixed(3) +
+                " — precisión: " +
+                accuracy.toFixed(3) +
                 "<br>";
 
 
@@ -2326,7 +2414,7 @@ async function entrenarModelo() {
     document.getElementById(
       "trainingStatus"
     ).textContent =
-      "✅ Entrenamiento terminado";
+      "✅ ¡Tu IA está lista!";
 
 
     await sleep(800);
@@ -2340,7 +2428,7 @@ async function entrenarModelo() {
     document.getElementById(
       "testStatus"
     ).textContent =
-      "✅ Tu IA está lista.";
+      "✅ Modelo entrenado correctamente.";
 
   } catch(error) {
 
@@ -2350,7 +2438,7 @@ async function entrenarModelo() {
     document.getElementById(
       "trainingStatus"
     ).textContent =
-      "❌ Error";
+      "❌ Error durante el entrenamiento";
 
 
     document.getElementById(
@@ -2373,9 +2461,7 @@ async function entrenarModelo() {
 async function guardarModelo() {
 
   if (!classifier) {
-
     return;
-
   }
 
 
@@ -2399,7 +2485,7 @@ async function guardarModelo() {
   } catch(error) {
 
     console.error(
-      "No se pudo guardar:",
+      "Error guardando modelo:",
       error
     );
 
@@ -2409,7 +2495,7 @@ async function guardarModelo() {
 
 
 /* =====================================================
-   CARGAR MODELO GUARDADO
+   CARGAR MODELO
 ===================================================== */
 
 async function cargarGuardado() {
@@ -2425,6 +2511,10 @@ async function cargarGuardado() {
     );
 
 
+  status.textContent =
+    "⏳ Buscando modelo guardado...";
+
+
   try {
 
     classifier =
@@ -2433,7 +2523,7 @@ async function cargarGuardado() {
       );
 
 
-    const savedClasses =
+    const saved =
       JSON.parse(
         localStorage.getItem(
           "iaObjetosClasses"
@@ -2442,19 +2532,24 @@ async function cargarGuardado() {
 
 
     classes =
-      savedClasses.map(
+      saved.map(
         name => ({
-          name,
+
+          name: name,
+
           count: 0
+
         })
       );
 
 
     status.textContent =
-      "✅ Modelo cargado.";
-
+      "✅ Modelo cargado. Listo para reconocer.";
 
   } catch(error) {
+
+    console.error(error);
+
 
     classifier =
       null;
@@ -2469,7 +2564,7 @@ async function cargarGuardado() {
 
 
 /* =====================================================
-   INICIAR PRUEBA
+   INICIAR RECONOCIMIENTO
 ===================================================== */
 
 async function iniciarPrueba() {
@@ -2485,10 +2580,27 @@ async function iniciarPrueba() {
   }
 
 
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+
+    alert(
+      "La cámara necesita HTTPS."
+    );
+
+    return;
+
+  }
+
+
   detenerPrueba();
 
 
   try {
+
+    await cargarMobileNet();
+
 
     testStream =
       await navigator.mediaDevices
@@ -2534,14 +2646,14 @@ async function iniciarPrueba() {
       "none";
 
 
+    video.muted =
+      true;
+
+
     video.setAttribute(
       "playsinline",
       ""
     );
-
-
-    video.muted =
-      true;
 
 
     await video.play();
@@ -2551,14 +2663,23 @@ async function iniciarPrueba() {
       true;
 
 
+    document.getElementById(
+      "testStatus"
+    ).textContent =
+      "🟢 Reconociendo...";
+
+
     reconocer();
 
   } catch(error) {
 
+    console.error(error);
+
+
     document.getElementById(
       "testStatus"
     ).textContent =
-      "❌ Cámara: " +
+      "❌ " +
       error.message;
 
   }
@@ -2567,25 +2688,10 @@ async function iniciarPrueba() {
 
 
 /* =====================================================
-   RECONOCIMIENTO
+   RECONOCER
 ===================================================== */
 
 async function reconocer() {
-
-  if (
-    !testRunning ||
-    !classifier ||
-    !mobileNet
-  ) {
-
-    if (!mobileNet) {
-
-      await cargarMobileNet();
-
-    }
-
-  }
-
 
   if (
     !testRunning
@@ -2654,10 +2760,8 @@ async function reconocer() {
 
 
     const name =
-      classes[bestIndex]
-        ?.name ||
-      "Clase " +
-      (bestIndex + 1);
+      classes[bestIndex]?.name ||
+      "Desconocido";
 
 
     document.getElementById(
@@ -2775,7 +2879,7 @@ function mostrarPredicciones(
 
 
 /* =====================================================
-   CAMBIAR CÁMARA
+   GIRAR CÁMARA DE RECONOCIMIENTO
 ===================================================== */
 
 async function cambiarCamaraPrueba() {
@@ -2783,7 +2887,9 @@ async function cambiarCamaraPrueba() {
   testFacingMode =
     testFacingMode ===
     "environment"
+
       ? "user"
+
       : "environment";
 
 
@@ -2797,7 +2903,7 @@ async function cambiarCamaraPrueba() {
 
 
 /* =====================================================
-   DETENER CÁMARA ENTRENAMIENTO
+   DETENER CÁMARA DE ENTRENAMIENTO
 ===================================================== */
 
 function detenerCamara() {
@@ -2851,7 +2957,7 @@ function detenerCamara() {
 
 
 /* =====================================================
-   DETENER PRUEBA
+   DETENER RECONOCIMIENTO
 ===================================================== */
 
 function detenerPrueba() {
@@ -2941,7 +3047,10 @@ function actualizarResumen() {
 
   const total =
     trainingData.reduce(
-      (sum, data) =>
+      (
+        sum,
+        data
+      ) =>
         sum + data.length,
       0
     );
@@ -2957,7 +3066,6 @@ function actualizarResumen() {
     " clases · " +
     total +
     " ejemplos";
-
 
 }
 
@@ -2985,9 +3093,7 @@ function vibrar() {
     navigator.vibrate
   ) {
 
-    navigator.vibrate(
-      30
-    );
+    navigator.vibrate(30);
 
   }
 
@@ -2997,22 +3103,27 @@ function vibrar() {
 function escapeHTML(text) {
 
   return String(text)
+
     .replace(
       /&/g,
       "&amp;"
     )
+
     .replace(
       /</g,
       "&lt;"
     )
+
     .replace(
       />/g,
       "&gt;"
     )
+
     .replace(
       /"/g,
       "&quot;"
     )
+
     .replace(
       /'/g,
       "&#039;"
@@ -3033,6 +3144,14 @@ window.addEventListener(
 
       await tf.ready();
 
+      document
+        .getElementById(
+          "loadingScreen"
+        )
+        .style.display =
+        "none";
+
+
       console.log(
         "TensorFlow.js listo"
       );
@@ -3041,6 +3160,23 @@ window.addEventListener(
 
       console.error(error);
 
+
+      document
+        .getElementById(
+          "loadingScreen"
+        )
+        .innerHTML = `
+
+          <div style="font-size:60px">
+            ❌
+          </div>
+
+          <p>
+            No se pudo cargar TensorFlow.js.
+          </p>
+
+        `;
+
     }
 
   }
@@ -3048,7 +3184,7 @@ window.addEventListener(
 
 
 /* =====================================================
-   AL SALIR
+   LIMPIAR AL SALIR
 ===================================================== */
 
 window.addEventListener(

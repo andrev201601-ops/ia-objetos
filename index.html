@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+1<!DOCTYPE html>
 <html lang="es">
 <head>
 
@@ -6,205 +6,542 @@
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1.0"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
+
+<meta name="theme-color" content="#4285f4">
 
 <title>IA-Objetos</title>
 
 <!-- TensorFlow.js -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 
-<!-- Teachable Machine Image -->
+<!-- Teachable Machine -->
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
 
 
 <style>
 
+/* ================================
+   BASE
+================================ */
+
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
+html,
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
   background: #f5f7fb;
   color: #202124;
 }
 
+
+/* ================================
+   HEADER
+================================ */
+
 header {
+
+  height: 64px;
+
   background: white;
-  border-bottom: 1px solid #ddd;
-  padding: 16px 22px;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
+  padding:
+    0 18px;
+
+  border-bottom:
+    1px solid #e0e0e0;
 
   position: sticky;
   top: 0;
-  z-index: 10;
+
+  z-index: 100;
+
 }
 
 .logo {
-  font-size: 25px;
-  font-weight: bold;
+
+  font-size: 22px;
+  font-weight: 800;
+
 }
 
 .logo span {
+
   color: #4285f4;
+
 }
 
-#status {
-  font-size: 14px;
-  color: #666;
+.status {
+
+  font-size: 13px;
+  color: #777;
+
 }
 
-main {
-  width: min(950px, 94%);
-  margin: 30px auto;
+
+/* ================================
+   PANTALLAS
+================================ */
+
+.screen {
+
+  display: none;
+
+  min-height:
+    calc(100vh - 64px);
+
+  padding:
+    22px 17px 100px;
+
 }
+
+.screen.active {
+
+  display: block;
+
+}
+
+
+/* ================================
+   INICIO
+================================ */
 
 .hero {
+
   text-align: center;
-  margin-bottom: 25px;
+
+  padding:
+    30px 10px 20px;
+
+}
+
+.robot {
+
+  font-size: 70px;
+
+  margin-bottom: 8px;
+
 }
 
 .hero h1 {
-  font-size: 42px;
-  margin-bottom: 8px;
+
+  font-size: 38px;
+
+  margin:
+    0 0 8px;
+
+}
+
+.hero h1 span {
+
+  color: #4285f4;
+
 }
 
 .hero p {
-  color: #666;
-}
 
-.panel {
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 18px;
-  padding: 24px;
-  margin-bottom: 20px;
+  margin: 0;
 
-  box-shadow: 0 3px 12px rgba(0,0,0,.06);
-}
-
-h2 {
-  margin-top: 0;
-}
-
-input {
-  width: 100%;
-  padding: 14px;
-
-  border: 1px solid #bbb;
-  border-radius: 10px;
+  color: #70757a;
 
   font-size: 16px;
 
-  outline: none;
+  line-height: 1.5;
+
 }
 
-input:focus {
-  border-color: #4285f4;
-}
 
-button {
+/* ================================
+   BOTONES PRINCIPALES
+================================ */
+
+.big-button {
+
+  width: 100%;
+
+  min-height: 62px;
+
   border: 0;
-  border-radius: 10px;
 
-  padding: 13px 18px;
+  border-radius: 18px;
 
-  font-size: 15px;
-  font-weight: bold;
+  margin-top: 12px;
+
+  padding: 14px 18px;
+
+  font-size: 17px;
+
+  font-weight: 700;
 
   cursor: pointer;
 
-  margin: 5px;
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  transition:
+    transform .1s,
+    opacity .1s;
+
 }
 
-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+.big-button:active {
+
+  transform: scale(.97);
+
 }
 
 .blue {
+
   background: #4285f4;
   color: white;
+
 }
 
 .green {
+
   background: #34a853;
   color: white;
-}
 
-.red {
-  background: #ea4335;
-  color: white;
 }
 
 .gray {
+
   background: #e8eaed;
   color: #202124;
+
 }
 
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 12px;
+.dark {
+
+  background: #202124;
+  color: white;
+
 }
+
+
+/* ================================
+   TARJETAS
+================================ */
+
+.card {
+
+  background: white;
+
+  border:
+    1px solid #e0e0e0;
+
+  border-radius: 20px;
+
+  padding: 20px;
+
+  margin-bottom: 16px;
+
+  box-shadow:
+    0 3px 12px rgba(0,0,0,.05);
+
+}
+
+.card h2 {
+
+  margin:
+    0 0 8px;
+
+  font-size: 21px;
+
+}
+
+.card p {
+
+  color: #666;
+
+  line-height: 1.5;
+
+}
+
+
+/* ================================
+   INPUT
+================================ */
+
+input {
+
+  width: 100%;
+
+  height: 54px;
+
+  border:
+    1px solid #c8c8c8;
+
+  border-radius: 14px;
+
+  padding:
+    0 14px;
+
+  font-size: 15px;
+
+  outline: none;
+
+}
+
+input:focus {
+
+  border-color:
+    #4285f4;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(66,133,244,.12);
+
+}
+
+
+/* ================================
+   CÁMARA
+================================ */
+
+.camera-screen {
+
+  padding:
+    0 0 90px;
+
+  background: #000;
+
+  min-height:
+    calc(100vh - 64px);
+
+}
+
+.camera-container {
+
+  position: relative;
+
+  width: 100%;
+
+  height:
+    calc(100vh - 160px);
+
+  min-height: 420px;
+
+  overflow: hidden;
+
+  background: #000;
+
+}
+
+
+/*
+  El elemento de vídeo/canvas
+*/
 
 #webcam-container {
+
   width: 100%;
+  height: 100%;
+
   display: flex;
+
+  align-items: center;
   justify-content: center;
-  margin-top: 20px;
+
+  overflow: hidden;
+
 }
 
+#webcam-container video,
 #webcam-container canvas {
-  width: min(500px, 100%);
-  height: auto;
 
-  border-radius: 18px;
-  background: #111;
-}
-
-#webcam-container video {
-  width: min(500px, 100%);
-  height: auto;
-
-  border-radius: 18px;
-  background: #111;
+  width: 100% !important;
+  height: 100% !important;
 
   object-fit: cover;
+
 }
 
-#mainPrediction {
-  text-align: center;
 
-  font-size: 30px;
-  font-weight: bold;
+/* ================================
+   RESULTADO SOBRE CÁMARA
+================================ */
 
-  margin: 25px 0 15px;
+.result-overlay {
+
+  position: absolute;
+
+  left: 12px;
+  right: 12px;
+
+  bottom: 15px;
+
+  z-index: 10;
+
+  pointer-events: none;
+
+}
+
+.result-main {
+
+  background:
+    rgba(0,0,0,.78);
+
+  color: white;
+
+  border-radius: 18px;
+
+  padding:
+    15px 17px;
+
+  backdrop-filter:
+    blur(8px);
+
+}
+
+.result-name {
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+}
+
+.result-confidence {
+
+  margin-top: 4px;
+
+  color: #d7d7d7;
+
+  font-size: 14px;
+
+}
+
+
+/* ================================
+   CONTROLES CÁMARA
+================================ */
+
+.camera-controls {
+
+  position: fixed;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 82px;
+
+  background:
+    rgba(255,255,255,.96);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  padding:
+    10px;
+
+  z-index: 200;
+
+  border-top:
+    1px solid #ddd;
+
+}
+
+.camera-control {
+
+  height: 55px;
+
+  flex: 1;
+
+  max-width: 180px;
+
+  border: 0;
+
+  border-radius: 16px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+}
+
+.stop {
+
+  background: #ea4335;
+
+  color: white;
+
+}
+
+
+/* ================================
+   PREDICCIONES
+================================ */
+
+.predictions {
+
+  margin-top: 18px;
+
 }
 
 .prediction {
-  background: #f1f3f4;
 
-  padding: 13px;
-  margin: 8px 0;
+  padding:
+    13px;
 
-  border-radius: 12px;
+  background:
+    #f5f5f5;
+
+  border-radius:
+    13px;
+
+  margin-bottom:
+    9px;
+
 }
 
-.prediction-header {
-  display: flex;
-  justify-content: space-between;
+.prediction-top {
 
-  font-weight: bold;
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  font-weight:
+    700;
+
 }
 
 .bar {
-  height: 12px;
+
+  height: 9px;
+
+  margin-top: 8px;
 
   background: #ddd;
 
@@ -212,100 +549,159 @@ button:disabled {
 
   overflow: hidden;
 
-  margin-top: 8px;
 }
 
-.bar-fill {
-  height: 100%;
+.fill {
 
-  width: 0%;
+  height: 100%;
 
   background: #4285f4;
 
-  transition: width .1s linear;
+  width: 0%;
+
+  transition:
+    width .1s linear;
+
 }
 
+
+/* ================================
+   MENSAJES
+================================ */
+
 .message {
+
   display: none;
 
-  padding: 14px;
+  margin-top: 14px;
 
-  border-radius: 10px;
+  padding: 13px;
 
-  margin-top: 15px;
+  border-radius: 13px;
 
-  line-height: 1.5;
+  font-size: 14px;
+
+  line-height: 1.4;
+
+}
+
+.message.show {
+
+  display: block;
+
 }
 
 .success {
-  display: block;
 
   background: #e6f4ea;
   color: #137333;
+
 }
 
 .error {
-  display: block;
 
   background: #fce8e6;
   color: #c5221f;
+
 }
 
 .info {
-  display: block;
 
   background: #e8f0fe;
   color: #174ea6;
+
 }
 
 .warning {
-  display: block;
 
   background: #fef7e0;
   color: #8a6116;
+
 }
 
-.hidden {
-  display: none;
-}
+
+/* ================================
+   DEBUG
+================================ */
 
 #debug {
+
   background: #111;
+
   color: #00ff88;
+
+  padding: 14px;
 
   border-radius: 12px;
 
-  padding: 15px;
-
   font-family: monospace;
-  font-size: 12px;
+
+  font-size: 11px;
 
   white-space: pre-wrap;
 
-  overflow-x: auto;
+  max-height: 230px;
 
-  margin-top: 15px;
+  overflow: auto;
+
 }
 
-footer {
-  text-align: center;
+
+/* ================================
+   BARRA INFERIOR
+================================ */
+
+.bottom-nav {
+
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 68px;
+
+  background: white;
+
+  border-top:
+    1px solid #ddd;
+
+  display: flex;
+
+  z-index: 150;
+
+}
+
+.nav-button {
+
+  flex: 1;
+
+  border: 0;
+
+  background: white;
 
   color: #777;
 
-  padding: 30px;
+  font-size: 12px;
 
-  font-size: 13px;
+  font-weight: 600;
+
 }
 
-@media(max-width:700px) {
+.nav-button.active {
 
-  .hero h1 {
-    font-size: 32px;
-  }
+  color: #4285f4;
 
-  .panel {
-    padding: 18px;
-  }
+}
+
+
+/* ================================
+   OCULTO
+================================ */
+
+.hidden {
+
+  display: none !important;
 
 }
 
@@ -317,49 +713,76 @@ footer {
 <body>
 
 
+<!-- ================================
+     HEADER
+================================ -->
+
 <header>
 
   <div class="logo">
     IA-<span>Objetos</span>
   </div>
 
-  <div id="status">
-    Sin modelo
+  <div
+    class="status"
+    id="status">
+
+    Listo
+
   </div>
 
 </header>
 
 
-<main>
 
+<!-- ================================
+     INICIO
+================================ -->
 
-<section class="hero">
+<section
+  id="home"
+  class="screen active">
 
-  <h1>🤖 IA-Objetos</h1>
+  <div class="hero">
 
-  <p>
-    Reconocimiento de objetos con tu propio modelo de IA
-  </p>
+    <div class="robot">
+      🤖
+    </div>
 
-</section>
+    <h1>
+      IA-<span>Objetos</span>
+    </h1>
 
+    <p>
+      Reconoce objetos usando tu propia inteligencia artificial.
+    </p>
 
+  </div>
 
-<!-- CREAR -->
-
-<section class="panel">
-
-  <h2>1️⃣ Crear tu IA</h2>
-
-  <p>
-    Crea y entrena tu modelo en Teachable Machine.
-  </p>
 
   <button
-    class="blue"
-    onclick="abrirTeachableMachine()">
+    class="big-button blue"
+    onclick="abrirReconocimiento()">
 
-    Crear / entrenar modelo
+    📷 Reconocer objeto
+
+  </button>
+
+
+  <button
+    class="big-button green"
+    onclick="abrirModelos()">
+
+    🧠 Mi modelo
+
+  </button>
+
+
+  <button
+    class="big-button gray"
+    onclick="crearModelo()">
+
+    ✨ Crear IA
 
   </button>
 
@@ -367,87 +790,160 @@ footer {
 
 
 
-<!-- MODELO -->
+<!-- ================================
+     MODELO
+================================ -->
 
-<section class="panel">
+<section
+  id="models"
+  class="screen">
 
-  <h2>2️⃣ Conectar modelo</h2>
+  <div class="card">
 
-  <p>
-    Pega aquí la URL que aparece cuando exportas
-    tu modelo de Teachable Machine.
-  </p>
+    <h2>
+      🧠 Conectar modelo
+    </h2>
 
-  <p>
-    Debe parecerse a:
-  </p>
+    <p>
+      Pega la URL del modelo exportado desde
+      Teachable Machine.
+    </p>
 
-  <code>
-    https://teachablemachine.withgoogle.com/models/XXXXXXXX/
-  </code>
+    <p>
+      Ejemplo:
+    </p>
 
-  <br><br>
+    <code>
+      https://teachablemachine.withgoogle.com/models/XXXX/
+    </code>
 
-  <input
-    id="modelURL"
-    type="text"
-    placeholder="Pega aquí la URL del modelo"
-    autocomplete="off"
-  >
+    <br><br>
 
-  <div class="buttons">
+    <input
+      id="modelURL"
+      placeholder="URL del modelo"
+      autocomplete="off"
+    >
 
     <button
-      id="loadButton"
-      class="green"
+      class="big-button green"
       onclick="cargarModelo()">
 
-      Cargar IA
+      🧠 Cargar modelo
 
     </button>
 
-    <button
-      class="gray"
-      onclick="limpiarTodo()">
 
-      Limpiar
+    <div
+      id="message"
+      class="message">
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>
+      ¿No tienes modelo?
+    </h2>
+
+    <p>
+      Crea uno gratuitamente en Teachable Machine
+      y luego vuelve aquí.
+    </p>
+
+    <button
+      class="big-button blue"
+      onclick="crearModelo()">
+
+      Crear modelo
 
     </button>
 
   </div>
 
-  <div id="message"></div>
+
+  <div class="card">
+
+    <h2>
+      🔧 Diagnóstico
+    </h2>
+
+    <div id="debug">
+Esperando...
+    </div>
+
+  </div>
 
 </section>
 
 
 
-<!-- RECONOCIMIENTO -->
+<!-- ================================
+     CÁMARA
+================================ -->
 
 <section
-  id="recognitionPanel"
-  class="panel hidden">
-
-  <h2>3️⃣ Reconocimiento</h2>
-
-  <p>
-    Pon un objeto delante de la cámara.
-  </p>
+  id="cameraScreen"
+  class="screen camera-screen">
 
 
-  <div class="buttons">
+  <div class="camera-container">
+
+    <div
+      id="webcam-container">
+    </div>
+
+
+    <div class="result-overlay">
+
+      <div class="result-main">
+
+        <div
+          id="resultName"
+          class="result-name">
+
+          Esperando...
+
+        </div>
+
+        <div
+          id="resultConfidence"
+          class="result-confidence">
+
+          Apunta al objeto
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="predictions">
+
+    <div
+      id="prediction-container">
+    </div>
+
+  </div>
+
+
+  <div class="camera-controls">
 
     <button
-      id="cameraButton"
-      class="blue"
-      onclick="iniciarCamara()">
+      class="camera-control gray"
+      onclick="cambiarCamara()">
 
-      📷 Iniciar cámara
+      🔄 Cámara
 
     </button>
 
     <button
-      class="red"
+      class="camera-control stop"
       onclick="detenerCamara()">
 
       ⏹ Detener
@@ -456,130 +952,116 @@ footer {
 
   </div>
 
-
-  <!--
-    Teachable Machine pondrá aquí
-    su cámara/canvas.
-  -->
-
-  <div id="webcam-container"></div>
-
-
-  <div id="mainPrediction">
-    Cámara apagada
-  </div>
-
-
-  <div id="prediction-container"></div>
-
-
 </section>
 
 
 
-<!-- DEBUG -->
+<!-- ================================
+     NAVEGACIÓN
+================================ -->
 
-<section class="panel">
+<nav class="bottom-nav">
 
-  <h2>🔧 Diagnóstico</h2>
+  <button
+    class="nav-button active"
+    id="navHome"
+    onclick="mostrarPantalla('home')">
 
-  <p>
-    Si algo falla, aquí aparecerá exactamente
-    qué está ocurriendo.
-  </p>
+    🏠
+    <br>
+    Inicio
 
-  <div id="debug">
-Esperando...
-  </div>
-
-</section>
-
-
-</main>
+  </button>
 
 
-<footer>
+  <button
+    class="nav-button"
+    id="navModels"
+    onclick="mostrarPantalla('models')">
 
-  IA-Objetos · TensorFlow.js + Teachable Machine
+    🧠
+    <br>
+    Modelo
 
-</footer>
+  </button>
+
+
+  <button
+    class="nav-button"
+    onclick="abrirReconocimiento()">
+
+    📷
+    <br>
+    Cámara
+
+  </button>
+
+</nav>
 
 
 
 <script>
 
 
-/*
-==================================================
-VARIABLES
-==================================================
-*/
-
+/* =================================================
+   VARIABLES
+================================================= */
 
 let model = null;
 
 let webcam = null;
 
-let maxPredictions = 0;
-
 let running = false;
 
 let predicting = false;
 
+let maxPredictions = 0;
 
-/*
-==================================================
-ELEMENTOS
-==================================================
-*/
+let facingMode = "environment";
 
+
+/* =================================================
+   ELEMENTOS
+================================================= */
 
 const statusElement =
   document.getElementById("status");
 
-
 const debugElement =
   document.getElementById("debug");
-
 
 const messageElement =
   document.getElementById("message");
 
-
-const recognitionPanel =
-  document.getElementById("recognitionPanel");
-
-
 const webcamContainer =
   document.getElementById("webcam-container");
 
+const resultName =
+  document.getElementById("resultName");
+
+const resultConfidence =
+  document.getElementById("resultConfidence");
 
 const predictionContainer =
-  document.getElementById(
-    "prediction-container"
-  );
+  document.getElementById("prediction-container");
 
 
-const mainPrediction =
-  document.getElementById(
-    "mainPrediction"
-  );
-
-
-/*
-==================================================
-DEBUG
-==================================================
-*/
-
+/* =================================================
+   DEBUG
+================================================= */
 
 function debug(text) {
+
+  if (!debugElement) return;
 
   const time =
     new Date().toLocaleTimeString();
 
   debugElement.textContent +=
-    "\n[" + time + "] " + text;
+    "\n[" +
+    time +
+    "] " +
+    text;
 
   debugElement.scrollTop =
     debugElement.scrollHeight;
@@ -592,54 +1074,136 @@ function debug(text) {
 }
 
 
-/*
-==================================================
-MENSAJES
-==================================================
-*/
-
+/* =================================================
+   MENSAJES
+================================================= */
 
 function showMessage(text, type) {
 
-  messageElement.textContent = text;
+  messageElement.textContent =
+    text;
 
   messageElement.className =
-    "message " + type;
+    "message show " + type;
 
 }
 
 
-/*
-==================================================
-ABRIR TEACHABLE MACHINE
-==================================================
-*/
+/* =================================================
+   CAMBIAR PANTALLA
+================================================= */
+
+function mostrarPantalla(id) {
+
+  document
+    .querySelectorAll(".screen")
+    .forEach(
+      screen =>
+        screen.classList.remove("active")
+    );
 
 
-function abrirTeachableMachine() {
+  const screen =
+    document.getElementById(id);
+
+
+  if (screen) {
+
+    screen.classList.add("active");
+
+  }
+
+
+  document
+    .querySelectorAll(".nav-button")
+    .forEach(
+      button =>
+        button.classList.remove("active")
+    );
+
+
+  if (id === "home") {
+
+    document
+      .getElementById("navHome")
+      .classList.add("active");
+
+  }
+
+
+  if (id === "models") {
+
+    document
+      .getElementById("navModels")
+      .classList.add("active");
+
+  }
+
+}
+
+
+/* =================================================
+   CREAR MODELO
+================================================= */
+
+function crearModelo() {
 
   window.open(
     "https://teachablemachine.withgoogle.com/train",
     "_blank"
   );
 
-  showMessage(
-    "Crea y entrena tu modelo en la nueva pestaña.",
-    "info"
-  );
+}
+
+
+/* =================================================
+   ABRIR MODELOS
+================================================= */
+
+function abrirModelos() {
+
+  mostrarPantalla("models");
 
 }
 
 
+/* =================================================
+   ABRIR RECONOCIMIENTO
+================================================= */
 
-/*
-==================================================
-NORMALIZAR URL
-==================================================
-*/
+async function abrirReconocimiento() {
+
+  if (!model) {
+
+    mostrarPantalla("models");
+
+    showMessage(
+      "Primero conecta un modelo de Teachable Machine.",
+      "warning"
+    );
+
+    return;
+
+  }
 
 
-function normalizarModeloURL(value) {
+  mostrarPantalla("cameraScreen");
+
+
+  if (!running) {
+
+    await iniciarCamara();
+
+  }
+
+}
+
+
+/* =================================================
+   NORMALIZAR URL
+================================================= */
+
+function normalizarURL(value) {
 
   let url =
     value.trim();
@@ -648,17 +1212,11 @@ function normalizarModeloURL(value) {
   if (!url) {
 
     throw new Error(
-      "No escribiste ninguna URL."
+      "Escribe la URL de tu modelo."
     );
 
   }
 
-
-  /*
-    Permitir solamente el ID:
-    
-    ABC123
-  */
 
   if (
     !url.startsWith("http://") &&
@@ -672,20 +1230,12 @@ function normalizarModeloURL(value) {
   }
 
 
-  /*
-    Quitar model.json
-  */
-
   url =
     url.replace(
       /\/model\.json\/?$/i,
       ""
     );
 
-
-  /*
-    Quitar metadata.json
-  */
 
   url =
     url.replace(
@@ -694,25 +1244,15 @@ function normalizarModeloURL(value) {
     );
 
 
-  /*
-    Quitar espacios y slash final
-  */
-
   url =
-    url.replace(/\/+$/, "");
+    url.replace(
+      /\/+$/,
+      ""
+    );
 
-
-  /*
-    Volver a poner slash
-  */
 
   url += "/";
 
-
-  /*
-    Comprobar que realmente
-    parece una URL de modelo.
-  */
 
   if (
     !url.includes(
@@ -721,7 +1261,7 @@ function normalizarModeloURL(value) {
   ) {
 
     throw new Error(
-      "Esta no parece ser una URL de modelo de Teachable Machine."
+      "Esa no parece una URL de modelo de Teachable Machine."
     );
 
   }
@@ -732,13 +1272,9 @@ function normalizarModeloURL(value) {
 }
 
 
-
-/*
-==================================================
-CARGAR MODELO
-==================================================
-*/
-
+/* =================================================
+   CARGAR MODELO
+================================================= */
 
 async function cargarModelo() {
 
@@ -748,113 +1284,59 @@ async function cargarModelo() {
     );
 
 
-  const button =
-    document.getElementById(
-      "loadButton"
-    );
-
-
-  /*
-    Detener modelo anterior
-  */
-
-  detenerCamara();
-
-
-  model = null;
-
-
-  button.disabled = true;
-
-
-  statusElement.textContent =
-    "Cargando...";
-
-
-  debug(
-    "Comenzando carga del modelo..."
-  );
-
-
-  let URL;
-
-
   try {
 
-    URL =
-      normalizarModeloURL(
+    detenerCamara();
+
+
+    const baseURL =
+      normalizarURL(
         input.value
       );
 
-  } catch(error) {
 
-    button.disabled = false;
+    const modelURL =
+      baseURL +
+      "model.json";
+
+
+    const metadataURL =
+      baseURL +
+      "metadata.json";
+
 
     statusElement.textContent =
-      "Error";
+      "Cargando...";
 
-    showMessage(
-      error.message,
-      "error"
-    );
 
     debug(
-      "ERROR URL: " +
-      error.message
+      "Cargando modelo..."
     );
 
-    return;
 
-  }
-
-
-  const modelURL =
-    URL + "model.json";
+    debug(
+      "model.json: " +
+      modelURL
+    );
 
 
-  const metadataURL =
-    URL + "metadata.json";
+    debug(
+      "metadata.json: " +
+      metadataURL
+    );
 
-
-  debug(
-    "Modelo: " +
-    modelURL
-  );
-
-
-  debug(
-    "Metadata: " +
-    metadataURL
-  );
-
-
-  try {
-
-
-    /*
-      Verificar que la librería
-      realmente está cargada.
-    */
 
     if (
-      typeof tmImage === "undefined"
+      typeof tmImage ===
+      "undefined"
     ) {
 
       throw new Error(
-        "La librería de Teachable Machine no cargó."
+        "Teachable Machine no cargó."
       );
 
     }
 
-
-    debug(
-      "tmImage encontrado correctamente."
-    );
-
-
-    /*
-      Cargar modelo.
-    */
 
     model =
       await tmImage.load(
@@ -863,50 +1345,28 @@ async function cargarModelo() {
       );
 
 
-    debug(
-      "Modelo descargado correctamente."
-    );
-
-
-    /*
-      Obtener número de clases.
-    */
-
     maxPredictions =
       model.getTotalClasses();
 
 
     debug(
-      "Número de clases: " +
+      "Clases encontradas: " +
       maxPredictions
     );
 
 
     if (
-      maxPredictions <= 0
+      maxPredictions < 1
     ) {
 
       throw new Error(
-        "El modelo no contiene clases."
+        "El modelo no tiene clases."
       );
 
     }
 
 
-    /*
-      Crear elementos de predicción.
-    */
-
-    crearElementosPrediccion();
-
-
-    /*
-      Mostrar panel.
-    */
-
-    recognitionPanel
-      .classList
-      .remove("hidden");
+    crearPredicciones();
 
 
     statusElement.textContent =
@@ -914,20 +1374,17 @@ async function cargarModelo() {
 
 
     showMessage(
-      "✅ Modelo cargado correctamente. Ahora inicia la cámara.",
+      "✅ Modelo cargado. Ya puedes abrir la cámara.",
       "success"
     );
 
 
     debug(
-      "MODELO LISTO."
+      "MODELO CARGADO CORRECTAMENTE."
     );
 
 
   } catch(error) {
-
-    console.error(error);
-
 
     model = null;
 
@@ -937,44 +1394,27 @@ async function cargarModelo() {
 
 
     showMessage(
-      "❌ No se pudo cargar el modelo. Revisa la URL y que el modelo sea de tipo Image.",
+      "❌ " +
+      error.message,
       "error"
     );
 
 
     debug(
-      "ERROR AL CARGAR: " +
+      "ERROR: " +
       error.message
     );
 
-
-    if (
-      error.stack
-    ) {
-
-      debug(
-        error.stack
-      );
-
-    }
-
   }
-
-
-  button.disabled = false;
 
 }
 
 
+/* =================================================
+   CREAR PREDICCIONES
+================================================= */
 
-/*
-==================================================
-CREAR BARRAS DE PREDICCIÓN
-==================================================
-*/
-
-
-function crearElementosPrediccion() {
+function crearPredicciones() {
 
   predictionContainer.innerHTML =
     "";
@@ -996,13 +1436,9 @@ function crearElementosPrediccion() {
       "prediction";
 
 
-    div.id =
-      "prediction-" + i;
-
-
     div.innerHTML = `
 
-      <div class="prediction-header">
+      <div class="prediction-top">
 
         <span id="label-${i}">
           Clase
@@ -1017,7 +1453,7 @@ function crearElementosPrediccion() {
       <div class="bar">
 
         <div
-          class="bar-fill"
+          class="fill"
           id="bar-${i}">
         </div>
 
@@ -1034,32 +1470,19 @@ function crearElementosPrediccion() {
 }
 
 
-
-/*
-==================================================
-INICIAR CÁMARA
-==================================================
-*/
-
+/* =================================================
+   INICIAR CÁMARA
+================================================= */
 
 async function iniciarCamara() {
 
   if (!model) {
 
+    mostrarPantalla("models");
+
     showMessage(
-      "Primero carga un modelo.",
+      "Carga primero un modelo.",
       "warning"
-    );
-
-    return;
-
-  }
-
-
-  if (running) {
-
-    debug(
-      "La cámara ya está funcionando."
     );
 
     return;
@@ -1069,111 +1492,76 @@ async function iniciarCamara() {
 
   try {
 
+    detenerCamara();
+
 
     debug(
-      "Preparando cámara..."
+      "Iniciando cámara..."
     );
 
 
-    /*
-      Usamos exactamente el sistema
-      Webcam de Teachable Machine.
-    */
-
     webcam =
       new tmImage.Webcam(
-        500,
-        500,
+        640,
+        480,
         true
       );
 
 
-    debug(
-      "Objeto tmImage.Webcam creado."
-    );
-
-
     /*
-      Pedir permiso.
+      true = espejo.
+      Lo cambiamos después para
+      usar cámara trasera.
     */
 
-    await webcam.setup();
+    await webcam.setup({
+      facingMode:
+        facingMode
+    });
 
-
-    debug(
-      "Permiso de cámara concedido."
-    );
-
-
-    /*
-      Reproducir.
-    */
 
     await webcam.play();
 
 
-    debug(
-      "Cámara iniciada."
-    );
+    running = true;
 
-
-    /*
-      Vaciar contenedor.
-    */
 
     webcamContainer.innerHTML =
       "";
 
 
     /*
-      SOLUCIÓN IMPORTANTE PARA iOS:
-
-      añadimos también el elemento
-      video real.
+      En móvil mostramos el vídeo.
     */
 
-    const isIOS =
-      /iPad|iPhone|iPod/.test(
-        navigator.userAgent
-      ) ||
-      (
-        navigator.platform ===
-        "MacIntel" &&
-        navigator.maxTouchPoints > 1
+    const video =
+      webcam.webcam;
+
+
+    if (video) {
+
+      video.setAttribute(
+        "playsinline",
+        ""
       );
 
-
-    if (isIOS) {
-
-      debug(
-        "iOS/iPadOS detectado."
+      video.setAttribute(
+        "webkit-playsinline",
+        ""
       );
+
+      video.muted = true;
+
+      video.autoplay = true;
+
+      video.style.transform =
+        facingMode === "user"
+          ? "scaleX(-1)"
+          : "none";
 
 
       webcamContainer
-        .appendChild(
-          webcam.webcam
-        );
-
-
-      webcam.webcam
-        .setAttribute(
-          "playsinline",
-          ""
-        );
-
-
-      webcam.webcam.muted =
-        true;
-
-
-      webcam.webcam.autoplay =
-        true;
-
-
-      debug(
-        "Modo de cámara iOS activado."
-      );
+        .appendChild(video);
 
     } else {
 
@@ -1182,56 +1570,38 @@ async function iniciarCamara() {
           webcam.canvas
         );
 
-
-      debug(
-        "Modo canvas activado."
-      );
-
     }
-
-
-    running = true;
 
 
     statusElement.textContent =
       "Reconociendo";
 
 
-    mainPrediction.textContent =
+    resultName.textContent =
       "Analizando...";
 
 
-    showMessage(
-      "📷 Cámara activa. Apunta al objeto que entrenaste.",
-      "success"
+    resultConfidence.textContent =
+      "Apunta al objeto";
+
+
+    debug(
+      "Cámara activa."
     );
 
 
-    /*
-      Iniciar ciclo.
-    */
-
-    window.requestAnimationFrame(
+    requestAnimationFrame(
       loop
     );
 
 
   } catch(error) {
 
-    console.error(error);
-
-
     running = false;
 
 
     statusElement.textContent =
-      "Cámara bloqueada";
-
-
-    showMessage(
-      "❌ No se pudo abrir la cámara. Acepta el permiso de cámara y vuelve a intentarlo.",
-      "error"
-    );
+      "Error de cámara";
 
 
     debug(
@@ -1240,29 +1610,22 @@ async function iniciarCamara() {
     );
 
 
-    if (
-      error.name
-    ) {
+    mostrarPantalla("models");
 
-      debug(
-        "Tipo: " +
-        error.name
-      );
 
-    }
+    showMessage(
+      "No se pudo abrir la cámara. Comprueba el permiso de cámara.",
+      "error"
+    );
 
   }
 
 }
 
 
-
-/*
-==================================================
-BUCLE
-==================================================
-*/
-
+/* =================================================
+   BUCLE
+================================================= */
 
 async function loop() {
 
@@ -1273,25 +1636,14 @@ async function loop() {
 
   try {
 
-
-    /*
-      Actualizar imagen de cámara.
-    */
-
     webcam.update();
 
-
-    /*
-      Hacer predicción.
-    */
-
     await predecir();
-
 
   } catch(error) {
 
     debug(
-      "ERROR PREDICCIÓN: " +
+      "ERROR: " +
       error.message
     );
 
@@ -1300,7 +1652,7 @@ async function loop() {
 
   if (running) {
 
-    window.requestAnimationFrame(
+    requestAnimationFrame(
       loop
     );
 
@@ -1309,34 +1661,20 @@ async function loop() {
 }
 
 
-
-/*
-==================================================
-PREDICCIÓN
-==================================================
-*/
-
+/* =================================================
+   PREDICCIÓN
+================================================= */
 
 async function predecir() {
 
   if (
+    predicting ||
     !model ||
-    !webcam ||
-    !running
+    !webcam
   ) {
 
     return;
 
-  }
-
-
-  /*
-    Evitar predicciones
-    simultáneas.
-  */
-
-  if (predicting) {
-    return;
   }
 
 
@@ -1345,48 +1683,11 @@ async function predecir() {
 
   try {
 
-
-    let prediction;
-
-
-    /*
-      En iOS usamos el video real.
-
-      En otros dispositivos usamos
-      el canvas de Teachable Machine.
-    */
-
-    const isIOS =
-      /iPad|iPhone|iPod/.test(
-        navigator.userAgent
-      ) ||
-      (
-        navigator.platform ===
-        "MacIntel" &&
-        navigator.maxTouchPoints > 1
+    const prediction =
+      await model.predict(
+        webcam.webcam
       );
 
-
-    if (isIOS) {
-
-      prediction =
-        await model.predict(
-          webcam.webcam
-        );
-
-    } else {
-
-      prediction =
-        await model.predict(
-          webcam.canvas
-        );
-
-    }
-
-
-    /*
-      Encontrar mejor clase.
-    */
 
     let best =
       prediction[0];
@@ -1411,26 +1712,22 @@ async function predecir() {
     }
 
 
-    /*
-      Resultado principal.
-    */
-
     const confidence =
-      (
-        best.probability * 100
-      ).toFixed(1);
+      best.probability *
+      100;
 
 
-    mainPrediction.textContent =
-      best.className +
-      " — " +
-      confidence +
-      "%";
+    resultName.textContent =
+      best.className;
+
+
+    resultConfidence.textContent =
+      confidence.toFixed(1) +
+      "% de confianza";
 
 
     /*
-      Actualizar todas
-      las clases.
+      Actualizar barras.
     */
 
     for (
@@ -1444,9 +1741,8 @@ async function predecir() {
 
 
       const percent =
-        (
-          item.probability * 100
-        );
+        item.probability *
+        100;
 
 
       const label =
@@ -1487,41 +1783,52 @@ async function predecir() {
       if (bar) {
 
         bar.style.width =
-          Math.max(
-            0,
-            Math.min(
-              100,
-              percent
-            )
-          ) + "%";
+          percent + "%";
 
       }
 
     }
 
+  } finally {
 
-  } catch(error) {
-
-    debug(
-      "Predicción falló: " +
-      error.message
-    );
+    predicting = false;
 
   }
-
-
-  predicting = false;
 
 }
 
 
+/* =================================================
+   CAMBIAR CÁMARA
+================================================= */
 
-/*
-==================================================
-DETENER CÁMARA
-==================================================
-*/
+async function cambiarCamara() {
 
+  if (!model) {
+    return;
+  }
+
+
+  facingMode =
+    facingMode === "environment"
+      ? "user"
+      : "environment";
+
+
+  debug(
+    "Cambiando cámara a: " +
+    facingMode
+  );
+
+
+  await iniciarCamara();
+
+}
+
+
+/* =================================================
+   DETENER
+================================================= */
 
 function detenerCamara() {
 
@@ -1536,10 +1843,7 @@ function detenerCamara() {
 
     } catch(error) {
 
-      debug(
-        "Error al detener cámara: " +
-        error.message
-      );
+      console.log(error);
 
     }
 
@@ -1553,8 +1857,12 @@ function detenerCamara() {
     "";
 
 
-  mainPrediction.textContent =
+  resultName.textContent =
     "Cámara apagada";
+
+
+  resultConfidence.textContent =
+    "Apunta al objeto";
 
 
   statusElement.textContent =
@@ -1562,84 +1870,19 @@ function detenerCamara() {
       ? "Modelo listo"
       : "Sin modelo";
 
-
-  debug(
-    "Cámara detenida."
-  );
-
 }
 
 
-
-/*
-==================================================
-LIMPIAR
-==================================================
-*/
-
-
-function limpiarTodo() {
-
-  detenerCamara();
-
-
-  model = null;
-
-
-  maxPredictions = 0;
-
-
-  predictionContainer.innerHTML =
-    "";
-
-
-  recognitionPanel
-    .classList
-    .add("hidden");
-
-
-  document.getElementById(
-    "modelURL"
-  ).value = "";
-
-
-  statusElement.textContent =
-    "Sin modelo";
-
-
-  messageElement.className =
-    "";
-
-
-  messageElement.style.display =
-    "none";
-
-
-  debugElement.textContent =
-    "Esperando...";
-
-
-  debug(
-    "Todo limpiado."
-  );
-
-}
-
-
-
-/*
-==================================================
-COMPROBACIÓN INICIAL
-==================================================
-*/
-
+/* =================================================
+   INICIO
+================================================= */
 
 window.addEventListener(
   "load",
   () => {
 
     debug(
-      "Página cargada."
+      "IA-Objetos iniciada."
     );
 
 
@@ -1648,13 +1891,13 @@ window.addEventListener(
     ) {
 
       debug(
-        "TensorFlow.js cargado."
+        "TensorFlow.js OK."
       );
 
     } else {
 
       debug(
-        "ERROR: TensorFlow.js NO cargó."
+        "ERROR: TensorFlow.js no cargó."
       );
 
     }
@@ -1665,50 +1908,27 @@ window.addEventListener(
     ) {
 
       debug(
-        "Teachable Machine Image cargado."
-      );
+        "Teachable Machine OK."
+      )
 
     } else {
 
       debug(
-        "ERROR: Teachable Machine Image NO cargó."
+        "ERROR: Teachable Machine no cargó."
       );
 
     }
 
 
     debug(
-      "Navegador: " +
+      "Dispositivo: " +
       navigator.userAgent
     );
-
-
-    /*
-      Comprobar cámara.
-    */
-
-    if (
-      navigator.mediaDevices &&
-      navigator.mediaDevices.getUserMedia
-    ) {
-
-      debug(
-        "API de cámara disponible."
-      );
-
-    } else {
-
-      debug(
-        "ADVERTENCIA: getUserMedia no está disponible."
-      );
-
-    }
 
   }
 );
 
-
 </script>
 
 </body>
-</html>
+</html>h

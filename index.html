@@ -1,153 +1,254 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-      maximum-scale=1.0, user-scalable=no">
+<meta
+  name="viewport"
+  content="width=device-width,
+  initial-scale=1.0,
+  maximum-scale=1.0,
+  user-scalable=no"
+>
+
+<meta name="theme-color" content="#111827">
 
 <title>IA-Objetos</title>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
+
+<!-- TensorFlow.js -->
+<script
+  src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js">
+</script>
+
+
+<!-- MobileNet -->
+<script
+  src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1">
+</script>
+
 
 <style>
+
+/* =====================================================
+   GENERAL
+===================================================== */
+
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
+html,
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+
   background: #f5f7fb;
   color: #202124;
 }
 
-/* =========================
-   INTERFAZ ORIGINAL
-========================= */
-
-#desktop {
-  min-height: 100vh;
+button {
+  font-family: inherit;
+  cursor: pointer;
 }
 
-header {
+.hidden {
+  display: none !important;
+}
+
+
+/* =====================================================
+   ESCRITORIO
+===================================================== */
+
+#desktop {
+
+  min-height: 100vh;
+
+}
+
+.desktop-header {
+
   height: 65px;
+
   background: white;
-  border-bottom: 1px solid #ddd;
+
+  border-bottom:
+    1px solid #ddd;
 
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
 
   padding: 0 20px;
+
 }
 
 .logo {
+
   font-size: 22px;
-  font-weight: bold;
+
+  font-weight: 800;
+
 }
 
 .logo span {
+
   color: #4285f4;
+
 }
 
 .desktop-content {
+
   max-width: 700px;
+
   margin: auto;
-  padding: 35px 20px;
+
+  padding: 40px 20px;
+
   text-align: center;
+
 }
 
 .robot {
+
   font-size: 75px;
+
 }
 
 .desktop-content h1 {
+
   font-size: 40px;
+
   margin: 10px 0;
+
 }
 
 .desktop-content p {
+
   color: #666;
+
   font-size: 17px;
+
+  line-height: 1.5;
+
 }
 
-.main-button {
+.desktop-button {
+
   width: 100%;
+
   min-height: 62px;
 
-  border: none;
+  border: 0;
+
   border-radius: 18px;
 
-  margin-top: 13px;
+  margin-top: 12px;
 
   font-size: 17px;
-  font-weight: bold;
 
-  cursor: pointer;
+  font-weight: 700;
+
 }
 
 .blue {
+
   background: #4285f4;
+
   color: white;
+
 }
 
 .green {
+
   background: #34a853;
+
   color: white;
+
 }
 
 .gray {
+
   background: #e8eaed;
+
   color: #202124;
+
 }
 
-.dark {
-  background: #202124;
+.red {
+
+  background: #ea4335;
+
   color: white;
-}
 
-/* BOTÓN MÓVIL */
+}
 
 .mobile-entry {
+
+  width: 100%;
+
+  min-height: 95px;
+
   margin-top: 30px;
 
-  background: linear-gradient(
-    135deg,
-    #4285f4,
-    #6c5ce7
-  );
+  border: 0;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4285f4,
+      #7c4dff
+    );
 
   color: white;
 
-  border: none;
-  border-radius: 25px;
-
-  width: 100%;
-  min-height: 90px;
-
   font-size: 22px;
-  font-weight: bold;
+
+  font-weight: 800;
 
   box-shadow:
-    0 8px 25px rgba(66,133,244,.25);
+    0 10px 30px
+    rgba(66,133,244,.25);
 
-  cursor: pointer;
 }
 
-.mobile-entry:active {
-  transform: scale(.98);
+.mobile-entry small {
+
+  display: block;
+
+  margin-top: 6px;
+
+  font-size: 13px;
+
+  font-weight: 500;
+
 }
 
 
-/* =========================
-   INTERFAZ MÓVIL
-========================= */
+/* =====================================================
+   MODO MÓVIL
+===================================================== */
 
 #mobile {
+
   display: none;
 
   min-height: 100vh;
@@ -155,128 +256,307 @@ header {
   background:
     linear-gradient(
       180deg,
-      #111827 0%,
-      #1f2937 100%
+      #111827,
+      #1f2937
     );
 
   color: white;
+
 }
 
 
-/* CABECERA MÓVIL */
+/* HEADER */
 
 .mobile-header {
-  height: 70px;
+
+  height: 68px;
 
   display: flex;
+
   align-items: center;
 
   justify-content: space-between;
 
-  padding: 0 16px;
+  padding: 0 14px;
 
-  background: rgba(0,0,0,.35);
+  background:
+    rgba(0,0,0,.35);
 
   position: sticky;
+
   top: 0;
 
   z-index: 100;
+
+  backdrop-filter: blur(12px);
+
 }
 
 .mobile-title {
-  font-size: 21px;
-  font-weight: bold;
+
+  font-size: 20px;
+
+  font-weight: 800;
+
 }
 
-.back-button {
-  border: none;
+.back {
 
-  background: rgba(255,255,255,.12);
+  border: 0;
+
+  background:
+    rgba(255,255,255,.1);
 
   color: white;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
   padding: 11px 15px;
 
-  font-size: 14px;
-  font-weight: bold;
+  font-weight: 700;
+
 }
 
 
-/* CONTENIDO */
+/* PÁGINAS */
 
-.mobile-content {
-  padding: 18px 15px 35px;
+.mobile-page {
+
+  padding:
+    20px 15px 50px;
+
+  max-width: 700px;
+
+  margin: auto;
+
 }
 
 
-/* TARJETAS */
+/* HERO */
 
-.mobile-card {
-  background: rgba(255,255,255,.09);
+.mobile-hero {
 
-  border: 1px solid rgba(255,255,255,.12);
+  text-align: center;
 
-  border-radius: 22px;
+  padding:
+    25px 10px;
 
-  padding: 18px;
-
-  margin-bottom: 15px;
 }
 
-.mobile-card h2 {
-  margin-top: 0;
+.mobile-hero-icon {
+
+  font-size: 70px;
+
+}
+
+.mobile-hero h1 {
+
+  font-size: 36px;
+
+  margin: 8px 0;
+
+}
+
+.mobile-hero p {
+
+  color: #aeb6c2;
+
+  line-height: 1.5;
+
 }
 
 
 /* BOTONES */
 
 .mobile-button {
+
   width: 100%;
 
   min-height: 60px;
 
-  border: none;
+  border: 0;
 
   border-radius: 17px;
 
-  margin-top: 10px;
+  margin-top: 11px;
 
   font-size: 16px;
 
-  font-weight: bold;
+  font-weight: 800;
+
+}
+
+.mobile-button small {
+
+  display: block;
+
+  margin-top: 4px;
+
+  opacity: .75;
+
+  font-size: 12px;
+
 }
 
 
-/* CÁMARA */
+/* TARJETA */
 
-.camera-box {
+.card {
+
+  background:
+    rgba(255,255,255,.08);
+
+  border:
+    1px solid
+    rgba(255,255,255,.1);
+
+  border-radius: 22px;
+
+  padding: 18px;
+
+  margin-bottom: 15px;
+
+}
+
+.card h2 {
+
+  margin-top: 0;
+
+}
+
+
+/* =====================================================
+   CLASES
+===================================================== */
+
+.class-item {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px;
+
+  background:
+    rgba(255,255,255,.07);
+
+  border-radius: 15px;
+
+  margin-top: 10px;
+
+}
+
+.class-color {
+
+  width: 12px;
+
+  height: 12px;
+
+  border-radius: 50%;
+
+  background: #4285f4;
+
+}
+
+.class-info {
+
+  flex: 1;
+
+}
+
+.class-name {
+
+  font-weight: 800;
+
+}
+
+.class-count {
+
+  color: #9ca3af;
+
+  font-size: 12px;
+
+  margin-top: 3px;
+
+}
+
+.delete-class {
+
+  border: 0;
+
+  background:
+    rgba(234,67,53,.15);
+
+  color: #ff6b6b;
+
+  border-radius: 10px;
+
+  padding: 9px;
+
+}
+
+
+/* INPUT */
+
+.input {
+
+  width: 100%;
+
+  height: 54px;
+
+  border: 0;
+
+  border-radius: 14px;
+
+  padding: 0 14px;
+
+  font-size: 16px;
+
+  outline: none;
+
+  margin-top: 8px;
+
+}
+
+
+/* =====================================================
+   CÁMARA
+===================================================== */
+
+.camera {
+
   width: 100%;
 
   aspect-ratio: 3 / 4;
 
-  background: black;
+  background: #000;
 
-  border-radius: 24px;
+  border-radius: 22px;
 
   overflow: hidden;
 
   position: relative;
 
-  margin-top: 15px;
+  margin-top: 12px;
+
 }
 
 #video {
+
   width: 100%;
+
   height: 100%;
 
   object-fit: cover;
 
   display: none;
+
 }
 
-.camera-message {
+.camera-placeholder {
+
   position: absolute;
 
   inset: 0;
@@ -284,125 +564,249 @@ header {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   text-align: center;
 
   padding: 30px;
 
-  color: #aaa;
-}
-
-
-/* RESULTADO */
-
-.result {
-  margin-top: 15px;
-
-  padding: 17px;
-
-  border-radius: 19px;
-
-  background: rgba(255,255,255,.1);
-}
-
-.result-title {
-  font-size: 13px;
-  color: #aaa;
-}
-
-.result-name {
-  font-size: 29px;
-  font-weight: bold;
-
-  margin-top: 4px;
-}
-
-.result-confidence {
   color: #9ca3af;
 
-  margin-top: 4px;
 }
 
 
-/* PREDICCIONES */
+/* =====================================================
+   CONTADOR
+===================================================== */
 
-.predictions {
-  margin-top: 15px;
+.capture-counter {
+
+  position: absolute;
+
+  top: 15px;
+
+  left: 15px;
+
+  background:
+    rgba(0,0,0,.7);
+
+  padding:
+    8px 12px;
+
+  border-radius: 12px;
+
+  font-weight: 800;
+
 }
 
-.prediction {
-  margin-bottom: 12px;
-}
 
-.prediction-top {
-  display: flex;
-  justify-content: space-between;
-
-  font-size: 14px;
-}
+/* =====================================================
+   PROGRESO
+===================================================== */
 
 .progress {
-  height: 8px;
 
-  background: rgba(255,255,255,.12);
+  width: 100%;
+
+  height: 12px;
+
+  background:
+    rgba(255,255,255,.1);
 
   border-radius: 20px;
 
   overflow: hidden;
 
-  margin-top: 5px;
+  margin-top: 12px;
+
 }
 
 .progress-bar {
+
   height: 100%;
 
   width: 0%;
 
   background: #4285f4;
 
-  transition: width .15s;
+  transition:
+    width .2s;
+
 }
 
 
-/* INPUT */
+/* =====================================================
+   RESULTADO
+===================================================== */
 
-.mobile-input {
-  width: 100%;
+.result {
 
-  height: 55px;
+  background:
+    rgba(255,255,255,.08);
 
-  border: none;
+  border-radius: 20px;
 
-  border-radius: 14px;
+  padding: 18px;
 
-  padding: 0 14px;
+  margin-top: 15px;
+
+}
+
+.result-label {
+
+  color: #9ca3af;
+
+  font-size: 12px;
+
+  text-transform: uppercase;
+
+}
+
+.result-name {
+
+  font-size: 30px;
+
+  font-weight: 900;
+
+  margin-top: 5px;
+
+}
+
+.result-confidence {
+
+  color: #aeb6c2;
+
+  margin-top: 4px;
+
+}
+
+
+/* =====================================================
+   PREDICCIONES
+===================================================== */
+
+.prediction {
+
+  margin-top: 13px;
+
+}
+
+.prediction-top {
+
+  display: flex;
+
+  justify-content: space-between;
 
   font-size: 14px;
 
-  outline: none;
+}
+
+.prediction-track {
+
+  height: 8px;
+
+  background:
+    rgba(255,255,255,.1);
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-top: 5px;
+
+}
+
+.prediction-fill {
+
+  height: 100%;
+
+  width: 0%;
+
+  background: #4285f4;
+
+  transition:
+    width .15s;
+
 }
 
 
-/* ESTADO */
+/* =====================================================
+   ESTADO
+===================================================== */
 
-.mobile-status {
+.status {
+
   text-align: center;
 
   color: #9ca3af;
 
   font-size: 13px;
 
-  margin: 12px 0;
+  padding: 10px;
+
 }
 
 
-/* OCULTO */
+/* =====================================================
+   ENTRENAMIENTO
+===================================================== */
 
-.hidden {
-  display: none !important;
+.training-title {
+
+  text-align: center;
+
 }
+
+.epoch {
+
+  text-align: center;
+
+  font-size: 30px;
+
+  font-weight: 900;
+
+  margin: 15px;
+
+}
+
+.training-log {
+
+  max-height: 180px;
+
+  overflow-y: auto;
+
+  background: #0b0f16;
+
+  border-radius: 14px;
+
+  padding: 12px;
+
+  font-family: monospace;
+
+  font-size: 11px;
+
+  color: #8fffa7;
+
+}
+
+
+/* =====================================================
+   PC
+===================================================== */
+
+@media (min-width: 800px) {
+
+  #desktop {
+
+    display: block !important;
+
+  }
+
+}
+
 </style>
+
 </head>
 
 
@@ -415,14 +819,14 @@ header {
 
 <div id="desktop">
 
-  <header>
+  <header class="desktop-header">
 
     <div class="logo">
       IA-<span>Objetos</span>
     </div>
 
     <div>
-      IA
+      🤖
     </div>
 
   </header>
@@ -441,30 +845,28 @@ header {
     </h1>
 
     <p>
-      Entrena y utiliza inteligencia artificial
+      Crea tu propia inteligencia artificial
       para reconocer objetos.
     </p>
 
 
     <button
-      class="main-button blue"
+      class="desktop-button blue"
       onclick="crearIA()">
 
-      ✨ Crear IA
+      🧠 Crear IA
 
     </button>
 
 
     <button
-      class="main-button green"
+      class="desktop-button green"
       onclick="abrirModelo()">
 
-      🧠 Mi modelo
+      📂 Mi modelo
 
     </button>
 
-
-    <!-- NUEVO BOTÓN -->
 
     <button
       class="mobile-entry"
@@ -472,10 +874,8 @@ header {
 
       📱 MODO MÓVIL
 
-      <br>
-
-      <small style="font-size:13px">
-        Reconocimiento optimizado para teléfonos
+      <small>
+        Crear y entrenar IA directamente desde tu dispositivo
       </small>
 
     </button>
@@ -487,18 +887,16 @@ header {
 
 
 <!-- =====================================================
-     INTERFAZ MÓVIL
+     MODO MÓVIL
 ===================================================== -->
 
 <div id="mobile">
 
 
-  <!-- HEADER -->
-
-  <div class="mobile-header">
+  <header class="mobile-header">
 
     <button
-      class="back-button"
+      class="back"
       onclick="salirMovil()">
 
       ← Volver
@@ -513,38 +911,122 @@ header {
       🤖
     </div>
 
-  </div>
+  </header>
 
 
 
-  <!-- CONTENIDO -->
+  <!-- =================================================
+       INICIO
+  ================================================== -->
 
-  <main class="mobile-content">
+  <section
+    id="pageHome"
+    class="mobile-page">
 
+    <div class="mobile-hero">
 
-    <!-- MODELO -->
+      <div class="mobile-hero-icon">
+        🤖
+      </div>
 
-    <div class="mobile-card">
+      <h1>
+        IA-Objetos
+      </h1>
 
-      <h2>
-        🧠 Modelo de IA
-      </h2>
-
-      <p style="color:#aaa">
-        Conecta tu modelo de Teachable Machine.
+      <p>
+        Crea y entrena tu propia IA
+        directamente desde tu móvil.
       </p>
 
+    </div>
+
+
+    <button
+      class="mobile-button blue"
+      onclick="abrirEntrenador()">
+
+      🧠 Crear mi IA
+
+      <small>
+        Crear clases y tomar ejemplos
+      </small>
+
+    </button>
+
+
+    <button
+      class="mobile-button green"
+      onclick="abrirPrueba()">
+
+      🎯 Probar mi IA
+
+      <small>
+        Reconocer objetos
+      </small>
+
+    </button>
+
+
+    <button
+      class="mobile-button gray"
+      onclick="cargarGuardado()">
+
+      💾 Modelo guardado
+
+      <small>
+        Cargar una IA de este dispositivo
+      </small>
+
+    </button>
+
+  </section>
+
+
+
+  <!-- =================================================
+       ENTRENADOR
+  ================================================== -->
+
+  <section
+    id="pageTrainer"
+    class="mobile-page hidden">
+
+    <button
+      class="back"
+      onclick="volverHome()">
+
+      ← Inicio
+
+    </button>
+
+
+    <div class="card">
+
+      <h2>
+        🧠 Crear IA
+      </h2>
+
+      <p style="color:#aeb6c2">
+
+        Primero crea una clase.
+        Por ejemplo: Botella.
+
+      </p>
+
+
       <input
-        id="modelURL"
-        class="mobile-input"
-        placeholder="https://teachablemachine.withgoogle.com/models/..."
+        id="className"
+        class="input"
+        placeholder="Nombre de la clase"
+        maxlength="30"
       >
 
-      <button
-        class="mobile-button green"
-        onclick="cargarModelo()">
 
-        🧠 Cargar modelo
+      <button
+        class="mobile-button blue"
+        onclick="crearClase()">
+
+        ➕ Crear clase
 
       </button>
 
@@ -552,15 +1034,42 @@ header {
 
 
 
-    <!-- CÁMARA -->
-
-    <div class="mobile-card">
+    <div
+      id="classesCard"
+      class="card hidden">
 
       <h2>
-        📷 Reconocimiento
+        📚 Mis clases
       </h2>
 
-      <div class="camera-box">
+      <div
+        id="classList">
+      </div>
+
+    </div>
+
+
+
+    <div
+      id="captureCard"
+      class="card hidden">
+
+      <h2>
+        📸 Añadir ejemplos
+      </h2>
+
+
+      <div
+        id="currentClass"
+        style="
+        font-weight:800;
+        font-size:18px;
+        ">
+
+      </div>
+
+
+      <div class="camera">
 
         <video
           id="video"
@@ -569,13 +1078,21 @@ header {
           playsinline>
         </video>
 
-        <div
-          id="cameraMessage"
-          class="camera-message">
 
-          Pulsa
-          <b>“Iniciar cámara”</b>
-          para comenzar.
+        <div
+          id="cameraPlaceholder"
+          class="camera-placeholder">
+
+          Pulsa "Abrir cámara".
+
+        </div>
+
+
+        <div
+          id="captureCounter"
+          class="capture-counter">
+
+          0 ejemplos
 
         </div>
 
@@ -584,28 +1101,36 @@ header {
 
       <button
         class="mobile-button blue"
-        onclick="iniciarCamara()">
+        onclick="abrirCamaraEntrenamiento()">
 
-        📷 Iniciar cámara
+        📷 Abrir cámara
+
+      </button>
+
+
+      <button
+        class="mobile-button green"
+        onclick="capturarEjemplo()">
+
+        📸 Capturar ejemplo
 
       </button>
 
 
       <button
         class="mobile-button gray"
-        onclick="cambiarCamara()">
+        onclick="capturarRafaga()">
 
-        🔄 Cambiar cámara
+        ⚡ Capturar 10 ejemplos
 
       </button>
 
 
       <button
-        class="mobile-button"
-        style="background:#ef4444;color:white"
+        class="mobile-button red"
         onclick="detenerCamara()">
 
-        ⏹ Detener
+        ⏹ Detener cámara
 
       </button>
 
@@ -613,17 +1138,179 @@ header {
 
 
 
-    <!-- RESULTADO -->
-
-    <div class="mobile-card">
+    <div
+      id="trainCard"
+      class="card hidden">
 
       <h2>
-        🎯 Resultado
+        🚀 Entrenar
       </h2>
+
+      <p style="color:#aeb6c2">
+
+        Cuando tengas ejemplos en todas
+        las clases, puedes entrenar.
+
+      </p>
+
+
+      <div
+        id="dataSummary"
+        style="
+        color:#aaa;
+        margin:10px 0;
+        ">
+
+      </div>
+
+
+      <button
+        class="mobile-button green"
+        onclick="entrenarModelo()">
+
+        🧠 ENTRENAR IA
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =================================================
+       ENTRENANDO
+  ================================================== -->
+
+  <section
+    id="pageTraining"
+    class="mobile-page hidden">
+
+    <div class="card">
+
+      <div class="training-title">
+
+        <h2>
+          🧠 Entrenando...
+        </h2>
+
+        <p
+          id="trainingStatus"
+          style="color:#aaa">
+
+          Preparando datos...
+
+        </p>
+
+      </div>
+
+
+      <div
+        class="epoch"
+        id="epoch">
+
+        0%
+
+      </div>
+
+
+      <div class="progress">
+
+        <div
+          id="trainingProgress"
+          class="progress-bar">
+        </div>
+
+      </div>
+
+
+      <div
+        id="trainingLog"
+        class="training-log">
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =================================================
+       PRUEBA
+  ================================================== -->
+
+  <section
+    id="pageTest"
+    class="mobile-page hidden">
+
+    <button
+      class="back"
+      onclick="volverHome()">
+
+      ← Inicio
+
+    </button>
+
+
+    <div class="card">
+
+      <h2>
+        🎯 Probar IA
+      </h2>
+
+
+      <div class="camera">
+
+        <video
+          id="testVideo"
+          autoplay
+          muted
+          playsinline>
+        </video>
+
+
+        <div
+          id="testPlaceholder"
+          class="camera-placeholder">
+
+          Pulsa iniciar cámara.
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="mobile-button blue"
+        onclick="iniciarPrueba()">
+
+        📷 Iniciar reconocimiento
+
+      </button>
+
+
+      <button
+        class="mobile-button gray"
+        onclick="cambiarCamaraPrueba()">
+
+        🔄 Cambiar cámara
+
+      </button>
+
+
+      <button
+        class="mobile-button red"
+        onclick="detenerPrueba()">
+
+        ⏹ Detener
+
+      </button>
+
 
       <div class="result">
 
-        <div class="result-title">
+        <div class="result-label">
           Objeto detectado
         </div>
 
@@ -647,33 +1334,21 @@ header {
 
 
       <div
-        id="predictions"
-        class="predictions">
+        id="predictions">
       </div>
 
     </div>
 
 
+    <div
+      id="testStatus"
+      class="status">
 
-    <!-- INFORMACIÓN -->
-
-    <div class="mobile-card">
-
-      <h2>
-        ℹ️ Estado
-      </h2>
-
-      <div
-        id="mobileStatus"
-        class="mobile-status">
-
-        Sin modelo
-
-      </div>
+      Sin modelo cargado.
 
     </div>
 
-  </main>
+  </section>
 
 </div>
 
@@ -685,298 +1360,478 @@ header {
    VARIABLES
 ===================================================== */
 
-let model = null;
+let mobileNet = null;
 
-let stream = null;
+let classifier = null;
 
-let running = false;
+let classes = [];
 
-let facingMode = "environment";
+let trainingData = [];
 
-let predictionLoop = null;
+let currentClass = null;
 
-let classCount = 0;
+let cameraStream = null;
+
+let testStream = null;
+
+let testRunning = false;
+
+let testFacingMode = "environment";
+
+let embeddingSize = 0;
 
 
 /* =====================================================
-   ENTRAR AL MODO MÓVIL
+   NAVEGACIÓN
 ===================================================== */
 
 function entrarMovil() {
 
-  document
-    .getElementById("desktop")
+  document.getElementById("desktop")
     .style.display = "none";
 
-  document
-    .getElementById("mobile")
+  document.getElementById("mobile")
     .style.display = "block";
 
-  window.scrollTo(0, 0);
+  mostrarPagina("pageHome");
 
 }
 
-
-/* =====================================================
-   SALIR
-===================================================== */
 
 function salirMovil() {
 
   detenerCamara();
 
-  document
-    .getElementById("mobile")
+  detenerPrueba();
+
+  document.getElementById("mobile")
     .style.display = "none";
 
-  document
-    .getElementById("desktop")
+  document.getElementById("desktop")
     .style.display = "block";
 
 }
 
 
-/* =====================================================
-   CREAR IA
-===================================================== */
+function mostrarPagina(id) {
 
-function crearIA() {
+  document
+    .querySelectorAll(".mobile-page")
+    .forEach(page => {
 
-  window.open(
-    "https://teachablemachine.withgoogle.com/train",
-    "_blank"
-  );
+      page.classList.add("hidden");
+
+    });
+
+
+  document
+    .getElementById(id)
+    .classList.remove("hidden");
+
+}
+
+
+function volverHome() {
+
+  detenerCamara();
+
+  detenerPrueba();
+
+  mostrarPagina("pageHome");
+
+}
+
+
+function abrirEntrenador() {
+
+  mostrarPagina("pageTrainer");
+
+  actualizarInterfazClases();
+
+}
+
+
+function abrirPrueba() {
+
+  mostrarPagina("pageTest");
+
+  if (!classifier) {
+
+    document.getElementById("testStatus")
+      .textContent =
+      "⚠️ Primero crea y entrena una IA.";
+
+  }
 
 }
 
 
 /* =====================================================
-   ABRIR MODELO
+   BOTONES ORIGINALES
 ===================================================== */
+
+function crearIA() {
+
+  entrarMovil();
+
+  abrirEntrenador();
+
+}
+
 
 function abrirModelo() {
 
   entrarMovil();
 
-}
-
-
-/* =====================================================
-   NORMALIZAR URL
-===================================================== */
-
-function normalizarURL(url) {
-
-  url = url.trim();
-
-  if (!url) {
-
-    throw new Error(
-      "Escribe la URL del modelo."
-    );
-
-  }
-
-
-  if (
-    !url.startsWith("http://") &&
-    !url.startsWith("https://")
-  ) {
-
-    url =
-      "https://teachablemachine.withgoogle.com/models/" +
-      url;
-
-  }
-
-
-  url = url
-    .replace(/\/model\.json\/?$/i, "")
-    .replace(/\/metadata\.json\/?$/i, "")
-    .replace(/\/+$/, "");
-
-
-  if (
-    !url.includes(
-      "teachablemachine.withgoogle.com/models/"
-    )
-  ) {
-
-    throw new Error(
-      "La URL no parece ser un modelo válido."
-    );
-
-  }
-
-
-  return url + "/";
+  cargarGuardado();
 
 }
 
 
 /* =====================================================
-   CARGAR MODELO
+   CARGAR MOBILENET
 ===================================================== */
 
-async function cargarModelo() {
+async function cargarMobileNet() {
 
-  const input =
-    document.getElementById("modelURL");
-
-  const status =
-    document.getElementById("mobileStatus");
-
-
-  try {
-
-    const baseURL =
-      normalizarURL(input.value);
-
-
-    status.textContent =
-      "⏳ Cargando modelo...";
-
-
-    model =
-      await tmImage.load(
-        baseURL + "model.json",
-        baseURL + "metadata.json"
-      );
-
-
-    classCount =
-      model.getTotalClasses();
-
-
-    crearBarras();
-
-
-    status.textContent =
-      "✅ Modelo cargado. " +
-      classCount +
-      " clases encontradas.";
-
-
-  } catch(error) {
-
-    model = null;
-
-
-    status.textContent =
-      "❌ Error: " +
-      error.message;
-
-  }
-
-}
-
-
-/* =====================================================
-   CREAR BARRAS
-===================================================== */
-
-function crearBarras() {
-
-  const container =
-    document.getElementById(
-      "predictions"
-    );
-
-
-  container.innerHTML = "";
-
-
-  for (
-    let i = 0;
-    i < classCount;
-    i++
-  ) {
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "prediction";
-
-
-    item.innerHTML = `
-
-      <div class="prediction-top">
-
-        <span id="label-${i}">
-          Clase
-        </span>
-
-        <span id="percent-${i}">
-          0%
-        </span>
-
-      </div>
-
-      <div class="progress">
-
-        <div
-          id="bar-${i}"
-          class="progress-bar">
-        </div>
-
-      </div>
-
-    `;
-
-
-    container.appendChild(item);
-
-  }
-
-}
-
-
-/* =====================================================
-   INICIAR CÁMARA
-===================================================== */
-
-async function iniciarCamara() {
-
-  if (!model) {
-
-    document.getElementById(
-      "mobileStatus"
-    ).textContent =
-      "⚠️ Primero carga un modelo.";
+  if (mobileNet) {
 
     return;
 
   }
 
 
+  const status =
+    document.getElementById("trainingStatus");
+
+
+  status.textContent =
+    "⏳ Cargando cerebro base de IA...";
+
+
+  mobileNet =
+    await mobilenet.load({
+
+      version: 1,
+
+      alpha: 0.25
+
+    });
+
+
+  status.textContent =
+    "✅ Cerebro base listo.";
+
+}
+
+
+/* =====================================================
+   CREAR CLASE
+===================================================== */
+
+async function crearClase() {
+
+  const input =
+    document.getElementById("className");
+
+
+  const name =
+    input.value.trim();
+
+
+  if (!name) {
+
+    alert(
+      "Escribe un nombre para la clase."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    classes.some(
+      c =>
+        c.name.toLowerCase() ===
+        name.toLowerCase()
+    )
+  ) {
+
+    alert(
+      "Esa clase ya existe."
+    );
+
+    return;
+
+  }
+
+
+  const newClass = {
+
+    id:
+      Date.now(),
+
+    name:
+      name,
+
+    count:
+      0
+
+  };
+
+
+  classes.push(
+    newClass
+  );
+
+
+  trainingData.push([]);
+
+
+  input.value = "";
+
+
+  actualizarInterfazClases();
+
+  seleccionarClase(
+    classes.length - 1
+  );
+
+}
+
+
+/* =====================================================
+   ACTUALIZAR CLASES
+===================================================== */
+
+function actualizarInterfazClases() {
+
+  const card =
+    document.getElementById(
+      "classesCard"
+    );
+
+  const list =
+    document.getElementById(
+      "classList"
+    );
+
+
+  if (classes.length === 0) {
+
+    card.classList.add("hidden");
+
+    return;
+
+  }
+
+
+  card.classList.remove("hidden");
+
+
+  list.innerHTML = "";
+
+
+  classes.forEach(
+    (item, index) => {
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "class-item";
+
+
+      div.innerHTML = `
+
+        <div class="class-color"></div>
+
+        <div class="class-info">
+
+          <div class="class-name">
+            ${escapeHTML(item.name)}
+          </div>
+
+          <div class="class-count">
+            ${item.count} ejemplos
+          </div>
+
+        </div>
+
+        <button
+          class="delete-class"
+          onclick="eliminarClase(${index})">
+
+          🗑️
+
+        </button>
+
+      `;
+
+
+      div.onclick = function(event) {
+
+        if (
+          event.target.tagName ===
+          "BUTTON"
+        ) {
+
+          return;
+
+        }
+
+
+        seleccionarClase(index);
+
+      };
+
+
+      list.appendChild(div);
+
+    }
+  );
+
+
+  actualizarResumen();
+
+}
+
+
+/* =====================================================
+   SELECCIONAR CLASE
+===================================================== */
+
+function seleccionarClase(index) {
+
+  currentClass =
+    index;
+
+
+  document.getElementById(
+    "captureCard"
+  ).classList.remove("hidden");
+
+
+  document.getElementById(
+    "currentClass"
+  ).textContent =
+    "Clase: " +
+    classes[index].name;
+
+
+  document.getElementById(
+    "captureCounter"
+  ).textContent =
+    classes[index].count +
+    " ejemplos";
+
+
+  actualizarResumen();
+
+}
+
+
+/* =====================================================
+   ELIMINAR CLASE
+===================================================== */
+
+function eliminarClase(index) {
+
   detenerCamara();
+
+
+  classes.splice(
+    index,
+    1
+  );
+
+
+  trainingData.splice(
+    index,
+    1
+  );
+
+
+  if (
+    currentClass === index
+  ) {
+
+    currentClass =
+      null;
+
+    document.getElementById(
+      "captureCard"
+    ).classList.add("hidden");
+
+  }
+
+
+  if (
+    currentClass !== null &&
+    currentClass >= classes.length
+  ) {
+
+    currentClass =
+      null;
+
+  }
+
+
+  actualizarInterfazClases();
+
+}
+
+
+/* =====================================================
+   ABRIR CÁMARA DE ENTRENAMIENTO
+===================================================== */
+
+async function abrirCamaraEntrenamiento() {
+
+  if (
+    currentClass === null
+  ) {
+
+    alert(
+      "Selecciona una clase primero."
+    );
+
+    return;
+
+  }
 
 
   try {
 
-    stream =
-      await navigator.mediaDevices.getUserMedia({
+    detenerCamara();
 
-        video: {
 
-          facingMode: {
-            ideal: facingMode
+    cameraStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+
+          video: {
+
+            facingMode:
+              "environment",
+
+            width: {
+              ideal: 640
+            },
+
+            height: {
+              ideal: 480
+            }
+
           },
 
-          width: {
-            ideal: 1280
-          },
+          audio: false
 
-          height: {
-            ideal: 720
-          }
-
-        },
-
-        audio: false
-
-      });
+        });
 
 
     const video =
@@ -986,7 +1841,7 @@ async function iniciarCamara() {
 
 
     video.srcObject =
-      stream;
+      cameraStream;
 
 
     video.style.display =
@@ -994,33 +1849,30 @@ async function iniciarCamara() {
 
 
     document.getElementById(
-      "cameraMessage"
+      "cameraPlaceholder"
     ).style.display =
       "none";
+
+
+    video.setAttribute(
+      "playsinline",
+      ""
+    );
+
+
+    video.muted =
+      true;
 
 
     await video.play();
 
 
-    running = true;
-
-
-    document.getElementById(
-      "mobileStatus"
-    ).textContent =
-      "🟢 Cámara activa";
-
-
-    predecir();
-
-
   } catch(error) {
 
-    document.getElementById(
-      "mobileStatus"
-    ).textContent =
-      "❌ No se pudo abrir la cámara: " +
-      error.message;
+    alert(
+      "No se pudo abrir la cámara: " +
+      error.message
+    );
 
   }
 
@@ -1028,15 +1880,18 @@ async function iniciarCamara() {
 
 
 /* =====================================================
-   RECONOCIMIENTO
+   CAPTURAR EJEMPLO
 ===================================================== */
 
-async function predecir() {
+async function capturarEjemplo() {
 
   if (
-    !running ||
-    !model
+    currentClass === null
   ) {
+
+    alert(
+      "Selecciona una clase."
+    );
 
     return;
 
@@ -1049,31 +1904,745 @@ async function predecir() {
     );
 
 
+  if (
+    !cameraStream ||
+    video.readyState < 2
+  ) {
+
+    alert(
+      "Primero abre la cámara."
+    );
+
+    return;
+
+  }
+
+
   try {
 
-    const predictions =
-      await model.predict(
-        video
+    await cargarMobileNet();
+
+
+    const embedding =
+      mobileNet.infer(
+        video,
+        true
       );
 
 
-    let best =
-      predictions[0];
+    const data =
+      await embedding.array();
+
+
+    embedding.dispose();
+
+
+    trainingData[currentClass]
+      .push(
+        data[0]
+      );
+
+
+    classes[currentClass].count =
+      trainingData[currentClass]
+        .length;
+
+
+    document.getElementById(
+      "captureCounter"
+    ).textContent =
+      classes[currentClass].count +
+      " ejemplos";
+
+
+    actualizarInterfazClases();
+
+
+    vibrar();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "Error capturando ejemplo: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CAPTURAR RÁFAGA
+===================================================== */
+
+async function capturarRafaga() {
+
+  if (
+    currentClass === null
+  ) {
+
+    alert(
+      "Selecciona una clase."
+    );
+
+    return;
+
+  }
+
+
+  const video =
+    document.getElementById(
+      "video"
+    );
+
+
+  if (
+    !cameraStream ||
+    video.readyState < 2
+  ) {
+
+    alert(
+      "Primero abre la cámara."
+    );
+
+    return;
+
+  }
+
+
+  await cargarMobileNet();
+
+
+  const button =
+    event?.currentTarget;
+
+
+  if (button) {
+
+    button.disabled =
+      true;
+
+  }
+
+
+  try {
+
+    for (
+      let i = 0;
+      i < 10;
+      i++
+    ) {
+
+      await capturarEjemplo();
+
+      await sleep(100);
+
+    }
+
+  } finally {
+
+    if (button) {
+
+      button.disabled =
+        false;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   ENTRENAR
+===================================================== */
+
+async function entrenarModelo() {
+
+  if (
+    classes.length < 2
+  ) {
+
+    alert(
+      "Necesitas al menos 2 clases."
+    );
+
+    return;
+
+  }
+
+
+  for (
+    let i = 0;
+    i < classes.length;
+    i++
+  ) {
+
+    if (
+      trainingData[i].length < 2
+    ) {
+
+      alert(
+        "La clase \"" +
+        classes[i].name +
+        "\" necesita al menos 2 ejemplos."
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  detenerCamara();
+
+
+  mostrarPagina(
+    "pageTraining"
+  );
+
+
+  try {
+
+    await cargarMobileNet();
+
+
+    const xsArray = [];
+
+    const ysArray = [];
+
+
+    for (
+      let classIndex = 0;
+      classIndex < trainingData.length;
+      classIndex++
+    ) {
+
+      for (
+        const embedding
+        of trainingData[classIndex]
+      ) {
+
+        xsArray.push(
+          embedding
+        );
+
+
+        const label =
+          new Array(
+            classes.length
+          ).fill(0);
+
+
+        label[classIndex] =
+          1;
+
+
+        ysArray.push(
+          label
+        );
+
+      }
+
+    }
+
+
+    const xs =
+      tf.tensor2d(
+        xsArray
+      );
+
+
+    const ys =
+      tf.tensor2d(
+        ysArray
+      );
+
+
+    embeddingSize =
+      xs.shape[1];
+
+
+    classifier =
+      tf.sequential({
+
+        layers: [
+
+          tf.layers.dense({
+
+            inputShape:
+              [embeddingSize],
+
+            units: 128,
+
+            activation: "relu"
+
+          }),
+
+
+          tf.layers.dropout({
+
+            rate: 0.2
+
+          }),
+
+
+          tf.layers.dense({
+
+            units:
+              classes.length,
+
+            activation:
+              "softmax"
+
+          })
+
+        ]
+
+      });
+
+
+    classifier.compile({
+
+      optimizer:
+        tf.train.adam(0.001),
+
+      loss:
+        "categoricalCrossentropy",
+
+      metrics:
+        ["accuracy"]
+
+    });
+
+
+    const totalEpochs =
+      25;
+
+
+    const log =
+      document.getElementById(
+        "trainingLog"
+      );
+
+
+    log.innerHTML =
+      "";
+
+
+    await classifier.fit(
+      xs,
+      ys,
+      {
+
+        epochs:
+          totalEpochs,
+
+        batchSize:
+          Math.min(
+            16,
+            xs.shape[0]
+          ),
+
+        shuffle:
+          true,
+
+        callbacks: {
+
+          onEpochEnd:
+            async (
+              epoch,
+              logs
+            ) => {
+
+              const percent =
+                Math.round(
+                  (
+                    (epoch + 1) /
+                    totalEpochs
+                  ) * 100
+                );
+
+
+              document.getElementById(
+                "trainingProgress"
+              ).style.width =
+                percent + "%";
+
+
+              document.getElementById(
+                "epoch"
+              ).textContent =
+                percent + "%";
+
+
+              document.getElementById(
+                "trainingStatus"
+              ).textContent =
+                "Entrenando...";
+
+
+              log.innerHTML +=
+                "Época " +
+                (epoch + 1) +
+                ": pérdida " +
+                logs.loss.toFixed(4) +
+                " | precisión " +
+                (
+                  logs.acc ??
+                  logs.accuracy ??
+                  0
+                ).toFixed(3) +
+                "<br>";
+
+
+              log.scrollTop =
+                log.scrollHeight;
+
+
+              await tf.nextFrame();
+
+            }
+
+        }
+
+      }
+    );
+
+
+    xs.dispose();
+
+    ys.dispose();
+
+
+    await guardarModelo();
+
+
+    document.getElementById(
+      "trainingStatus"
+    ).textContent =
+      "✅ Entrenamiento terminado";
+
+
+    await sleep(800);
+
+
+    mostrarPagina(
+      "pageTest"
+    );
+
+
+    document.getElementById(
+      "testStatus"
+    ).textContent =
+      "✅ Tu IA está lista.";
+
+  } catch(error) {
+
+    console.error(error);
+
+
+    document.getElementById(
+      "trainingStatus"
+    ).textContent =
+      "❌ Error";
+
+
+    document.getElementById(
+      "trainingLog"
+    ).innerHTML +=
+      "<br>ERROR: " +
+      escapeHTML(
+        error.message
+      );
+
+  }
+
+}
+
+
+/* =====================================================
+   GUARDAR MODELO
+===================================================== */
+
+async function guardarModelo() {
+
+  if (!classifier) {
+
+    return;
+
+  }
+
+
+  try {
+
+    await classifier.save(
+      "indexeddb://ia-objetos-model"
+    );
+
+
+    localStorage.setItem(
+      "iaObjetosClasses",
+      JSON.stringify(
+        classes.map(
+          c => c.name
+        )
+      )
+    );
+
+
+  } catch(error) {
+
+    console.error(
+      "No se pudo guardar:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   CARGAR MODELO GUARDADO
+===================================================== */
+
+async function cargarGuardado() {
+
+  mostrarPagina(
+    "pageTest"
+  );
+
+
+  const status =
+    document.getElementById(
+      "testStatus"
+    );
+
+
+  try {
+
+    classifier =
+      await tf.loadLayersModel(
+        "indexeddb://ia-objetos-model"
+      );
+
+
+    const savedClasses =
+      JSON.parse(
+        localStorage.getItem(
+          "iaObjetosClasses"
+        ) || "[]"
+      );
+
+
+    classes =
+      savedClasses.map(
+        name => ({
+          name,
+          count: 0
+        })
+      );
+
+
+    status.textContent =
+      "✅ Modelo cargado.";
+
+
+  } catch(error) {
+
+    classifier =
+      null;
+
+
+    status.textContent =
+      "⚠️ No hay un modelo guardado todavía.";
+
+  }
+
+}
+
+
+/* =====================================================
+   INICIAR PRUEBA
+===================================================== */
+
+async function iniciarPrueba() {
+
+  if (!classifier) {
+
+    alert(
+      "Primero crea y entrena una IA."
+    );
+
+    return;
+
+  }
+
+
+  detenerPrueba();
+
+
+  try {
+
+    testStream =
+      await navigator.mediaDevices
+        .getUserMedia({
+
+          video: {
+
+            facingMode:
+              testFacingMode,
+
+            width: {
+              ideal: 640
+            },
+
+            height: {
+              ideal: 480
+            }
+
+          },
+
+          audio: false
+
+        });
+
+
+    const video =
+      document.getElementById(
+        "testVideo"
+      );
+
+
+    video.srcObject =
+      testStream;
+
+
+    video.style.display =
+      "block";
+
+
+    document.getElementById(
+      "testPlaceholder"
+    ).style.display =
+      "none";
+
+
+    video.setAttribute(
+      "playsinline",
+      ""
+    );
+
+
+    video.muted =
+      true;
+
+
+    await video.play();
+
+
+    testRunning =
+      true;
+
+
+    reconocer();
+
+  } catch(error) {
+
+    document.getElementById(
+      "testStatus"
+    ).textContent =
+      "❌ Cámara: " +
+      error.message;
+
+  }
+
+}
+
+
+/* =====================================================
+   RECONOCIMIENTO
+===================================================== */
+
+async function reconocer() {
+
+  if (
+    !testRunning ||
+    !classifier ||
+    !mobileNet
+  ) {
+
+    if (!mobileNet) {
+
+      await cargarMobileNet();
+
+    }
+
+  }
+
+
+  if (
+    !testRunning
+  ) {
+
+    return;
+
+  }
+
+
+  const video =
+    document.getElementById(
+      "testVideo"
+    );
+
+
+  try {
+
+    const embedding =
+      mobileNet.infer(
+        video,
+        true
+      );
+
+
+    const prediction =
+      classifier.predict(
+        embedding
+      );
+
+
+    const values =
+      await prediction.data();
+
+
+    embedding.dispose();
+
+    prediction.dispose();
+
+
+    let bestIndex =
+      0;
 
 
     for (
       let i = 1;
-      i < predictions.length;
+      i < values.length;
       i++
     ) {
 
       if (
-        predictions[i].probability >
-        best.probability
+        values[i] >
+        values[bestIndex]
       ) {
 
-        best =
-          predictions[i];
+        bestIndex =
+          i;
 
       }
 
@@ -1081,13 +2650,20 @@ async function predecir() {
 
 
     const confidence =
-      best.probability * 100;
+      values[bestIndex] * 100;
+
+
+    const name =
+      classes[bestIndex]
+        ?.name ||
+      "Clase " +
+      (bestIndex + 1);
 
 
     document.getElementById(
       "resultName"
     ).textContent =
-      best.className;
+      name;
 
 
     document.getElementById(
@@ -1097,67 +2673,103 @@ async function predecir() {
       "% de confianza";
 
 
-    for (
-      let i = 0;
-      i < predictions.length;
-      i++
-    ) {
+    mostrarPredicciones(
+      values
+    );
 
-      const percent =
-        predictions[i].probability *
-        100;
-
-
-      const label =
-        document.getElementById(
-          "label-" + i
-        );
-
-      const percentText =
-        document.getElementById(
-          "percent-" + i
-        );
-
-      const bar =
-        document.getElementById(
-          "bar-" + i
-        );
-
-
-      if (label)
-        label.textContent =
-          predictions[i].className;
-
-
-      if (percentText)
-        percentText.textContent =
-          percent.toFixed(1) + "%";
-
-
-      if (bar)
-        bar.style.width =
-          percent + "%";
-
-    }
 
   } catch(error) {
 
-    console.log(
-      "Error de reconocimiento:",
+    console.error(
+      "Predicción:",
       error
     );
 
   }
 
 
-  if (running) {
+  if (testRunning) {
 
-    predictionLoop =
-      requestAnimationFrame(
-        predecir
-      );
+    requestAnimationFrame(
+      reconocer
+    );
 
   }
+
+}
+
+
+/* =====================================================
+   PREDICCIONES
+===================================================== */
+
+function mostrarPredicciones(
+  values
+) {
+
+  const container =
+    document.getElementById(
+      "predictions"
+    );
+
+
+  container.innerHTML =
+    "";
+
+
+  values.forEach(
+    (value, index) => {
+
+      const percent =
+        value * 100;
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "prediction";
+
+
+      div.innerHTML = `
+
+        <div class="prediction-top">
+
+          <span>
+            ${escapeHTML(
+              classes[index]?.name ||
+              "Clase " + (index + 1)
+            )}
+          </span>
+
+          <span>
+            ${percent.toFixed(1)}%
+          </span>
+
+        </div>
+
+        <div class="prediction-track">
+
+          <div
+            class="prediction-fill"
+            style="width:${percent}%">
+
+          </div>
+
+        </div>
+
+      `;
+
+
+      container.appendChild(
+        div
+      );
+
+    }
+  );
 
 }
 
@@ -1166,53 +2778,41 @@ async function predecir() {
    CAMBIAR CÁMARA
 ===================================================== */
 
-async function cambiarCamara() {
+async function cambiarCamaraPrueba() {
 
-  if (facingMode === "environment") {
+  testFacingMode =
+    testFacingMode ===
+    "environment"
+      ? "user"
+      : "environment";
 
-    facingMode = "user";
 
-  } else {
+  if (testRunning) {
 
-    facingMode = "environment";
+    await iniciarPrueba();
 
   }
-
-
-  await iniciarCamara();
 
 }
 
 
 /* =====================================================
-   DETENER
+   DETENER CÁMARA ENTRENAMIENTO
 ===================================================== */
 
 function detenerCamara() {
 
-  running = false;
+  if (cameraStream) {
 
-
-  if (predictionLoop) {
-
-    cancelAnimationFrame(
-      predictionLoop
-    );
-
-    predictionLoop = null;
-
-  }
-
-
-  if (stream) {
-
-    stream
+    cameraStream
       .getTracks()
       .forEach(
-        track => track.stop()
+        track =>
+          track.stop()
       );
 
-    stream = null;
+    cameraStream =
+      null;
 
   }
 
@@ -1225,7 +2825,8 @@ function detenerCamara() {
 
   if (video) {
 
-    video.srcObject = null;
+    video.srcObject =
+      null;
 
     video.style.display =
       "none";
@@ -1233,44 +2834,212 @@ function detenerCamara() {
   }
 
 
-  const message =
+  const placeholder =
     document.getElementById(
-      "cameraMessage"
+      "cameraPlaceholder"
     );
 
 
-  if (message) {
+  if (placeholder) {
 
-    message.style.display =
+    placeholder.style.display =
       "flex";
 
   }
-
-
-  document.getElementById(
-    "mobileStatus"
-  ).textContent =
-    model
-      ? "🧠 Modelo listo"
-      : "Sin modelo";
 
 }
 
 
 /* =====================================================
-   EVITAR QUE LA CÁMARA QUEDE ENCENDIDA
+   DETENER PRUEBA
 ===================================================== */
 
-document.addEventListener(
-  "visibilitychange",
-  () => {
+function detenerPrueba() {
 
-    if (
-      document.hidden &&
-      running
-    ) {
+  testRunning =
+    false;
 
-      detenerCamara();
+
+  if (testStream) {
+
+    testStream
+      .getTracks()
+      .forEach(
+        track =>
+          track.stop()
+      );
+
+    testStream =
+      null;
+
+  }
+
+
+  const video =
+    document.getElementById(
+      "testVideo"
+    );
+
+
+  if (video) {
+
+    video.srcObject =
+      null;
+
+    video.style.display =
+      "none";
+
+  }
+
+
+  const placeholder =
+    document.getElementById(
+      "testPlaceholder"
+    );
+
+
+  if (placeholder) {
+
+    placeholder.style.display =
+      "flex";
+
+  }
+
+}
+
+
+/* =====================================================
+   RESUMEN
+===================================================== */
+
+function actualizarResumen() {
+
+  const card =
+    document.getElementById(
+      "trainCard"
+    );
+
+
+  const summary =
+    document.getElementById(
+      "dataSummary"
+    );
+
+
+  if (
+    classes.length < 2
+  ) {
+
+    card.classList.add(
+      "hidden"
+    );
+
+    return;
+
+  }
+
+
+  const total =
+    trainingData.reduce(
+      (sum, data) =>
+        sum + data.length,
+      0
+    );
+
+
+  card.classList.remove(
+    "hidden"
+  );
+
+
+  summary.textContent =
+    classes.length +
+    " clases · " +
+    total +
+    " ejemplos";
+
+
+}
+
+
+/* =====================================================
+   UTILIDADES
+===================================================== */
+
+function sleep(ms) {
+
+  return new Promise(
+    resolve =>
+      setTimeout(
+        resolve,
+        ms
+      )
+  );
+
+}
+
+
+function vibrar() {
+
+  if (
+    navigator.vibrate
+  ) {
+
+    navigator.vibrate(
+      30
+    );
+
+  }
+
+}
+
+
+function escapeHTML(text) {
+
+  return String(text)
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+window.addEventListener(
+  "load",
+  async () => {
+
+    try {
+
+      await tf.ready();
+
+      console.log(
+        "TensorFlow.js listo"
+      );
+
+    } catch(error) {
+
+      console.error(error);
 
     }
 
@@ -1279,33 +3048,16 @@ document.addEventListener(
 
 
 /* =====================================================
-   COMPROBAR LIBRERÍAS
+   AL SALIR
 ===================================================== */
 
 window.addEventListener(
-  "load",
+  "beforeunload",
   () => {
 
-    if (
-      typeof tf === "undefined"
-    ) {
+    detenerCamara();
 
-      console.error(
-        "TensorFlow.js no cargó."
-      );
-
-    }
-
-
-    if (
-      typeof tmImage === "undefined"
-    ) {
-
-      console.error(
-        "Teachable Machine no cargó."
-      );
-
-    }
+    detenerPrueba();
 
   }
 );

@@ -18,6 +18,9 @@
 <!-- MobileNet -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1"></script>
 
+<!-- JSZip: permite crear el paquete de entrenamiento -->
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
 <style>
 
 /* =====================================================
@@ -139,6 +142,16 @@ button {
 .red {
   background: #ea4335;
   color: white;
+}
+
+.purple {
+  background: #7c4dff;
+  color: white;
+}
+
+.orange {
+  background: #f9ab00;
+  color: #202124;
 }
 
 .mobile-entry {
@@ -336,7 +349,7 @@ button {
 
 
 /* =====================================================
-   CÁMARA TIPO APP
+   CÁMARA
 ===================================================== */
 
 .camera-app {
@@ -452,17 +465,6 @@ button {
 
 .camera-actions {
   margin-top: 12px;
-}
-
-
-/* =====================================================
-   CONTADOR
-===================================================== */
-
-.capture-counter {
-  position: absolute;
-  top: 15px;
-  right: 15px;
 }
 
 
@@ -630,6 +632,55 @@ button {
 
 
 /* =====================================================
+   RAISE PLAYGROUND
+===================================================== */
+
+.raise-card {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,77,255,.18),
+      rgba(66,133,244,.12)
+    );
+  border: 1px solid rgba(124,77,255,.35);
+}
+
+.raise-icon {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.raise-title {
+  text-align: center;
+  font-size: 25px;
+  font-weight: 900;
+}
+
+.raise-description {
+  color: #c4cbd6;
+  line-height: 1.55;
+  font-size: 14px;
+}
+
+.raise-status {
+  background: rgba(0,0,0,.25);
+  border-radius: 14px;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: #cdd4df;
+}
+
+.export-info {
+  margin-top: 12px;
+  color: #9ca3af;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =====================================================
    STATUS
 ===================================================== */
 
@@ -696,11 +747,6 @@ button {
 
 }
 
-
-/* =====================================================
-   PANTALLAS PEQUEÑAS
-===================================================== */
-
 @media (max-width: 380px) {
 
   .mobile-page {
@@ -722,12 +768,10 @@ button {
 </style>
 </head>
 
-
 <body>
 
-
 <!-- =====================================================
-     PANTALLA DE CARGA
+     CARGA
 ===================================================== -->
 
 <div
@@ -763,7 +807,6 @@ button {
 
   </header>
 
-
   <main class="desktop-content">
 
     <div class="robot">
@@ -781,7 +824,6 @@ button {
       para reconocer objetos.
     </p>
 
-
     <button
       class="desktop-button blue"
       onclick="crearIA()">
@@ -790,7 +832,6 @@ button {
 
     </button>
 
-
     <button
       class="desktop-button green"
       onclick="abrirModelo()">
@@ -798,7 +839,6 @@ button {
       📂 Mi modelo
 
     </button>
-
 
     <button
       class="mobile-entry"
@@ -822,7 +862,6 @@ button {
 ===================================================== -->
 
 <div id="mobile">
-
 
 <header class="mobile-header">
 
@@ -870,7 +909,6 @@ button {
 
   </div>
 
-
   <button
     class="mobile-button blue"
     onclick="abrirEntrenador()">
@@ -882,7 +920,6 @@ button {
     </small>
 
   </button>
-
 
   <button
     class="mobile-button green"
@@ -896,6 +933,17 @@ button {
 
   </button>
 
+  <button
+    class="mobile-button purple"
+    onclick="abrirRaise()">
+
+    🧩 RAISE Playground
+
+    <small>
+      Preparar mis datos para RAISE
+    </small>
+
+  </button>
 
   <button
     class="mobile-button gray"
@@ -920,7 +968,6 @@ button {
   id="pageTrainer"
   class="mobile-page hidden">
 
-
   <button
     class="back"
     onclick="volverHome()">
@@ -928,9 +975,6 @@ button {
     ← Inicio
 
   </button>
-
-
-  <!-- CREAR CLASE -->
 
   <div class="card">
 
@@ -952,14 +996,12 @@ button {
 
     </p>
 
-
     <input
       id="className"
       class="input"
       placeholder="Nombre del objeto..."
       maxlength="30"
     >
-
 
     <button
       class="mobile-button blue"
@@ -987,7 +1029,7 @@ button {
   </div>
 
 
-  <!-- CÁMARA DE ENTRENAMIENTO -->
+  <!-- CÁMARA -->
 
   <div
     id="captureCard"
@@ -996,7 +1038,6 @@ button {
     <h2>
       📸 Añadir ejemplos
     </h2>
-
 
     <p
       style="
@@ -1007,11 +1048,14 @@ button {
       Selecciona una clase y muestra el objeto
       a la cámara.
 
+      <br><br>
+
+      <b>Consejo:</b> toma fotos desde diferentes
+      ángulos y distancias.
+
     </p>
 
-
     <div class="camera-app">
-
 
       <video
         id="video"
@@ -1019,7 +1063,6 @@ button {
         muted
         playsinline>
       </video>
-
 
       <div
         id="cameraPlaceholder"
@@ -1029,7 +1072,6 @@ button {
         Pulsa "Abrir cámara"
 
       </div>
-
 
       <div class="camera-top">
 
@@ -1043,7 +1085,6 @@ button {
 
         </div>
 
-
         <div
           class="camera-pill"
           id="captureCounter">
@@ -1054,11 +1095,7 @@ button {
 
       </div>
 
-
       <div class="camera-controls">
-
-
-        <!-- GIRAR -->
 
         <button
           class="camera-small"
@@ -1069,9 +1106,6 @@ button {
 
         </button>
 
-
-        <!-- CAPTURAR -->
-
         <button
           class="camera-capture"
           onclick="capturarEjemplo()"
@@ -1080,9 +1114,6 @@ button {
           📸
 
         </button>
-
-
-        <!-- RÁFAGA -->
 
         <button
           id="burstButton"
@@ -1094,14 +1125,11 @@ button {
 
         </button>
 
-
       </div>
 
     </div>
 
-
     <div class="camera-actions">
-
 
       <button
         class="mobile-button blue"
@@ -1111,7 +1139,6 @@ button {
 
       </button>
 
-
       <button
         class="mobile-button red"
         onclick="detenerCamara()">
@@ -1119,7 +1146,6 @@ button {
         ⏹ Cerrar cámara
 
       </button>
-
 
     </div>
 
@@ -1143,7 +1169,6 @@ button {
 
     </p>
 
-
     <div
       id="dataSummary"
       style="
@@ -1152,7 +1177,6 @@ button {
       ">
 
     </div>
-
 
     <button
       class="mobile-button green"
@@ -1175,7 +1199,6 @@ button {
   id="pageTraining"
   class="mobile-page hidden">
 
-
   <div class="card">
 
     <div class="training-title">
@@ -1194,7 +1217,6 @@ button {
 
     </div>
 
-
     <div
       class="epoch"
       id="epoch">
@@ -1202,7 +1224,6 @@ button {
       0%
 
     </div>
-
 
     <div class="progress">
 
@@ -1213,7 +1234,6 @@ button {
       </div>
 
     </div>
-
 
     <div
       id="trainingLog"
@@ -1234,7 +1254,6 @@ button {
   id="pageTest"
   class="mobile-page hidden">
 
-
   <button
     class="back"
     onclick="volverHome()">
@@ -1243,16 +1262,13 @@ button {
 
   </button>
 
-
   <div class="card">
 
     <h2>
       🎯 Probar mi IA
     </h2>
 
-
     <div class="recognition-camera">
-
 
       <video
         id="testVideo"
@@ -1260,7 +1276,6 @@ button {
         muted
         playsinline>
       </video>
-
 
       <div
         id="testPlaceholder"
@@ -1271,9 +1286,7 @@ button {
 
       </div>
 
-
       <div class="recognition-overlay"></div>
-
 
       <div class="recognition-top">
 
@@ -1291,9 +1304,7 @@ button {
 
       </div>
 
-
       <div class="recognition-controls">
-
 
         <button
           class="camera-small"
@@ -1303,7 +1314,6 @@ button {
 
         </button>
 
-
         <button
           class="camera-capture"
           onclick="iniciarPrueba()">
@@ -1311,7 +1321,6 @@ button {
           ▶️
 
         </button>
-
 
         <button
           class="camera-small"
@@ -1321,11 +1330,9 @@ button {
 
         </button>
 
-
       </div>
 
     </div>
-
 
     <div class="result">
 
@@ -1351,9 +1358,7 @@ button {
 
     </div>
 
-
     <div id="predictions"></div>
-
 
     <button
       class="mobile-button blue"
@@ -1363,7 +1368,6 @@ button {
 
     </button>
 
-
     <button
       class="mobile-button gray"
       onclick="cambiarCamaraPrueba()">
@@ -1371,7 +1375,6 @@ button {
       🔄 Cambiar cámara
 
     </button>
-
 
     <button
       class="mobile-button red"
@@ -1383,7 +1386,6 @@ button {
 
   </div>
 
-
   <div
     id="testStatus"
     class="status">
@@ -1394,6 +1396,98 @@ button {
 
 </section>
 
+
+<!-- =====================================================
+     RAISE PLAYGROUND
+===================================================== -->
+
+<section
+  id="pageRaise"
+  class="mobile-page hidden">
+
+  <button
+    class="back"
+    onclick="volverHome()">
+
+    ← Inicio
+
+  </button>
+
+  <div class="card raise-card">
+
+    <div class="raise-icon">
+      🧩
+    </div>
+
+    <div class="raise-title">
+      RAISE Playground
+    </div>
+
+    <p class="raise-description">
+
+      Prepara las fotos y los nombres de tus clases
+      para utilizarlos en un proyecto de clasificación
+      de imágenes.
+
+    </p>
+
+    <div
+      id="raiseStatus"
+      class="raise-status">
+
+      Comprobando tus datos...
+
+    </div>
+
+    <button
+      class="mobile-button purple"
+      onclick="exportarParaRaise()">
+
+      📦 EXPORTAR PARA RAISE
+
+      <small>
+        Descargar todas tus imágenes y clases
+      </small>
+
+    </button>
+
+    <button
+      class="mobile-button blue"
+      onclick="abrirRaisePlayground()">
+
+      🌐 ABRIR RAISE PLAYGROUND
+
+      <small>
+        Abrir la plataforma oficial
+      </small>
+
+    </button>
+
+    <button
+      class="mobile-button gray"
+      onclick="mostrarPagina('pageTrainer')">
+
+      ← Volver al entrenamiento
+
+    </button>
+
+    <div class="export-info">
+
+      El paquete incluye una carpeta por clase,
+      las imágenes originales, los nombres de las
+      clases y un archivo de información.
+
+      <br><br>
+
+      <b>Nota:</b> el modelo entrenado dentro de
+      IA-Objetos no se convierte automáticamente
+      en una URL de Teachable Machine.
+
+    </div>
+
+  </div>
+
+</section>
 
 </div>
 
@@ -1412,6 +1506,8 @@ let classes = [];
 
 let trainingData = [];
 
+let trainingImages = [];
+
 let currentClass = null;
 
 let cameraStream = null;
@@ -1420,9 +1516,19 @@ let testStream = null;
 
 let testRunning = false;
 
+let recognitionFrame = null;
+
 let trainingFacingMode = "environment";
 
 let testFacingMode = "environment";
+
+
+/* =====================================================
+   URL OFICIAL DE RAISE
+===================================================== */
+
+const RAISE_PLAYGROUND_URL =
+  "https://playground.raise.mit.edu/";
 
 
 /* =====================================================
@@ -1467,10 +1573,14 @@ function mostrarPagina(id) {
 
     });
 
+  const page =
+    document.getElementById(id);
 
-  document
-    .getElementById(id)
-    .classList.remove("hidden");
+  if (page) {
+
+    page.classList.remove("hidden");
+
+  }
 
 }
 
@@ -1510,6 +1620,19 @@ function abrirPrueba() {
 }
 
 
+function abrirRaise() {
+
+  detenerCamara();
+
+  detenerPrueba();
+
+  mostrarPagina("pageRaise");
+
+  actualizarEstadoRaise();
+
+}
+
+
 /* =====================================================
    BOTONES PRINCIPALES
 ===================================================== */
@@ -1539,15 +1662,15 @@ function abrirModelo() {
 async function cargarMobileNet() {
 
   if (mobileNet) {
-    return;
-  }
 
+    return;
+
+  }
 
   const status =
     document.getElementById(
       "trainingStatus"
     );
-
 
   if (status) {
 
@@ -1555,7 +1678,6 @@ async function cargarMobileNet() {
       "⏳ Cargando cerebro base de IA...";
 
   }
-
 
   mobileNet =
     await mobilenet.load({
@@ -1565,7 +1687,6 @@ async function cargarMobileNet() {
       alpha: 0.25
 
     });
-
 
   if (status) {
 
@@ -1588,10 +1709,8 @@ async function crearClase() {
       "className"
     );
 
-
   const name =
     input.value.trim();
-
 
   if (!name) {
 
@@ -1602,7 +1721,6 @@ async function crearClase() {
     return;
 
   }
-
 
   if (
     classes.some(
@@ -1620,7 +1738,6 @@ async function crearClase() {
 
   }
 
-
   classes.push({
 
     id: Date.now(),
@@ -1631,15 +1748,13 @@ async function crearClase() {
 
   });
 
-
   trainingData.push([]);
 
+  trainingImages.push([]);
 
   input.value = "";
 
-
   actualizarInterfazClases();
-
 
   seleccionarClase(
     classes.length - 1
@@ -1664,7 +1779,6 @@ function actualizarInterfazClases() {
       "classList"
     );
 
-
   if (classes.length === 0) {
 
     card.classList.add(
@@ -1675,14 +1789,11 @@ function actualizarInterfazClases() {
 
   }
 
-
   card.classList.remove(
     "hidden"
   );
 
-
   list.innerHTML = "";
-
 
   classes.forEach(
     (item, index) => {
@@ -1692,10 +1803,8 @@ function actualizarInterfazClases() {
           "div"
         );
 
-
       div.className =
         "class-item";
-
 
       div.innerHTML = `
 
@@ -1723,7 +1832,6 @@ function actualizarInterfazClases() {
 
       `;
 
-
       div.addEventListener(
         "click",
         function(event) {
@@ -1731,7 +1839,9 @@ function actualizarInterfazClases() {
           if (
             event.target.closest("button")
           ) {
+
             return;
+
           }
 
           seleccionarClase(index);
@@ -1739,12 +1849,10 @@ function actualizarInterfazClases() {
         }
       );
 
-
       list.appendChild(div);
 
     }
   );
-
 
   actualizarResumen();
 
@@ -1757,9 +1865,17 @@ function actualizarInterfazClases() {
 
 function seleccionarClase(index) {
 
+  if (
+    index < 0 ||
+    index >= classes.length
+  ) {
+
+    return;
+
+  }
+
   currentClass =
     index;
-
 
   document.getElementById(
     "captureCard"
@@ -1767,19 +1883,16 @@ function seleccionarClase(index) {
     "hidden"
   );
 
-
   document.getElementById(
     "currentClass"
   ).textContent =
     classes[index].name;
-
 
   document.getElementById(
     "captureCounter"
   ).textContent =
     classes[index].count +
     " ejemplos";
-
 
   actualizarResumen();
 
@@ -1794,29 +1907,38 @@ function eliminarClase(index) {
 
   detenerCamara();
 
+  if (
+    index < 0 ||
+    index >= classes.length
+  ) {
+
+    return;
+
+  }
 
   classes.splice(
     index,
     1
   );
 
-
   trainingData.splice(
     index,
     1
   );
 
+  trainingImages.splice(
+    index,
+    1
+  );
 
   currentClass =
     null;
-
 
   document.getElementById(
     "captureCard"
   ).classList.add(
     "hidden"
   );
-
 
   actualizarInterfazClases();
 
@@ -1841,7 +1963,6 @@ async function abrirCamaraEntrenamiento() {
 
   }
 
-
   if (
     !navigator.mediaDevices ||
     !navigator.mediaDevices.getUserMedia
@@ -1855,11 +1976,9 @@ async function abrirCamaraEntrenamiento() {
 
   }
 
-
   try {
 
     detenerCamara();
-
 
     cameraStream =
       await navigator.mediaDevices
@@ -1884,48 +2003,38 @@ async function abrirCamaraEntrenamiento() {
 
         });
 
-
     const video =
       document.getElementById(
         "video"
       );
 
-
     video.srcObject =
       cameraStream;
 
-
     video.style.display =
       "block";
-
 
     document.getElementById(
       "cameraPlaceholder"
     ).style.display =
       "none";
 
-
     video.muted =
       true;
-
 
     video.setAttribute(
       "playsinline",
       ""
     );
 
-
     await video.play();
-
 
   } catch(error) {
 
     console.error(error);
 
-
     cameraStream =
       null;
-
 
     alert(
       "No se pudo abrir la cámara.\n\n" +
@@ -1938,7 +2047,7 @@ async function abrirCamaraEntrenamiento() {
 
 
 /* =====================================================
-   GIRAR CÁMARA DE ENTRENAMIENTO
+   GIRAR CÁMARA
 ===================================================== */
 
 async function girarCamaraEntrenamiento() {
@@ -1948,13 +2057,11 @@ async function girarCamaraEntrenamiento() {
       ? "user"
       : "environment";
 
-
   if (!cameraStream) {
 
     return;
 
   }
-
 
   await abrirCamaraEntrenamiento();
 
@@ -1979,12 +2086,10 @@ async function capturarEjemplo() {
 
   }
 
-
   const video =
     document.getElementById(
       "video"
     );
-
 
   if (
     !cameraStream ||
@@ -1999,11 +2104,16 @@ async function capturarEjemplo() {
 
   }
 
-
   try {
 
     await cargarMobileNet();
 
+    /*
+      --------------------------------------------------
+      PARTE 1:
+      Guardar embedding para nuestro propio clasificador
+      --------------------------------------------------
+    */
 
     const embedding =
       mobileNet.infer(
@@ -2011,13 +2121,10 @@ async function capturarEjemplo() {
         true
       );
 
-
     const data =
       await embedding.array();
 
-
     embedding.dispose();
-
 
     trainingData[currentClass]
       .push(
@@ -2025,10 +2132,34 @@ async function capturarEjemplo() {
       );
 
 
+    /*
+      --------------------------------------------------
+      PARTE 2:
+      Guardar también la FOTO ORIGINAL.
+
+      Esto es nuevo y es importante para poder
+      exportar las clases a otros sistemas.
+      --------------------------------------------------
+    */
+
+    const imageBlob =
+      await capturarFrameComoBlob(
+        video
+      );
+
+    if (imageBlob) {
+
+      trainingImages[currentClass]
+        .push(
+          imageBlob
+        );
+
+    }
+
+
     classes[currentClass].count =
       trainingData[currentClass]
         .length;
-
 
     document.getElementById(
       "captureCounter"
@@ -2036,21 +2167,109 @@ async function capturarEjemplo() {
       classes[currentClass].count +
       " ejemplos";
 
-
     actualizarInterfazClases();
 
-
     vibrar();
+
+    actualizarEstadoRaise();
 
   } catch(error) {
 
     console.error(error);
 
-
     alert(
       "Error capturando ejemplo:\n" +
       error.message
     );
+
+  }
+
+}
+
+
+/* =====================================================
+   CAPTURAR FOTO COMO BLOB
+===================================================== */
+
+async function capturarFrameComoBlob(video) {
+
+  try {
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+    const maxSize = 640;
+
+    let width =
+      video.videoWidth || 640;
+
+    let height =
+      video.videoHeight || 480;
+
+
+    /*
+      Reducimos las imágenes para que el ZIP
+      no sea exageradamente grande.
+    */
+
+    if (width > maxSize) {
+
+      const ratio =
+        maxSize / width;
+
+      width =
+        Math.round(
+          width * ratio
+        );
+
+      height =
+        Math.round(
+          height * ratio
+        );
+
+    }
+
+    canvas.width =
+      width;
+
+    canvas.height =
+      height;
+
+    const ctx =
+      canvas.getContext(
+        "2d"
+      );
+
+    ctx.drawImage(
+      video,
+      0,
+      0,
+      width,
+      height
+    );
+
+    return await new Promise(
+      resolve => {
+
+        canvas.toBlob(
+          blob => resolve(blob),
+          "image/jpeg",
+          0.88
+        );
+
+      }
+    );
+
+  } catch(error) {
+
+    console.error(
+      "Error creando imagen:",
+      error
+    );
+
+    return null;
 
   }
 
@@ -2075,12 +2294,10 @@ async function capturarRafaga() {
 
   }
 
-
   const video =
     document.getElementById(
       "video"
     );
-
 
   if (
     !cameraStream ||
@@ -2095,16 +2312,13 @@ async function capturarRafaga() {
 
   }
 
-
   const button =
     document.getElementById(
       "burstButton"
     );
 
-
   button.disabled =
     true;
-
 
   try {
 
@@ -2116,7 +2330,7 @@ async function capturarRafaga() {
 
       await capturarEjemplo();
 
-      await sleep(120);
+      await sleep(150);
 
     }
 
@@ -2148,7 +2362,6 @@ async function entrenarModelo() {
 
   }
 
-
   for (
     let i = 0;
     i < classes.length;
@@ -2171,24 +2384,29 @@ async function entrenarModelo() {
 
   }
 
-
   detenerCamara();
-
 
   mostrarPagina(
     "pageTraining"
   );
 
+  document.getElementById(
+    "trainingProgress"
+  ).style.width =
+    "0%";
+
+  document.getElementById(
+    "epoch"
+  ).textContent =
+    "0%";
 
   try {
 
     await cargarMobileNet();
 
-
     const xsArray = [];
 
     const ysArray = [];
-
 
     for (
       let classIndex = 0;
@@ -2205,16 +2423,13 @@ async function entrenarModelo() {
           embedding
         );
 
-
         const label =
           new Array(
             classes.length
           ).fill(0);
 
-
         label[classIndex] =
           1;
-
 
         ysArray.push(
           label
@@ -2224,22 +2439,27 @@ async function entrenarModelo() {
 
     }
 
-
     const xs =
       tf.tensor2d(
         xsArray
       );
-
 
     const ys =
       tf.tensor2d(
         ysArray
       );
 
-
     const embeddingSize =
       xs.shape[1];
 
+    if (classifier) {
+
+      classifier.dispose();
+
+      classifier =
+        null;
+
+    }
 
     classifier =
       tf.sequential({
@@ -2278,7 +2498,6 @@ async function entrenarModelo() {
 
       });
 
-
     classifier.compile({
 
       optimizer:
@@ -2292,20 +2511,16 @@ async function entrenarModelo() {
 
     });
 
-
     const epochs =
       25;
-
 
     const log =
       document.getElementById(
         "trainingLog"
       );
 
-
     log.innerHTML =
       "";
-
 
     await classifier.fit(
       xs,
@@ -2313,18 +2528,15 @@ async function entrenarModelo() {
       {
 
         epochs:
-
           epochs,
 
         batchSize:
-
           Math.min(
             16,
             xs.shape[0]
           ),
 
         shuffle:
-
           true,
 
         callbacks: {
@@ -2343,22 +2555,18 @@ async function entrenarModelo() {
                   ) * 100
                 );
 
-
               document.getElementById(
                 "trainingProgress"
               ).style.width =
                 percent + "%";
-
 
               document.getElementById(
                 "epoch"
               ).textContent =
                 percent + "%";
 
-
               let accuracy =
                 logs.accuracy;
-
 
               if (
                 accuracy === undefined
@@ -2369,15 +2577,14 @@ async function entrenarModelo() {
 
               }
 
-
               if (
                 accuracy === undefined
               ) {
 
-                accuracy = 0;
+                accuracy =
+                  0;
 
               }
-
 
               log.innerHTML +=
                 "Época " +
@@ -2388,10 +2595,8 @@ async function entrenarModelo() {
                 accuracy.toFixed(3) +
                 "<br>";
 
-
               log.scrollTop =
                 log.scrollHeight;
-
 
               await tf.nextFrame();
 
@@ -2402,28 +2607,24 @@ async function entrenarModelo() {
       }
     );
 
-
     xs.dispose();
 
     ys.dispose();
 
-
     await guardarModelo();
-
 
     document.getElementById(
       "trainingStatus"
     ).textContent =
       "✅ ¡Tu IA está lista!";
 
+    actualizarEstadoRaise();
 
     await sleep(800);
-
 
     mostrarPagina(
       "pageTest"
     );
-
 
     document.getElementById(
       "testStatus"
@@ -2434,12 +2635,10 @@ async function entrenarModelo() {
 
     console.error(error);
 
-
     document.getElementById(
       "trainingStatus"
     ).textContent =
       "❌ Error durante el entrenamiento";
-
 
     document.getElementById(
       "trainingLog"
@@ -2461,16 +2660,16 @@ async function entrenarModelo() {
 async function guardarModelo() {
 
   if (!classifier) {
-    return;
-  }
 
+    return;
+
+  }
 
   try {
 
     await classifier.save(
       "indexeddb://ia-objetos-model"
     );
-
 
     localStorage.setItem(
       "iaObjetosClasses",
@@ -2480,7 +2679,6 @@ async function guardarModelo() {
         )
       )
     );
-
 
   } catch(error) {
 
@@ -2504,16 +2702,13 @@ async function cargarGuardado() {
     "pageTest"
   );
 
-
   const status =
     document.getElementById(
       "testStatus"
     );
 
-
   status.textContent =
     "⏳ Buscando modelo guardado...";
-
 
   try {
 
@@ -2522,14 +2717,12 @@ async function cargarGuardado() {
         "indexeddb://ia-objetos-model"
       );
 
-
     const saved =
       JSON.parse(
         localStorage.getItem(
           "iaObjetosClasses"
         ) || "[]"
       );
-
 
     classes =
       saved.map(
@@ -2542,6 +2735,20 @@ async function cargarGuardado() {
         })
       );
 
+    /*
+      Cuando se carga solamente el modelo,
+      todavía no tenemos las fotos originales.
+    */
+
+    trainingData =
+      classes.map(
+        () => []
+      );
+
+    trainingImages =
+      classes.map(
+        () => []
+      );
 
     status.textContent =
       "✅ Modelo cargado. Listo para reconocer.";
@@ -2550,10 +2757,8 @@ async function cargarGuardado() {
 
     console.error(error);
 
-
     classifier =
       null;
-
 
     status.textContent =
       "⚠️ No hay un modelo guardado todavía.";
@@ -2579,7 +2784,6 @@ async function iniciarPrueba() {
 
   }
 
-
   if (
     !navigator.mediaDevices ||
     !navigator.mediaDevices.getUserMedia
@@ -2593,14 +2797,11 @@ async function iniciarPrueba() {
 
   }
 
-
   detenerPrueba();
-
 
   try {
 
     await cargarMobileNet();
-
 
     testStream =
       await navigator.mediaDevices
@@ -2625,56 +2826,45 @@ async function iniciarPrueba() {
 
         });
 
-
     const video =
       document.getElementById(
         "testVideo"
       );
 
-
     video.srcObject =
       testStream;
 
-
     video.style.display =
       "block";
-
 
     document.getElementById(
       "testPlaceholder"
     ).style.display =
       "none";
 
-
     video.muted =
       true;
-
 
     video.setAttribute(
       "playsinline",
       ""
     );
 
-
     await video.play();
-
 
     testRunning =
       true;
-
 
     document.getElementById(
       "testStatus"
     ).textContent =
       "🟢 Reconociendo...";
 
-
     reconocer();
 
   } catch(error) {
 
     console.error(error);
-
 
     document.getElementById(
       "testStatus"
@@ -2701,12 +2891,10 @@ async function reconocer() {
 
   }
 
-
   const video =
     document.getElementById(
       "testVideo"
     );
-
 
   try {
 
@@ -2716,25 +2904,20 @@ async function reconocer() {
         true
       );
 
-
     const prediction =
       classifier.predict(
         embedding
       );
 
-
     const values =
       await prediction.data();
-
 
     embedding.dispose();
 
     prediction.dispose();
 
-
     let bestIndex =
       0;
-
 
     for (
       let i = 1;
@@ -2754,21 +2937,17 @@ async function reconocer() {
 
     }
 
-
     const confidence =
       values[bestIndex] * 100;
-
 
     const name =
       classes[bestIndex]?.name ||
       "Desconocido";
 
-
     document.getElementById(
       "resultName"
     ).textContent =
       name;
-
 
     document.getElementById(
       "resultConfidence"
@@ -2776,11 +2955,9 @@ async function reconocer() {
       confidence.toFixed(1) +
       "% de confianza";
 
-
     mostrarPredicciones(
       values
     );
-
 
   } catch(error) {
 
@@ -2791,12 +2968,12 @@ async function reconocer() {
 
   }
 
-
   if (testRunning) {
 
-    requestAnimationFrame(
-      reconocer
-    );
+    recognitionFrame =
+      requestAnimationFrame(
+        reconocer
+      );
 
   }
 
@@ -2816,10 +2993,8 @@ function mostrarPredicciones(
       "predictions"
     );
 
-
   container.innerHTML =
     "";
-
 
   values.forEach(
     (value, index) => {
@@ -2827,16 +3002,13 @@ function mostrarPredicciones(
       const percent =
         value * 100;
 
-
       const div =
         document.createElement(
           "div"
         );
 
-
       div.className =
         "prediction";
-
 
       div.innerHTML = `
 
@@ -2859,14 +3031,19 @@ function mostrarPredicciones(
 
           <div
             class="prediction-fill"
-            style="width:${percent}%">
+            style="width:${Math.min(
+              100,
+              Math.max(
+                0,
+                percent
+              )
+            )}%">
 
           </div>
 
         </div>
 
       `;
-
 
       container.appendChild(
         div
@@ -2879,7 +3056,7 @@ function mostrarPredicciones(
 
 
 /* =====================================================
-   GIRAR CÁMARA DE RECONOCIMIENTO
+   GIRAR CÁMARA DE PRUEBA
 ===================================================== */
 
 async function cambiarCamaraPrueba() {
@@ -2891,7 +3068,6 @@ async function cambiarCamaraPrueba() {
       ? "user"
 
       : "environment";
-
 
   if (testRunning) {
 
@@ -2922,14 +3098,14 @@ function detenerCamara() {
 
   }
 
-
   const video =
     document.getElementById(
       "video"
     );
 
-
   if (video) {
+
+    video.pause();
 
     video.srcObject =
       null;
@@ -2939,12 +3115,10 @@ function detenerCamara() {
 
   }
 
-
   const placeholder =
     document.getElementById(
       "cameraPlaceholder"
     );
-
 
   if (placeholder) {
 
@@ -2965,6 +3139,16 @@ function detenerPrueba() {
   testRunning =
     false;
 
+  if (recognitionFrame) {
+
+    cancelAnimationFrame(
+      recognitionFrame
+    );
+
+    recognitionFrame =
+      null;
+
+  }
 
   if (testStream) {
 
@@ -2980,14 +3164,14 @@ function detenerPrueba() {
 
   }
 
-
   const video =
     document.getElementById(
       "testVideo"
     );
 
-
   if (video) {
+
+    video.pause();
 
     video.srcObject =
       null;
@@ -2997,12 +3181,10 @@ function detenerPrueba() {
 
   }
 
-
   const placeholder =
     document.getElementById(
       "testPlaceholder"
     );
-
 
   if (placeholder) {
 
@@ -3025,12 +3207,10 @@ function actualizarResumen() {
       "trainCard"
     );
 
-
   const summary =
     document.getElementById(
       "dataSummary"
     );
-
 
   if (
     classes.length < 2
@@ -3044,7 +3224,6 @@ function actualizarResumen() {
 
   }
 
-
   const total =
     trainingData.reduce(
       (
@@ -3055,17 +3234,483 @@ function actualizarResumen() {
       0
     );
 
-
   card.classList.remove(
     "hidden"
   );
-
 
   summary.textContent =
     classes.length +
     " clases · " +
     total +
     " ejemplos";
+
+}
+
+
+/* =====================================================
+   ESTADO RAISE
+===================================================== */
+
+function actualizarEstadoRaise() {
+
+  const status =
+    document.getElementById(
+      "raiseStatus"
+    );
+
+  if (!status) {
+
+    return;
+
+  }
+
+  if (classes.length === 0) {
+
+    status.innerHTML =
+      "⚪ Todavía no tienes clases.";
+
+    return;
+
+  }
+
+  let totalImages = 0;
+
+  trainingImages.forEach(
+    images => {
+
+      totalImages +=
+        images.length;
+
+    }
+  );
+
+  status.innerHTML =
+    "🟢 " +
+    classes.length +
+    " clases · " +
+    totalImages +
+    " imágenes originales listas para exportar.";
+
+}
+
+
+/* =====================================================
+   EXPORTAR PARA RAISE
+===================================================== */
+
+async function exportarParaRaise() {
+
+  if (
+    classes.length < 2
+  ) {
+
+    alert(
+      "Necesitas al menos 2 clases antes de exportar."
+    );
+
+    return;
+
+  }
+
+  let totalImages = 0;
+
+  trainingImages.forEach(
+    images => {
+
+      totalImages +=
+        images.length;
+
+    }
+  );
+
+  if (
+    totalImages < 2
+  ) {
+
+    alert(
+      "Todavía no hay suficientes imágenes originales. " +
+      "Toma ejemplos con la cámara primero."
+    );
+
+    return;
+
+  }
+
+  const button =
+    event?.currentTarget ||
+    null;
+
+  if (button) {
+
+    button.disabled =
+      true;
+
+  }
+
+  const status =
+    document.getElementById(
+      "raiseStatus"
+    );
+
+  status.textContent =
+    "⏳ Preparando paquete...";
+
+  try {
+
+    if (
+      typeof JSZip ===
+      "undefined"
+    ) {
+
+      throw new Error(
+        "No se pudo cargar el sistema ZIP."
+      );
+
+    }
+
+    const zip =
+      new JSZip();
+
+
+    /*
+      --------------------------------------------------
+      README
+      --------------------------------------------------
+    */
+
+    const readme =
+
+`IA-OBJETOS
+==========
+
+Paquete de datos de entrenamiento.
+
+Este paquete fue generado por IA-Objetos.
+
+CLASES
+------
+
+${classes
+  .map(
+    (c, i) =>
+      `${i + 1}. ${c.name} (${trainingImages[i]?.length || 0} imágenes)`
+  )
+  .join("\n")}
+
+ESTRUCTURA
+----------
+
+Cada carpeta contiene las imágenes correspondientes
+a una clase:
+
+${classes
+  .map(
+    c =>
+      `dataset/${sanitizarNombreArchivo(c.name)}/`
+  )
+  .join("\n")}
+
+USO
+---
+
+Estas imágenes pueden utilizarse como datos de
+entrenamiento en una herramienta compatible con
+clasificación de imágenes.
+
+IMPORTANTE
+----------
+
+El modelo interno de IA-Objetos utiliza TensorFlow.js
++ MobileNet.
+
+Este ZIP contiene las imágenes originales y los nombres
+de las clases; no convierte automáticamente ese modelo
+en una URL alojada de Teachable Machine.
+
+RAISE PLAYGROUND
+----------------
+
+https://playground.raise.mit.edu/
+
+`;
+
+    zip.file(
+      "README.txt",
+      readme
+    );
+
+
+    /*
+      --------------------------------------------------
+      METADATA JSON
+      --------------------------------------------------
+    */
+
+    const metadata = {
+
+      generator:
+        "IA-Objetos",
+
+      version:
+        "2.0",
+
+      createdAt:
+        new Date().toISOString(),
+
+      classes:
+        classes.map(
+          (c, index) => ({
+
+            index:
+              index,
+
+            name:
+              c.name,
+
+            images:
+              trainingImages[index]?.length || 0
+
+          })
+        )
+
+    };
+
+    zip.file(
+      "dataset.json",
+      JSON.stringify(
+        metadata,
+        null,
+        2
+      )
+    );
+
+
+    /*
+      --------------------------------------------------
+      IMÁGENES
+      --------------------------------------------------
+    */
+
+    for (
+      let classIndex = 0;
+      classIndex < classes.length;
+      classIndex++
+    ) {
+
+      const className =
+        sanitizarNombreArchivo(
+          classes[classIndex].name
+        );
+
+      const folder =
+        zip.folder(
+          "dataset/" +
+          className
+        );
+
+      const images =
+        trainingImages[classIndex] ||
+        [];
+
+      for (
+        let imageIndex = 0;
+        imageIndex < images.length;
+        imageIndex++
+      ) {
+
+        const filename =
+          className +
+          "_" +
+          String(
+            imageIndex + 1
+          ).padStart(
+            4,
+            "0"
+          ) +
+          ".jpg";
+
+        folder.file(
+          filename,
+          images[imageIndex]
+        );
+
+      }
+
+    }
+
+
+    /*
+      --------------------------------------------------
+      ARCHIVO DE CLASES
+      --------------------------------------------------
+    */
+
+    const labels =
+      classes
+        .map(
+          (c, i) =>
+            i +
+            ": " +
+            c.name
+        )
+        .join("\n");
+
+    zip.file(
+      "labels.txt",
+      labels
+    );
+
+
+    /*
+      --------------------------------------------------
+      GENERAR ZIP
+      --------------------------------------------------
+    */
+
+    const blob =
+      await zip.generateAsync({
+
+        type:
+          "blob",
+
+        compression:
+          "DEFLATE",
+
+        compressionOptions: {
+
+          level:
+            6
+
+        }
+
+      });
+
+
+    const url =
+      URL.createObjectURL(
+        blob
+      );
+
+    const a =
+      document.createElement(
+        "a"
+      );
+
+    a.href =
+      url;
+
+    a.download =
+      "IA-Objetos-RAISE-dataset.zip";
+
+    document.body.appendChild(
+      a
+    );
+
+    a.click();
+
+    a.remove();
+
+    setTimeout(
+      () => {
+
+        URL.revokeObjectURL(
+          url
+        );
+
+      },
+      5000
+    );
+
+
+    status.innerHTML =
+      "✅ ZIP creado correctamente.<br>" +
+      totalImages +
+      " imágenes exportadas.";
+
+    vibrar();
+
+  } catch(error) {
+
+    console.error(
+      "Exportación RAISE:",
+      error
+    );
+
+    status.textContent =
+      "❌ Error exportando: " +
+      error.message;
+
+  } finally {
+
+    if (button) {
+
+      button.disabled =
+        false;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   ABRIR RAISE
+===================================================== */
+
+function abrirRaisePlayground() {
+
+  window.open(
+    RAISE_PLAYGROUND_URL,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =====================================================
+   SANITIZAR NOMBRE DE ARCHIVO
+===================================================== */
+
+function sanitizarNombreArchivo(name) {
+
+  let result =
+    String(name)
+
+      .normalize(
+        "NFD"
+      )
+
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+
+      .replace(
+        /[^a-zA-Z0-9_\- ]/g,
+        ""
+      )
+
+      .trim()
+
+      .replace(
+        /\s+/g,
+        "_"
+      );
+
+  if (!result) {
+
+    result =
+      "Clase";
+
+  }
+
+  return result
+    .substring(
+      0,
+      60
+    );
 
 }
 
@@ -3093,7 +3738,9 @@ function vibrar() {
     navigator.vibrate
   ) {
 
-    navigator.vibrate(30);
+    navigator.vibrate(
+      30
+    );
 
   }
 
@@ -3133,6 +3780,49 @@ function escapeHTML(text) {
 
 
 /* =====================================================
+   GUARDAR DATOS BÁSICOS LOCALMENTE
+===================================================== */
+
+function guardarDatosBasicos() {
+
+  try {
+
+    localStorage.setItem(
+      "iaObjetosClasses",
+      JSON.stringify(
+        classes.map(
+          c => c.name
+        )
+      )
+    );
+
+  } catch(error) {
+
+    console.warn(
+      "No se pudieron guardar las clases:",
+      error
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTOGUARDADO DE NOMBRES
+===================================================== */
+
+setInterval(
+  () => {
+
+    guardarDatosBasicos();
+
+  },
+  3000
+);
+
+
+/* =====================================================
    INICIO
 ===================================================== */
 
@@ -3151,7 +3841,6 @@ window.addEventListener(
         .style.display =
         "none";
 
-
       console.log(
         "TensorFlow.js listo"
       );
@@ -3159,7 +3848,6 @@ window.addEventListener(
     } catch(error) {
 
       console.error(error);
-
 
       document
         .getElementById(

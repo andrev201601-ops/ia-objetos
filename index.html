@@ -1,620 +1,1714 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IA-Objetos</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fb;
-      color: #202124;
-    }
-    header {
-      background: white;
-      border-bottom: 1px solid #ddd;
-      padding: 18px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .logo span {
-      color: #4285f4;
-    }
-    .status {
-      font-size: 14px;
-      color: #555;
-    }
-    main {
-      max-width: 950px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .hero {
-      text-align: center;
-      margin-bottom: 35px;
-    }
-    .hero h1 {
-      font-size: 42px;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      color: #666;
-      font-size: 18px;
-    }
-    .steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .step {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 16px;
-      padding: 20px;
-      min-height: 180px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .number {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #4285f4;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-    .step h3 {
-      margin: 5px 0 10px;
-    }
-    .step p {
-      color: #666;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    button {
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 18px;
-      font-size: 15px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 5px;
-    }
-    .primary {
-      background: #4285f4;
-      color: white;
-    }
-    .primary:hover {
-      background: #3367d6;
-    }
-    .green {
-      background: #34a853;
-      color: white;
-    }
-    .dark {
-      background: #202124;
-      color: white;
-    }
-    .gray {
-      background: #e8eaed;
-      color: #202124;
-    }
-    .panel {
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 18px;
-      padding: 25px;
-      margin-top: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .panel h2 {
-      margin-top: 0;
-    }
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-    input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #bbb;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-    }
-    input:focus {
-      border-color: #4285f4;
-      box-shadow: 0 0 0 2px rgba(66,133,244,.15);
-    }
-    .button-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .result {
-      display: none;
-      margin-top: 20px;
-      padding: 18px;
-      background: #f1f8f4;
-      border: 1px solid #b7dfc5;
-      border-radius: 12px;
-    }
-    .result strong {
-      display: block;
-      margin-bottom: 8px;
-    }
-    .real-link {
-      word-break: break-all;
-      color: #1a73e8;
-      font-size: 15px;
-    }
-    .message {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 10px;
-      display: none;
-    }
-    .success {
-      background: #e6f4ea;
-      color: #137333;
-    }
-    .error {
-      background: #fce8e6;
-      color: #c5221f;
-    }
-    .info {
-      background: #e8f0fe;
-      color: #174ea6;
-    }
-    .warning {
-      background: #fef7e0;
-      color: #8a6116;
-    }
-    footer {
-      text-align: center;
-      color: #777;
-      font-size: 13px;
-      padding: 40px 20px;
-    }
-    @media (max-width: 750px) {
-      .steps {
-        grid-template-columns: 1fr;
-      }
-      .hero h1 {
-        font-size: 32px;
-      }
-      header {
-        padding: 15px;
-      }
-    }
-  </style>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>IA-Objetos</title>
+
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+
+<!-- Teachable Machine Image -->
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
+
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fb;
+  color: #202124;
+}
+
+header {
+  background: white;
+  border-bottom: 1px solid #ddd;
+  padding: 16px 22px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #4285f4;
+}
+
+#status {
+  font-size: 14px;
+  color: #666;
+}
+
+main {
+  width: min(950px, 94%);
+  margin: 30px auto;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  margin-bottom: 8px;
+}
+
+.hero p {
+  color: #666;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 20px;
+
+  box-shadow: 0 3px 12px rgba(0,0,0,.06);
+}
+
+h2 {
+  margin-top: 0;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+
+  border: 1px solid #bbb;
+  border-radius: 10px;
+
+  font-size: 16px;
+
+  outline: none;
+}
+
+input:focus {
+  border-color: #4285f4;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+
+  padding: 13px 18px;
+
+  font-size: 15px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  margin: 5px;
+}
+
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.blue {
+  background: #4285f4;
+  color: white;
+}
+
+.green {
+  background: #34a853;
+  color: white;
+}
+
+.red {
+  background: #ea4335;
+  color: white;
+}
+
+.gray {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+#webcam-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#webcam-container canvas {
+  width: min(500px, 100%);
+  height: auto;
+
+  border-radius: 18px;
+  background: #111;
+}
+
+#webcam-container video {
+  width: min(500px, 100%);
+  height: auto;
+
+  border-radius: 18px;
+  background: #111;
+
+  object-fit: cover;
+}
+
+#mainPrediction {
+  text-align: center;
+
+  font-size: 30px;
+  font-weight: bold;
+
+  margin: 25px 0 15px;
+}
+
+.prediction {
+  background: #f1f3f4;
+
+  padding: 13px;
+  margin: 8px 0;
+
+  border-radius: 12px;
+}
+
+.prediction-header {
+  display: flex;
+  justify-content: space-between;
+
+  font-weight: bold;
+}
+
+.bar {
+  height: 12px;
+
+  background: #ddd;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  margin-top: 8px;
+}
+
+.bar-fill {
+  height: 100%;
+
+  width: 0%;
+
+  background: #4285f4;
+
+  transition: width .1s linear;
+}
+
+.message {
+  display: none;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  margin-top: 15px;
+
+  line-height: 1.5;
+}
+
+.success {
+  display: block;
+
+  background: #e6f4ea;
+  color: #137333;
+}
+
+.error {
+  display: block;
+
+  background: #fce8e6;
+  color: #c5221f;
+}
+
+.info {
+  display: block;
+
+  background: #e8f0fe;
+  color: #174ea6;
+}
+
+.warning {
+  display: block;
+
+  background: #fef7e0;
+  color: #8a6116;
+}
+
+.hidden {
+  display: none;
+}
+
+#debug {
+  background: #111;
+  color: #00ff88;
+
+  border-radius: 12px;
+
+  padding: 15px;
+
+  font-family: monospace;
+  font-size: 12px;
+
+  white-space: pre-wrap;
+
+  overflow-x: auto;
+
+  margin-top: 15px;
+}
+
+footer {
+  text-align: center;
+
+  color: #777;
+
+  padding: 30px;
+
+  font-size: 13px;
+}
+
+@media(max-width:700px) {
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .panel {
+    padding: 18px;
+  }
+
+}
+
+</style>
+
 </head>
+
+
 <body>
+
+
 <header>
+
   <div class="logo">
     IA-<span>Objetos</span>
   </div>
-  <div class="status" id="status">
-    Listo
+
+  <div id="status">
+    Sin modelo
   </div>
+
 </header>
+
+
 <main>
-  <section class="hero">
-    <h1>IA-Objetos</h1>
-    <p>
-      Crea y comparte tus proyectos de inteligencia artificial.
-    </p>
-  </section>
-  <!-- PASOS -->
-  <section class="steps">
-    <!-- 1 -->
-    <div class="step">
-      <div class="number">1</div>
-      <h3>Crear</h3>
-      <p>
-        Crea un proyecto real directamente en Teachable Machine.
-      </p>
-      <button
-        class="primary"
-        onclick="crearProyecto()">
-        Crear proyecto
-      </button>
-    </div>
-    <!-- 2 -->
-    <div class="step">
-      <div class="number">2</div>
-      <h3>Entrenar</h3>
-      <p>
-        Abre tu proyecto real y entrena las clases con imágenes o cámara.
-      </p>
-      <button
-        class="green"
-        onclick="entrenarProyecto()">
-        Entrenar
-      </button>
-    </div>
-    <!-- 3 -->
-    <div class="step">
-      <div class="number">3</div>
-      <h3>Obtener link real</h3>
-      <p>
-        Introduce el ID o la URL de tu proyecto para generar el enlace real.
-      </p>
-      <button
-        class="dark"
-        onclick="irAlProyecto()">
-        Obtener link
-      </button>
-    </div>
-    <!-- 4 -->
-    <div class="step">
-      <div class="number">4</div>
-      <h3>Compartir</h3>
-      <p>
-        Comparte tu proyecto o copia el enlace real.
-      </p>
-      <button
-        class="gray"
-        onclick="compartirProyecto()">
-        Compartir
-      </button>
-    </div>
-  </section>
-  <!-- PROYECTO -->
-  <section class="panel">
-    <h2>🔗 Proyecto de Teachable Machine</h2>
-    <p>
-      Pega aquí el ID de tu proyecto o su URL completa.
-    </p>
-    <label for="projectInput">
-      ID o URL del proyecto
-    </label>
-    <input
-      id="projectInput"
-      type="text"
-      placeholder="Ejemplo: n-zeeRLBgd0"
-      autocomplete="off"
-    >
-    <div class="button-row">
-      <button
-        class="primary"
-        onclick="generarLink()">
-        Obtener link real
-      </button>
-      <button
-        class="green"
-        onclick="entrenarProyecto()">
-        Abrir para entrenar
-      </button>
-      <button
-        class="gray"
-        onclick="limpiar()">
-        Limpiar
-      </button>
-    </div>
-    <div id="message" class="message"></div>
-    <div id="result" class="result">
-      <strong>✅ Enlace real de tu proyecto:</strong>
-      <div
-        id="realLink"
-        class="real-link">
-      </div>
-      <div class="button-row">
-        <button
-          class="primary"
-          onclick="abrirLink()">
-          Abrir proyecto
-        </button>
-        <button
-          class="dark"
-          onclick="copiarLink()">
-          Copiar enlace
-        </button>
-        <button
-          class="green"
-          onclick="compartirProyecto()">
-          Compartir
-        </button>
-      </div>
-    </div>
-  </section>
-  <!-- INFORMACIÓN -->
-  <section class="panel">
-    <h2>🤖 ¿Cómo funciona?</h2>
-    <p>
-      <b>1.</b> Pulsa "Crear proyecto".
-    </p>
-    <p>
-      <b>2.</b> Teachable Machine creará el proyecto real.
-    </p>
-    <p>
-      <b>3.</b> Entrena tu IA.
-    </p>
-    <p>
-      <b>4.</b> Copia la URL del proyecto.
-    </p>
-    <p>
-      <b>5.</b> Pégala arriba.
-    </p>
-    <p>
-      <b>6.</b> IA-Objetos detectará automáticamente el ID.
-    </p>
-    <p>
-      <b>7.</b> Se generará el enlace real.
-    </p>
-  </section>
+
+
+<section class="hero">
+
+  <h1>🤖 IA-Objetos</h1>
+
+  <p>
+    Reconocimiento de objetos con tu propio modelo de IA
+  </p>
+
+</section>
+
+
+
+<!-- CREAR -->
+
+<section class="panel">
+
+  <h2>1️⃣ Crear tu IA</h2>
+
+  <p>
+    Crea y entrena tu modelo en Teachable Machine.
+  </p>
+
+  <button
+    class="blue"
+    onclick="abrirTeachableMachine()">
+
+    Crear / entrenar modelo
+
+  </button>
+
+</section>
+
+
+
+<!-- MODELO -->
+
+<section class="panel">
+
+  <h2>2️⃣ Conectar modelo</h2>
+
+  <p>
+    Pega aquí la URL que aparece cuando exportas
+    tu modelo de Teachable Machine.
+  </p>
+
+  <p>
+    Debe parecerse a:
+  </p>
+
+  <code>
+    https://teachablemachine.withgoogle.com/models/XXXXXXXX/
+  </code>
+
+  <br><br>
+
+  <input
+    id="modelURL"
+    type="text"
+    placeholder="Pega aquí la URL del modelo"
+    autocomplete="off"
+  >
+
+  <div class="buttons">
+
+    <button
+      id="loadButton"
+      class="green"
+      onclick="cargarModelo()">
+
+      Cargar IA
+
+    </button>
+
+    <button
+      class="gray"
+      onclick="limpiarTodo()">
+
+      Limpiar
+
+    </button>
+
+  </div>
+
+  <div id="message"></div>
+
+</section>
+
+
+
+<!-- RECONOCIMIENTO -->
+
+<section
+  id="recognitionPanel"
+  class="panel hidden">
+
+  <h2>3️⃣ Reconocimiento</h2>
+
+  <p>
+    Pon un objeto delante de la cámara.
+  </p>
+
+
+  <div class="buttons">
+
+    <button
+      id="cameraButton"
+      class="blue"
+      onclick="iniciarCamara()">
+
+      📷 Iniciar cámara
+
+    </button>
+
+    <button
+      class="red"
+      onclick="detenerCamara()">
+
+      ⏹ Detener
+
+    </button>
+
+  </div>
+
+
+  <!--
+    Teachable Machine pondrá aquí
+    su cámara/canvas.
+  -->
+
+  <div id="webcam-container"></div>
+
+
+  <div id="mainPrediction">
+    Cámara apagada
+  </div>
+
+
+  <div id="prediction-container"></div>
+
+
+</section>
+
+
+
+<!-- DEBUG -->
+
+<section class="panel">
+
+  <h2>🔧 Diagnóstico</h2>
+
+  <p>
+    Si algo falla, aquí aparecerá exactamente
+    qué está ocurriendo.
+  </p>
+
+  <div id="debug">
+Esperando...
+  </div>
+
+</section>
+
+
 </main>
+
+
 <footer>
-  IA-Objetos · Proyecto educativo de inteligencia artificial
+
+  IA-Objetos · TensorFlow.js + Teachable Machine
+
 </footer>
+
+
+
 <script>
-  /*
-    URL OFICIAL DE TEACHABLE MACHINE
-  */
-  const TEACHABLE_MACHINE =
-    "https://teachablemachine.withgoogle.com/train";
-  let realProjectURL = "";
-  /*
-    ACTUALIZAR ESTADO
-  */
-  function setStatus(text) {
-    document.getElementById("status").textContent = text;
-  }
-  /*
-    MOSTRAR MENSAJE
-  */
-  function showMessage(text, type) {
-    const box = document.getElementById("message");
-    box.textContent = text;
-    box.className = "message " + type;
-    box.style.display = "block";
-  }
-  /*
-    CREAR PROYECTO REAL
-  */
-  function crearProyecto() {
-    setStatus("Abriendo Teachable Machine...");
-    showMessage(
-      "Se abrirá Teachable Machine. Crea allí tu proyecto real.",
-      "info"
+
+
+/*
+==================================================
+VARIABLES
+==================================================
+*/
+
+
+let model = null;
+
+let webcam = null;
+
+let maxPredictions = 0;
+
+let running = false;
+
+let predicting = false;
+
+
+/*
+==================================================
+ELEMENTOS
+==================================================
+*/
+
+
+const statusElement =
+  document.getElementById("status");
+
+
+const debugElement =
+  document.getElementById("debug");
+
+
+const messageElement =
+  document.getElementById("message");
+
+
+const recognitionPanel =
+  document.getElementById("recognitionPanel");
+
+
+const webcamContainer =
+  document.getElementById("webcam-container");
+
+
+const predictionContainer =
+  document.getElementById(
+    "prediction-container"
+  );
+
+
+const mainPrediction =
+  document.getElementById(
+    "mainPrediction"
+  );
+
+
+/*
+==================================================
+DEBUG
+==================================================
+*/
+
+
+function debug(text) {
+
+  const time =
+    new Date().toLocaleTimeString();
+
+  debugElement.textContent +=
+    "\n[" + time + "] " + text;
+
+  debugElement.scrollTop =
+    debugElement.scrollHeight;
+
+  console.log(
+    "[IA-OBJETOS]",
+    text
+  );
+
+}
+
+
+/*
+==================================================
+MENSAJES
+==================================================
+*/
+
+
+function showMessage(text, type) {
+
+  messageElement.textContent = text;
+
+  messageElement.className =
+    "message " + type;
+
+}
+
+
+/*
+==================================================
+ABRIR TEACHABLE MACHINE
+==================================================
+*/
+
+
+function abrirTeachableMachine() {
+
+  window.open(
+    "https://teachablemachine.withgoogle.com/train",
+    "_blank"
+  );
+
+  showMessage(
+    "Crea y entrena tu modelo en la nueva pestaña.",
+    "info"
+  );
+
+}
+
+
+
+/*
+==================================================
+NORMALIZAR URL
+==================================================
+*/
+
+
+function normalizarModeloURL(value) {
+
+  let url =
+    value.trim();
+
+
+  if (!url) {
+
+    throw new Error(
+      "No escribiste ninguna URL."
     );
-    window.open(
-      TEACHABLE_MACHINE,
-      "_blank"
+
+  }
+
+
+  /*
+    Permitir solamente el ID:
+    
+    ABC123
+  */
+
+  if (
+    !url.startsWith("http://") &&
+    !url.startsWith("https://")
+  ) {
+
+    url =
+      "https://teachablemachine.withgoogle.com/models/" +
+      url;
+
+  }
+
+
+  /*
+    Quitar model.json
+  */
+
+  url =
+    url.replace(
+      /\/model\.json\/?$/i,
+      ""
     );
-  }
+
+
   /*
-    EXTRAER ID
+    Quitar metadata.json
   */
-  function obtenerID(valor) {
-    valor = valor.trim();
-    if (!valor) {
-      return null;
-    }
-    /*
-      Si pegaron una URL completa
-    */
-    try {
-      const url = new URL(valor);
-      const id = url.searchParams.get("id");
-      if (id) {
-        return id;
-      }
-    } catch (error) {
-      /*
-        No era una URL.
-        Puede ser directamente el ID.
-      */
-    }
-    /*
-      También aceptamos solamente el ID.
-    */
-    const limpio = valor
-      .replace(/^id=/i, "")
-      .trim();
-    /*
-      Los IDs reales normalmente usan
-      letras, números y algunos símbolos.
-    */
-    if (
-      /^[A-Za-z0-9_-]{5,100}$/.test(limpio)
-    ) {
-      return limpio;
-    }
-    return null;
-  }
+
+  url =
+    url.replace(
+      /\/metadata\.json\/?$/i,
+      ""
+    );
+
+
   /*
-    GENERAR LINK REAL
+    Quitar espacios y slash final
   */
-  function generarLink() {
-    const input =
-      document.getElementById("projectInput");
-    const valor = input.value;
-    const id = obtenerID(valor);
-    if (!id) {
-      showMessage(
-        "No pude reconocer el ID. Pega la URL completa de tu proyecto o solamente su ID.",
-        "error"
+
+  url =
+    url.replace(/\/+$/, "");
+
+
+  /*
+    Volver a poner slash
+  */
+
+  url += "/";
+
+
+  /*
+    Comprobar que realmente
+    parece una URL de modelo.
+  */
+
+  if (
+    !url.includes(
+      "teachablemachine.withgoogle.com/models/"
+    )
+  ) {
+
+    throw new Error(
+      "Esta no parece ser una URL de modelo de Teachable Machine."
+    );
+
+  }
+
+
+  return url;
+
+}
+
+
+
+/*
+==================================================
+CARGAR MODELO
+==================================================
+*/
+
+
+async function cargarModelo() {
+
+  const input =
+    document.getElementById(
+      "modelURL"
+    );
+
+
+  const button =
+    document.getElementById(
+      "loadButton"
+    );
+
+
+  /*
+    Detener modelo anterior
+  */
+
+  detenerCamara();
+
+
+  model = null;
+
+
+  button.disabled = true;
+
+
+  statusElement.textContent =
+    "Cargando...";
+
+
+  debug(
+    "Comenzando carga del modelo..."
+  );
+
+
+  let URL;
+
+
+  try {
+
+    URL =
+      normalizarModeloURL(
+        input.value
       );
-      return;
-    }
-    realProjectURL =
-      TEACHABLE_MACHINE +
-      "?id=" +
-      encodeURIComponent(id);
-    document.getElementById("realLink").textContent =
-      realProjectURL;
-    document.getElementById("result").style.display =
-      "block";
+
+  } catch(error) {
+
+    button.disabled = false;
+
+    statusElement.textContent =
+      "Error";
+
     showMessage(
-      "¡Enlace generado correctamente!",
+      error.message,
+      "error"
+    );
+
+    debug(
+      "ERROR URL: " +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  const modelURL =
+    URL + "model.json";
+
+
+  const metadataURL =
+    URL + "metadata.json";
+
+
+  debug(
+    "Modelo: " +
+    modelURL
+  );
+
+
+  debug(
+    "Metadata: " +
+    metadataURL
+  );
+
+
+  try {
+
+
+    /*
+      Verificar que la librería
+      realmente está cargada.
+    */
+
+    if (
+      typeof tmImage === "undefined"
+    ) {
+
+      throw new Error(
+        "La librería de Teachable Machine no cargó."
+      );
+
+    }
+
+
+    debug(
+      "tmImage encontrado correctamente."
+    );
+
+
+    /*
+      Cargar modelo.
+    */
+
+    model =
+      await tmImage.load(
+        modelURL,
+        metadataURL
+      );
+
+
+    debug(
+      "Modelo descargado correctamente."
+    );
+
+
+    /*
+      Obtener número de clases.
+    */
+
+    maxPredictions =
+      model.getTotalClasses();
+
+
+    debug(
+      "Número de clases: " +
+      maxPredictions
+    );
+
+
+    if (
+      maxPredictions <= 0
+    ) {
+
+      throw new Error(
+        "El modelo no contiene clases."
+      );
+
+    }
+
+
+    /*
+      Crear elementos de predicción.
+    */
+
+    crearElementosPrediccion();
+
+
+    /*
+      Mostrar panel.
+    */
+
+    recognitionPanel
+      .classList
+      .remove("hidden");
+
+
+    statusElement.textContent =
+      "Modelo listo";
+
+
+    showMessage(
+      "✅ Modelo cargado correctamente. Ahora inicia la cámara.",
       "success"
     );
-    setStatus("Proyecto conectado");
-  }
-  /*
-    ABRIR PARA ENTRENAR
-  */
-  function entrenarProyecto() {
-    const input =
-      document.getElementById("projectInput");
-    const id = obtenerID(input.value);
-    if (!id) {
-      showMessage(
-        "Primero pega el ID o la URL de tu proyecto real.",
-        "warning"
-      );
-      return;
-    }
-    realProjectURL =
-      TEACHABLE_MACHINE +
-      "?id=" +
-      encodeURIComponent(id);
-    window.open(
-      realProjectURL,
-      "_blank"
+
+
+    debug(
+      "MODELO LISTO."
     );
-    setStatus("Proyecto abierto");
-  }
-  /*
-    ABRIR LINK GENERADO
-  */
-  function abrirLink() {
-    if (!realProjectURL) {
-      generarLink();
-      if (!realProjectURL) {
-        return;
-      }
-    }
-    window.open(
-      realProjectURL,
-      "_blank"
+
+
+  } catch(error) {
+
+    console.error(error);
+
+
+    model = null;
+
+
+    statusElement.textContent =
+      "Error";
+
+
+    showMessage(
+      "❌ No se pudo cargar el modelo. Revisa la URL y que el modelo sea de tipo Image.",
+      "error"
     );
-  }
-  /*
-    COPIAR LINK
-  */
-  async function copiarLink() {
-    if (!realProjectURL) {
-      generarLink();
-      if (!realProjectURL) {
-        return;
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(
-        realProjectURL
-      );
-      showMessage(
-        "Enlace copiado al portapapeles.",
-        "success"
-      );
-      setStatus("Enlace copiado");
-    } catch (error) {
-      /*
-        Método alternativo
-      */
-      const textarea =
-        document.createElement("textarea");
-      textarea.value =
-        realProjectURL;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      textarea.remove();
-      showMessage(
-        "Enlace copiado.",
-        "success"
-      );
-    }
-  }
-  /*
-    COMPARTIR
-  */
-  async function compartirProyecto() {
-    if (!realProjectURL) {
-      const input =
-        document.getElementById("projectInput");
-      const id =
-        obtenerID(input.value);
-      if (!id) {
-        showMessage(
-          "Primero genera el enlace real.",
-          "warning"
-        );
-        return;
-      }
-      realProjectURL =
-        TEACHABLE_MACHINE +
-        "?id=" +
-        encodeURIComponent(id);
-    }
-    /*
-      En dispositivos que soportan
-      el menú nativo de compartir.
-    */
+
+
+    debug(
+      "ERROR AL CARGAR: " +
+      error.message
+    );
+
+
     if (
-      navigator.share
+      error.stack
     ) {
-      try {
-        await navigator.share({
-          title: "Mi proyecto IA-Objetos",
-          text:
-            "Mira mi proyecto de Teachable Machine",
-          url:
-            realProjectURL
-        });
-        setStatus("Proyecto compartido");
-        return;
-      } catch (error) {
-        /*
-          El usuario pudo cancelar.
-        */
-      }
+
+      debug(
+        error.stack
+      );
+
     }
+
+  }
+
+
+  button.disabled = false;
+
+}
+
+
+
+/*
+==================================================
+CREAR BARRAS DE PREDICCIÓN
+==================================================
+*/
+
+
+function crearElementosPrediccion() {
+
+  predictionContainer.innerHTML =
+    "";
+
+
+  for (
+    let i = 0;
+    i < maxPredictions;
+    i++
+  ) {
+
+    const div =
+      document.createElement(
+        "div"
+      );
+
+
+    div.className =
+      "prediction";
+
+
+    div.id =
+      "prediction-" + i;
+
+
+    div.innerHTML = `
+
+      <div class="prediction-header">
+
+        <span id="label-${i}">
+          Clase
+        </span>
+
+        <span id="percent-${i}">
+          0%
+        </span>
+
+      </div>
+
+      <div class="bar">
+
+        <div
+          class="bar-fill"
+          id="bar-${i}">
+        </div>
+
+      </div>
+
+    `;
+
+
+    predictionContainer
+      .appendChild(div);
+
+  }
+
+}
+
+
+
+/*
+==================================================
+INICIAR CÁMARA
+==================================================
+*/
+
+
+async function iniciarCamara() {
+
+  if (!model) {
+
+    showMessage(
+      "Primero carga un modelo.",
+      "warning"
+    );
+
+    return;
+
+  }
+
+
+  if (running) {
+
+    debug(
+      "La cámara ya está funcionando."
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+
+    debug(
+      "Preparando cámara..."
+    );
+
+
     /*
-      Si el navegador no soporta Share,
-      copiamos el enlace.
+      Usamos exactamente el sistema
+      Webcam de Teachable Machine.
     */
-    await copiarLink();
+
+    webcam =
+      new tmImage.Webcam(
+        500,
+        500,
+        true
+      );
+
+
+    debug(
+      "Objeto tmImage.Webcam creado."
+    );
+
+
+    /*
+      Pedir permiso.
+    */
+
+    await webcam.setup();
+
+
+    debug(
+      "Permiso de cámara concedido."
+    );
+
+
+    /*
+      Reproducir.
+    */
+
+    await webcam.play();
+
+
+    debug(
+      "Cámara iniciada."
+    );
+
+
+    /*
+      Vaciar contenedor.
+    */
+
+    webcamContainer.innerHTML =
+      "";
+
+
+    /*
+      SOLUCIÓN IMPORTANTE PARA iOS:
+
+      añadimos también el elemento
+      video real.
+    */
+
+    const isIOS =
+      /iPad|iPhone|iPod/.test(
+        navigator.userAgent
+      ) ||
+      (
+        navigator.platform ===
+        "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+
+    if (isIOS) {
+
+      debug(
+        "iOS/iPadOS detectado."
+      );
+
+
+      webcamContainer
+        .appendChild(
+          webcam.webcam
+        );
+
+
+      webcam.webcam
+        .setAttribute(
+          "playsinline",
+          ""
+        );
+
+
+      webcam.webcam.muted =
+        true;
+
+
+      webcam.webcam.autoplay =
+        true;
+
+
+      debug(
+        "Modo de cámara iOS activado."
+      );
+
+    } else {
+
+      webcamContainer
+        .appendChild(
+          webcam.canvas
+        );
+
+
+      debug(
+        "Modo canvas activado."
+      );
+
+    }
+
+
+    running = true;
+
+
+    statusElement.textContent =
+      "Reconociendo";
+
+
+    mainPrediction.textContent =
+      "Analizando...";
+
+
+    showMessage(
+      "📷 Cámara activa. Apunta al objeto que entrenaste.",
+      "success"
+    );
+
+
+    /*
+      Iniciar ciclo.
+    */
+
+    window.requestAnimationFrame(
+      loop
+    );
+
+
+  } catch(error) {
+
+    console.error(error);
+
+
+    running = false;
+
+
+    statusElement.textContent =
+      "Cámara bloqueada";
+
+
+    showMessage(
+      "❌ No se pudo abrir la cámara. Acepta el permiso de cámara y vuelve a intentarlo.",
+      "error"
+    );
+
+
+    debug(
+      "ERROR CÁMARA: " +
+      error.message
+    );
+
+
+    if (
+      error.name
+    ) {
+
+      debug(
+        "Tipo: " +
+        error.name
+      );
+
+    }
+
   }
+
+}
+
+
+
+/*
+==================================================
+BUCLE
+==================================================
+*/
+
+
+async function loop() {
+
+  if (!running) {
+    return;
+  }
+
+
+  try {
+
+
+    /*
+      Actualizar imagen de cámara.
+    */
+
+    webcam.update();
+
+
+    /*
+      Hacer predicción.
+    */
+
+    await predecir();
+
+
+  } catch(error) {
+
+    debug(
+      "ERROR PREDICCIÓN: " +
+      error.message
+    );
+
+  }
+
+
+  if (running) {
+
+    window.requestAnimationFrame(
+      loop
+    );
+
+  }
+
+}
+
+
+
+/*
+==================================================
+PREDICCIÓN
+==================================================
+*/
+
+
+async function predecir() {
+
+  if (
+    !model ||
+    !webcam ||
+    !running
+  ) {
+
+    return;
+
+  }
+
+
   /*
-    LIMPIAR
+    Evitar predicciones
+    simultáneas.
   */
-  function limpiar() {
-    document.getElementById(
-      "projectInput"
-    ).value = "";
-    document.getElementById(
-      "result"
-    ).style.display = "none";
-    document.getElementById(
-      "message"
-    ).style.display = "none";
-    document.getElementById(
-      "realLink"
-    ).textContent = "";
-    realProjectURL = "";
-    setStatus("Listo");
+
+  if (predicting) {
+    return;
   }
+
+
+  predicting = true;
+
+
+  try {
+
+
+    let prediction;
+
+
+    /*
+      En iOS usamos el video real.
+
+      En otros dispositivos usamos
+      el canvas de Teachable Machine.
+    */
+
+    const isIOS =
+      /iPad|iPhone|iPod/.test(
+        navigator.userAgent
+      ) ||
+      (
+        navigator.platform ===
+        "MacIntel" &&
+        navigator.maxTouchPoints > 1
+      );
+
+
+    if (isIOS) {
+
+      prediction =
+        await model.predict(
+          webcam.webcam
+        );
+
+    } else {
+
+      prediction =
+        await model.predict(
+          webcam.canvas
+        );
+
+    }
+
+
+    /*
+      Encontrar mejor clase.
+    */
+
+    let best =
+      prediction[0];
+
+
+    for (
+      let i = 1;
+      i < prediction.length;
+      i++
+    ) {
+
+      if (
+        prediction[i].probability >
+        best.probability
+      ) {
+
+        best =
+          prediction[i];
+
+      }
+
+    }
+
+
+    /*
+      Resultado principal.
+    */
+
+    const confidence =
+      (
+        best.probability * 100
+      ).toFixed(1);
+
+
+    mainPrediction.textContent =
+      best.className +
+      " — " +
+      confidence +
+      "%";
+
+
+    /*
+      Actualizar todas
+      las clases.
+    */
+
+    for (
+      let i = 0;
+      i < prediction.length;
+      i++
+    ) {
+
+      const item =
+        prediction[i];
+
+
+      const percent =
+        (
+          item.probability * 100
+        );
+
+
+      const label =
+        document.getElementById(
+          "label-" + i
+        );
+
+
+      const percentElement =
+        document.getElementById(
+          "percent-" + i
+        );
+
+
+      const bar =
+        document.getElementById(
+          "bar-" + i
+        );
+
+
+      if (label) {
+
+        label.textContent =
+          item.className;
+
+      }
+
+
+      if (percentElement) {
+
+        percentElement.textContent =
+          percent.toFixed(1) +
+          "%";
+
+      }
+
+
+      if (bar) {
+
+        bar.style.width =
+          Math.max(
+            0,
+            Math.min(
+              100,
+              percent
+            )
+          ) + "%";
+
+      }
+
+    }
+
+
+  } catch(error) {
+
+    debug(
+      "Predicción falló: " +
+      error.message
+    );
+
+  }
+
+
+  predicting = false;
+
+}
+
+
+
+/*
+==================================================
+DETENER CÁMARA
+==================================================
+*/
+
+
+function detenerCamara() {
+
+  running = false;
+
+
+  if (webcam) {
+
+    try {
+
+      webcam.stop();
+
+    } catch(error) {
+
+      debug(
+        "Error al detener cámara: " +
+        error.message
+      );
+
+    }
+
+  }
+
+
+  webcam = null;
+
+
+  webcamContainer.innerHTML =
+    "";
+
+
+  mainPrediction.textContent =
+    "Cámara apagada";
+
+
+  statusElement.textContent =
+    model
+      ? "Modelo listo"
+      : "Sin modelo";
+
+
+  debug(
+    "Cámara detenida."
+  );
+
+}
+
+
+
+/*
+==================================================
+LIMPIAR
+==================================================
+*/
+
+
+function limpiarTodo() {
+
+  detenerCamara();
+
+
+  model = null;
+
+
+  maxPredictions = 0;
+
+
+  predictionContainer.innerHTML =
+    "";
+
+
+  recognitionPanel
+    .classList
+    .add("hidden");
+
+
+  document.getElementById(
+    "modelURL"
+  ).value = "";
+
+
+  statusElement.textContent =
+    "Sin modelo";
+
+
+  messageElement.className =
+    "";
+
+
+  messageElement.style.display =
+    "none";
+
+
+  debugElement.textContent =
+    "Esperando...";
+
+
+  debug(
+    "Todo limpiado."
+  );
+
+}
+
+
+
+/*
+==================================================
+COMPROBACIÓN INICIAL
+==================================================
+*/
+
+
+window.addEventListener(
+  "load",
+  () => {
+
+    debug(
+      "Página cargada."
+    );
+
+
+    if (
+      typeof tf !== "undefined"
+    ) {
+
+      debug(
+        "TensorFlow.js cargado."
+      );
+
+    } else {
+
+      debug(
+        "ERROR: TensorFlow.js NO cargó."
+      );
+
+    }
+
+
+    if (
+      typeof tmImage !== "undefined"
+    ) {
+
+      debug(
+        "Teachable Machine Image cargado."
+      );
+
+    } else {
+
+      debug(
+        "ERROR: Teachable Machine Image NO cargó."
+      );
+
+    }
+
+
+    debug(
+      "Navegador: " +
+      navigator.userAgent
+    );
+
+
+    /*
+      Comprobar cámara.
+    */
+
+    if (
+      navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia
+    ) {
+
+      debug(
+        "API de cámara disponible."
+      );
+
+    } else {
+
+      debug(
+        "ADVERTENCIA: getUserMedia no está disponible."
+      );
+
+    }
+
+  }
+);
+
+
 </script>
+
 </body>
 </html>

@@ -1,904 +1,631 @@
-1<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-
 <meta charset="UTF-8">
 
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
-
-<meta name="theme-color" content="#4285f4">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+      maximum-scale=1.0, user-scalable=no">
 
 <title>IA-Objetos</title>
 
-<!-- TensorFlow.js -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
-
-<!-- Teachable Machine -->
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8.3/dist/teachablemachine-image.min.js"></script>
 
-
 <style>
-
-/* ================================
-   BASE
-================================ */
-
 * {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
-html,
 body {
   margin: 0;
-  padding: 0;
-
-  width: 100%;
-  min-height: 100%;
-
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
+  font-family: Arial, sans-serif;
   background: #f5f7fb;
   color: #202124;
 }
 
+/* =========================
+   INTERFAZ ORIGINAL
+========================= */
 
-/* ================================
-   HEADER
-================================ */
+#desktop {
+  min-height: 100vh;
+}
 
 header {
-
-  height: 64px;
-
+  height: 65px;
   background: white;
+  border-bottom: 1px solid #ddd;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding:
-    0 18px;
+  padding: 0 20px;
+}
 
-  border-bottom:
-    1px solid #e0e0e0;
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.logo span {
+  color: #4285f4;
+}
+
+.desktop-content {
+  max-width: 700px;
+  margin: auto;
+  padding: 35px 20px;
+  text-align: center;
+}
+
+.robot {
+  font-size: 75px;
+}
+
+.desktop-content h1 {
+  font-size: 40px;
+  margin: 10px 0;
+}
+
+.desktop-content p {
+  color: #666;
+  font-size: 17px;
+}
+
+.main-button {
+  width: 100%;
+  min-height: 62px;
+
+  border: none;
+  border-radius: 18px;
+
+  margin-top: 13px;
+
+  font-size: 17px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.blue {
+  background: #4285f4;
+  color: white;
+}
+
+.green {
+  background: #34a853;
+  color: white;
+}
+
+.gray {
+  background: #e8eaed;
+  color: #202124;
+}
+
+.dark {
+  background: #202124;
+  color: white;
+}
+
+/* BOTÓN MÓVIL */
+
+.mobile-entry {
+  margin-top: 30px;
+
+  background: linear-gradient(
+    135deg,
+    #4285f4,
+    #6c5ce7
+  );
+
+  color: white;
+
+  border: none;
+  border-radius: 25px;
+
+  width: 100%;
+  min-height: 90px;
+
+  font-size: 22px;
+  font-weight: bold;
+
+  box-shadow:
+    0 8px 25px rgba(66,133,244,.25);
+
+  cursor: pointer;
+}
+
+.mobile-entry:active {
+  transform: scale(.98);
+}
+
+
+/* =========================
+   INTERFAZ MÓVIL
+========================= */
+
+#mobile {
+  display: none;
+
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      180deg,
+      #111827 0%,
+      #1f2937 100%
+    );
+
+  color: white;
+}
+
+
+/* CABECERA MÓVIL */
+
+.mobile-header {
+  height: 70px;
+
+  display: flex;
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 0 16px;
+
+  background: rgba(0,0,0,.35);
 
   position: sticky;
   top: 0;
 
   z-index: 100;
-
 }
 
-.logo {
-
-  font-size: 22px;
-  font-weight: 800;
-
-}
-
-.logo span {
-
-  color: #4285f4;
-
-}
-
-.status {
-
-  font-size: 13px;
-  color: #777;
-
-}
-
-
-/* ================================
-   PANTALLAS
-================================ */
-
-.screen {
-
-  display: none;
-
-  min-height:
-    calc(100vh - 64px);
-
-  padding:
-    22px 17px 100px;
-
-}
-
-.screen.active {
-
-  display: block;
-
-}
-
-
-/* ================================
-   INICIO
-================================ */
-
-.hero {
-
-  text-align: center;
-
-  padding:
-    30px 10px 20px;
-
-}
-
-.robot {
-
-  font-size: 70px;
-
-  margin-bottom: 8px;
-
-}
-
-.hero h1 {
-
-  font-size: 38px;
-
-  margin:
-    0 0 8px;
-
-}
-
-.hero h1 span {
-
-  color: #4285f4;
-
-}
-
-.hero p {
-
-  margin: 0;
-
-  color: #70757a;
-
-  font-size: 16px;
-
-  line-height: 1.5;
-
-}
-
-
-/* ================================
-   BOTONES PRINCIPALES
-================================ */
-
-.big-button {
-
-  width: 100%;
-
-  min-height: 62px;
-
-  border: 0;
-
-  border-radius: 18px;
-
-  margin-top: 12px;
-
-  padding: 14px 18px;
-
-  font-size: 17px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 10px;
-
-  transition:
-    transform .1s,
-    opacity .1s;
-
-}
-
-.big-button:active {
-
-  transform: scale(.97);
-
-}
-
-.blue {
-
-  background: #4285f4;
-  color: white;
-
-}
-
-.green {
-
-  background: #34a853;
-  color: white;
-
-}
-
-.gray {
-
-  background: #e8eaed;
-  color: #202124;
-
-}
-
-.dark {
-
-  background: #202124;
-  color: white;
-
-}
-
-
-/* ================================
-   TARJETAS
-================================ */
-
-.card {
-
-  background: white;
-
-  border:
-    1px solid #e0e0e0;
-
-  border-radius: 20px;
-
-  padding: 20px;
-
-  margin-bottom: 16px;
-
-  box-shadow:
-    0 3px 12px rgba(0,0,0,.05);
-
-}
-
-.card h2 {
-
-  margin:
-    0 0 8px;
-
+.mobile-title {
   font-size: 21px;
-
+  font-weight: bold;
 }
 
-.card p {
+.back-button {
+  border: none;
 
-  color: #666;
+  background: rgba(255,255,255,.12);
 
-  line-height: 1.5;
-
-}
-
-
-/* ================================
-   INPUT
-================================ */
-
-input {
-
-  width: 100%;
-
-  height: 54px;
-
-  border:
-    1px solid #c8c8c8;
+  color: white;
 
   border-radius: 14px;
 
-  padding:
-    0 14px;
+  padding: 11px 15px;
 
-  font-size: 15px;
-
-  outline: none;
-
-}
-
-input:focus {
-
-  border-color:
-    #4285f4;
-
-  box-shadow:
-    0 0 0 3px
-    rgba(66,133,244,.12);
-
+  font-size: 14px;
+  font-weight: bold;
 }
 
 
-/* ================================
-   CÁMARA
-================================ */
+/* CONTENIDO */
 
-.camera-screen {
-
-  padding:
-    0 0 90px;
-
-  background: #000;
-
-  min-height:
-    calc(100vh - 64px);
-
+.mobile-content {
+  padding: 18px 15px 35px;
 }
 
-.camera-container {
+
+/* TARJETAS */
+
+.mobile-card {
+  background: rgba(255,255,255,.09);
+
+  border: 1px solid rgba(255,255,255,.12);
+
+  border-radius: 22px;
+
+  padding: 18px;
+
+  margin-bottom: 15px;
+}
+
+.mobile-card h2 {
+  margin-top: 0;
+}
+
+
+/* BOTONES */
+
+.mobile-button {
+  width: 100%;
+
+  min-height: 60px;
+
+  border: none;
+
+  border-radius: 17px;
+
+  margin-top: 10px;
+
+  font-size: 16px;
+
+  font-weight: bold;
+}
+
+
+/* CÁMARA */
+
+.camera-box {
+  width: 100%;
+
+  aspect-ratio: 3 / 4;
+
+  background: black;
+
+  border-radius: 24px;
+
+  overflow: hidden;
 
   position: relative;
 
-  width: 100%;
-
-  height:
-    calc(100vh - 160px);
-
-  min-height: 420px;
-
-  overflow: hidden;
-
-  background: #000;
-
+  margin-top: 15px;
 }
 
-
-/*
-  El elemento de vídeo/canvas
-*/
-
-#webcam-container {
-
+#video {
   width: 100%;
   height: 100%;
 
+  object-fit: cover;
+
+  display: none;
+}
+
+.camera-message {
+  position: absolute;
+
+  inset: 0;
+
   display: flex;
 
   align-items: center;
   justify-content: center;
 
-  overflow: hidden;
+  text-align: center;
 
-}
+  padding: 30px;
 
-#webcam-container video,
-#webcam-container canvas {
-
-  width: 100% !important;
-  height: 100% !important;
-
-  object-fit: cover;
-
+  color: #aaa;
 }
 
 
-/* ================================
-   RESULTADO SOBRE CÁMARA
-================================ */
+/* RESULTADO */
 
-.result-overlay {
+.result {
+  margin-top: 15px;
 
-  position: absolute;
+  padding: 17px;
 
-  left: 12px;
-  right: 12px;
+  border-radius: 19px;
 
-  bottom: 15px;
-
-  z-index: 10;
-
-  pointer-events: none;
-
+  background: rgba(255,255,255,.1);
 }
 
-.result-main {
-
-  background:
-    rgba(0,0,0,.78);
-
-  color: white;
-
-  border-radius: 18px;
-
-  padding:
-    15px 17px;
-
-  backdrop-filter:
-    blur(8px);
-
+.result-title {
+  font-size: 13px;
+  color: #aaa;
 }
 
 .result-name {
+  font-size: 29px;
+  font-weight: bold;
 
-  font-size: 25px;
-
-  font-weight: 800;
-
+  margin-top: 4px;
 }
 
 .result-confidence {
+  color: #9ca3af;
 
   margin-top: 4px;
-
-  color: #d7d7d7;
-
-  font-size: 14px;
-
 }
 
 
-/* ================================
-   CONTROLES CÁMARA
-================================ */
-
-.camera-controls {
-
-  position: fixed;
-
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  height: 82px;
-
-  background:
-    rgba(255,255,255,.96);
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 10px;
-
-  padding:
-    10px;
-
-  z-index: 200;
-
-  border-top:
-    1px solid #ddd;
-
-}
-
-.camera-control {
-
-  height: 55px;
-
-  flex: 1;
-
-  max-width: 180px;
-
-  border: 0;
-
-  border-radius: 16px;
-
-  font-size: 15px;
-
-  font-weight: 700;
-
-}
-
-.stop {
-
-  background: #ea4335;
-
-  color: white;
-
-}
-
-
-/* ================================
-   PREDICCIONES
-================================ */
+/* PREDICCIONES */
 
 .predictions {
-
-  margin-top: 18px;
-
+  margin-top: 15px;
 }
 
 .prediction {
-
-  padding:
-    13px;
-
-  background:
-    #f5f5f5;
-
-  border-radius:
-    13px;
-
-  margin-bottom:
-    9px;
-
+  margin-bottom: 12px;
 }
 
 .prediction-top {
-
   display: flex;
+  justify-content: space-between;
 
-  justify-content:
-    space-between;
-
-  font-weight:
-    700;
-
+  font-size: 14px;
 }
 
-.bar {
+.progress {
+  height: 8px;
 
-  height: 9px;
-
-  margin-top: 8px;
-
-  background: #ddd;
+  background: rgba(255,255,255,.12);
 
   border-radius: 20px;
 
   overflow: hidden;
 
+  margin-top: 5px;
 }
 
-.fill {
-
+.progress-bar {
   height: 100%;
-
-  background: #4285f4;
 
   width: 0%;
 
-  transition:
-    width .1s linear;
+  background: #4285f4;
 
+  transition: width .15s;
 }
 
 
-/* ================================
-   MENSAJES
-================================ */
+/* INPUT */
 
-.message {
+.mobile-input {
+  width: 100%;
 
-  display: none;
+  height: 55px;
 
-  margin-top: 14px;
+  border: none;
 
-  padding: 13px;
+  border-radius: 14px;
 
-  border-radius: 13px;
+  padding: 0 14px;
 
   font-size: 14px;
 
-  line-height: 1.4;
-
-}
-
-.message.show {
-
-  display: block;
-
-}
-
-.success {
-
-  background: #e6f4ea;
-  color: #137333;
-
-}
-
-.error {
-
-  background: #fce8e6;
-  color: #c5221f;
-
-}
-
-.info {
-
-  background: #e8f0fe;
-  color: #174ea6;
-
-}
-
-.warning {
-
-  background: #fef7e0;
-  color: #8a6116;
-
+  outline: none;
 }
 
 
-/* ================================
-   DEBUG
-================================ */
+/* ESTADO */
 
-#debug {
+.mobile-status {
+  text-align: center;
 
-  background: #111;
+  color: #9ca3af;
 
-  color: #00ff88;
+  font-size: 13px;
 
-  padding: 14px;
-
-  border-radius: 12px;
-
-  font-family: monospace;
-
-  font-size: 11px;
-
-  white-space: pre-wrap;
-
-  max-height: 230px;
-
-  overflow: auto;
-
+  margin: 12px 0;
 }
 
 
-/* ================================
-   BARRA INFERIOR
-================================ */
-
-.bottom-nav {
-
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 68px;
-
-  background: white;
-
-  border-top:
-    1px solid #ddd;
-
-  display: flex;
-
-  z-index: 150;
-
-}
-
-.nav-button {
-
-  flex: 1;
-
-  border: 0;
-
-  background: white;
-
-  color: #777;
-
-  font-size: 12px;
-
-  font-weight: 600;
-
-}
-
-.nav-button.active {
-
-  color: #4285f4;
-
-}
-
-
-/* ================================
-   OCULTO
-================================ */
+/* OCULTO */
 
 .hidden {
-
   display: none !important;
-
 }
-
 </style>
-
 </head>
 
 
 <body>
 
 
-<!-- ================================
-     HEADER
-================================ -->
+<!-- =====================================================
+     INTERFAZ ORIGINAL
+===================================================== -->
 
-<header>
+<div id="desktop">
 
-  <div class="logo">
-    IA-<span>Objetos</span>
-  </div>
+  <header>
 
-  <div
-    class="status"
-    id="status">
+    <div class="logo">
+      IA-<span>Objetos</span>
+    </div>
 
-    Listo
+    <div>
+      IA
+    </div>
 
-  </div>
-
-</header>
+  </header>
 
 
-
-<!-- ================================
-     INICIO
-================================ -->
-
-<section
-  id="home"
-  class="screen active">
-
-  <div class="hero">
+  <main class="desktop-content">
 
     <div class="robot">
       🤖
     </div>
 
     <h1>
-      IA-<span>Objetos</span>
+      IA-<span style="color:#4285f4">
+        Objetos
+      </span>
     </h1>
 
     <p>
-      Reconoce objetos usando tu propia inteligencia artificial.
+      Entrena y utiliza inteligencia artificial
+      para reconocer objetos.
     </p>
 
-  </div>
-
-
-  <button
-    class="big-button blue"
-    onclick="abrirReconocimiento()">
-
-    📷 Reconocer objeto
-
-  </button>
-
-
-  <button
-    class="big-button green"
-    onclick="abrirModelos()">
-
-    🧠 Mi modelo
-
-  </button>
-
-
-  <button
-    class="big-button gray"
-    onclick="crearModelo()">
-
-    ✨ Crear IA
-
-  </button>
-
-</section>
-
-
-
-<!-- ================================
-     MODELO
-================================ -->
-
-<section
-  id="models"
-  class="screen">
-
-  <div class="card">
-
-    <h2>
-      🧠 Conectar modelo
-    </h2>
-
-    <p>
-      Pega la URL del modelo exportado desde
-      Teachable Machine.
-    </p>
-
-    <p>
-      Ejemplo:
-    </p>
-
-    <code>
-      https://teachablemachine.withgoogle.com/models/XXXX/
-    </code>
-
-    <br><br>
-
-    <input
-      id="modelURL"
-      placeholder="URL del modelo"
-      autocomplete="off"
-    >
 
     <button
-      class="big-button green"
-      onclick="cargarModelo()">
+      class="main-button blue"
+      onclick="crearIA()">
 
-      🧠 Cargar modelo
+      ✨ Crear IA
 
     </button>
 
 
-    <div
-      id="message"
-      class="message">
-    </div>
-
-  </div>
-
-
-  <div class="card">
-
-    <h2>
-      ¿No tienes modelo?
-    </h2>
-
-    <p>
-      Crea uno gratuitamente en Teachable Machine
-      y luego vuelve aquí.
-    </p>
-
     <button
-      class="big-button blue"
-      onclick="crearModelo()">
+      class="main-button green"
+      onclick="abrirModelo()">
 
-      Crear modelo
+      🧠 Mi modelo
 
     </button>
 
-  </div>
+
+    <!-- NUEVO BOTÓN -->
+
+    <button
+      class="mobile-entry"
+      onclick="entrarMovil()">
+
+      📱 MODO MÓVIL
+
+      <br>
+
+      <small style="font-size:13px">
+        Reconocimiento optimizado para teléfonos
+      </small>
+
+    </button>
+
+  </main>
+
+</div>
 
 
-  <div class="card">
 
-    <h2>
-      🔧 Diagnóstico
-    </h2>
+<!-- =====================================================
+     INTERFAZ MÓVIL
+===================================================== -->
 
-    <div id="debug">
-Esperando...
+<div id="mobile">
+
+
+  <!-- HEADER -->
+
+  <div class="mobile-header">
+
+    <button
+      class="back-button"
+      onclick="salirMovil()">
+
+      ← Volver
+
+    </button>
+
+    <div class="mobile-title">
+      📱 IA-Objetos
+    </div>
+
+    <div>
+      🤖
     </div>
 
   </div>
 
-</section>
 
 
+  <!-- CONTENIDO -->
 
-<!-- ================================
-     CÁMARA
-================================ -->
-
-<section
-  id="cameraScreen"
-  class="screen camera-screen">
+  <main class="mobile-content">
 
 
-  <div class="camera-container">
+    <!-- MODELO -->
 
-    <div
-      id="webcam-container">
+    <div class="mobile-card">
+
+      <h2>
+        🧠 Modelo de IA
+      </h2>
+
+      <p style="color:#aaa">
+        Conecta tu modelo de Teachable Machine.
+      </p>
+
+      <input
+        id="modelURL"
+        class="mobile-input"
+        placeholder="https://teachablemachine.withgoogle.com/models/..."
+      >
+
+      <button
+        class="mobile-button green"
+        onclick="cargarModelo()">
+
+        🧠 Cargar modelo
+
+      </button>
+
     </div>
 
 
-    <div class="result-overlay">
 
-      <div class="result-main">
+    <!-- CÁMARA -->
+
+    <div class="mobile-card">
+
+      <h2>
+        📷 Reconocimiento
+      </h2>
+
+      <div class="camera-box">
+
+        <video
+          id="video"
+          autoplay
+          muted
+          playsinline>
+        </video>
+
+        <div
+          id="cameraMessage"
+          class="camera-message">
+
+          Pulsa
+          <b>“Iniciar cámara”</b>
+          para comenzar.
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="mobile-button blue"
+        onclick="iniciarCamara()">
+
+        📷 Iniciar cámara
+
+      </button>
+
+
+      <button
+        class="mobile-button gray"
+        onclick="cambiarCamara()">
+
+        🔄 Cambiar cámara
+
+      </button>
+
+
+      <button
+        class="mobile-button"
+        style="background:#ef4444;color:white"
+        onclick="detenerCamara()">
+
+        ⏹ Detener
+
+      </button>
+
+    </div>
+
+
+
+    <!-- RESULTADO -->
+
+    <div class="mobile-card">
+
+      <h2>
+        🎯 Resultado
+      </h2>
+
+      <div class="result">
+
+        <div class="result-title">
+          Objeto detectado
+        </div>
 
         <div
           id="resultName"
@@ -912,241 +639,108 @@ Esperando...
           id="resultConfidence"
           class="result-confidence">
 
-          Apunta al objeto
+          0%
 
         </div>
 
       </div>
 
+
+      <div
+        id="predictions"
+        class="predictions">
+      </div>
+
     </div>
 
-  </div>
 
 
-  <div class="predictions">
+    <!-- INFORMACIÓN -->
 
-    <div
-      id="prediction-container">
+    <div class="mobile-card">
+
+      <h2>
+        ℹ️ Estado
+      </h2>
+
+      <div
+        id="mobileStatus"
+        class="mobile-status">
+
+        Sin modelo
+
+      </div>
+
     </div>
 
-  </div>
+  </main>
 
-
-  <div class="camera-controls">
-
-    <button
-      class="camera-control gray"
-      onclick="cambiarCamara()">
-
-      🔄 Cámara
-
-    </button>
-
-    <button
-      class="camera-control stop"
-      onclick="detenerCamara()">
-
-      ⏹ Detener
-
-    </button>
-
-  </div>
-
-</section>
-
-
-
-<!-- ================================
-     NAVEGACIÓN
-================================ -->
-
-<nav class="bottom-nav">
-
-  <button
-    class="nav-button active"
-    id="navHome"
-    onclick="mostrarPantalla('home')">
-
-    🏠
-    <br>
-    Inicio
-
-  </button>
-
-
-  <button
-    class="nav-button"
-    id="navModels"
-    onclick="mostrarPantalla('models')">
-
-    🧠
-    <br>
-    Modelo
-
-  </button>
-
-
-  <button
-    class="nav-button"
-    onclick="abrirReconocimiento()">
-
-    📷
-    <br>
-    Cámara
-
-  </button>
-
-</nav>
+</div>
 
 
 
 <script>
 
-
-/* =================================================
+/* =====================================================
    VARIABLES
-================================================= */
+===================================================== */
 
 let model = null;
 
-let webcam = null;
+let stream = null;
 
 let running = false;
 
-let predicting = false;
-
-let maxPredictions = 0;
-
 let facingMode = "environment";
 
+let predictionLoop = null;
 
-/* =================================================
-   ELEMENTOS
-================================================= */
-
-const statusElement =
-  document.getElementById("status");
-
-const debugElement =
-  document.getElementById("debug");
-
-const messageElement =
-  document.getElementById("message");
-
-const webcamContainer =
-  document.getElementById("webcam-container");
-
-const resultName =
-  document.getElementById("resultName");
-
-const resultConfidence =
-  document.getElementById("resultConfidence");
-
-const predictionContainer =
-  document.getElementById("prediction-container");
+let classCount = 0;
 
 
-/* =================================================
-   DEBUG
-================================================= */
+/* =====================================================
+   ENTRAR AL MODO MÓVIL
+===================================================== */
 
-function debug(text) {
-
-  if (!debugElement) return;
-
-  const time =
-    new Date().toLocaleTimeString();
-
-  debugElement.textContent +=
-    "\n[" +
-    time +
-    "] " +
-    text;
-
-  debugElement.scrollTop =
-    debugElement.scrollHeight;
-
-  console.log(
-    "[IA-OBJETOS]",
-    text
-  );
-
-}
-
-
-/* =================================================
-   MENSAJES
-================================================= */
-
-function showMessage(text, type) {
-
-  messageElement.textContent =
-    text;
-
-  messageElement.className =
-    "message show " + type;
-
-}
-
-
-/* =================================================
-   CAMBIAR PANTALLA
-================================================= */
-
-function mostrarPantalla(id) {
+function entrarMovil() {
 
   document
-    .querySelectorAll(".screen")
-    .forEach(
-      screen =>
-        screen.classList.remove("active")
-    );
-
-
-  const screen =
-    document.getElementById(id);
-
-
-  if (screen) {
-
-    screen.classList.add("active");
-
-  }
-
+    .getElementById("desktop")
+    .style.display = "none";
 
   document
-    .querySelectorAll(".nav-button")
-    .forEach(
-      button =>
-        button.classList.remove("active")
-    );
+    .getElementById("mobile")
+    .style.display = "block";
 
-
-  if (id === "home") {
-
-    document
-      .getElementById("navHome")
-      .classList.add("active");
-
-  }
-
-
-  if (id === "models") {
-
-    document
-      .getElementById("navModels")
-      .classList.add("active");
-
-  }
+  window.scrollTo(0, 0);
 
 }
 
 
-/* =================================================
-   CREAR MODELO
-================================================= */
+/* =====================================================
+   SALIR
+===================================================== */
 
-function crearModelo() {
+function salirMovil() {
+
+  detenerCamara();
+
+  document
+    .getElementById("mobile")
+    .style.display = "none";
+
+  document
+    .getElementById("desktop")
+    .style.display = "block";
+
+}
+
+
+/* =====================================================
+   CREAR IA
+===================================================== */
+
+function crearIA() {
 
   window.open(
     "https://teachablemachine.withgoogle.com/train",
@@ -1156,63 +750,29 @@ function crearModelo() {
 }
 
 
-/* =================================================
-   ABRIR MODELOS
-================================================= */
+/* =====================================================
+   ABRIR MODELO
+===================================================== */
 
-function abrirModelos() {
+function abrirModelo() {
 
-  mostrarPantalla("models");
-
-}
-
-
-/* =================================================
-   ABRIR RECONOCIMIENTO
-================================================= */
-
-async function abrirReconocimiento() {
-
-  if (!model) {
-
-    mostrarPantalla("models");
-
-    showMessage(
-      "Primero conecta un modelo de Teachable Machine.",
-      "warning"
-    );
-
-    return;
-
-  }
-
-
-  mostrarPantalla("cameraScreen");
-
-
-  if (!running) {
-
-    await iniciarCamara();
-
-  }
+  entrarMovil();
 
 }
 
 
-/* =================================================
+/* =====================================================
    NORMALIZAR URL
-================================================= */
+===================================================== */
 
-function normalizarURL(value) {
+function normalizarURL(url) {
 
-  let url =
-    value.trim();
-
+  url = url.trim();
 
   if (!url) {
 
     throw new Error(
-      "Escribe la URL de tu modelo."
+      "Escribe la URL del modelo."
     );
 
   }
@@ -1230,28 +790,10 @@ function normalizarURL(value) {
   }
 
 
-  url =
-    url.replace(
-      /\/model\.json\/?$/i,
-      ""
-    );
-
-
-  url =
-    url.replace(
-      /\/metadata\.json\/?$/i,
-      ""
-    );
-
-
-  url =
-    url.replace(
-      /\/+$/,
-      ""
-    );
-
-
-  url += "/";
+  url = url
+    .replace(/\/model\.json\/?$/i, "")
+    .replace(/\/metadata\.json\/?$/i, "")
+    .replace(/\/+$/, "");
 
 
   if (
@@ -1261,127 +803,58 @@ function normalizarURL(value) {
   ) {
 
     throw new Error(
-      "Esa no parece una URL de modelo de Teachable Machine."
+      "La URL no parece ser un modelo válido."
     );
 
   }
 
 
-  return url;
+  return url + "/";
 
 }
 
 
-/* =================================================
+/* =====================================================
    CARGAR MODELO
-================================================= */
+===================================================== */
 
 async function cargarModelo() {
 
   const input =
-    document.getElementById(
-      "modelURL"
-    );
+    document.getElementById("modelURL");
+
+  const status =
+    document.getElementById("mobileStatus");
 
 
   try {
 
-    detenerCamara();
-
-
     const baseURL =
-      normalizarURL(
-        input.value
-      );
+      normalizarURL(input.value);
 
 
-    const modelURL =
-      baseURL +
-      "model.json";
-
-
-    const metadataURL =
-      baseURL +
-      "metadata.json";
-
-
-    statusElement.textContent =
-      "Cargando...";
-
-
-    debug(
-      "Cargando modelo..."
-    );
-
-
-    debug(
-      "model.json: " +
-      modelURL
-    );
-
-
-    debug(
-      "metadata.json: " +
-      metadataURL
-    );
-
-
-    if (
-      typeof tmImage ===
-      "undefined"
-    ) {
-
-      throw new Error(
-        "Teachable Machine no cargó."
-      );
-
-    }
+    status.textContent =
+      "⏳ Cargando modelo...";
 
 
     model =
       await tmImage.load(
-        modelURL,
-        metadataURL
+        baseURL + "model.json",
+        baseURL + "metadata.json"
       );
 
 
-    maxPredictions =
+    classCount =
       model.getTotalClasses();
 
 
-    debug(
-      "Clases encontradas: " +
-      maxPredictions
-    );
+    crearBarras();
 
 
-    if (
-      maxPredictions < 1
-    ) {
-
-      throw new Error(
-        "El modelo no tiene clases."
-      );
-
-    }
-
-
-    crearPredicciones();
-
-
-    statusElement.textContent =
-      "Modelo listo";
-
-
-    showMessage(
-      "✅ Modelo cargado. Ya puedes abrir la cámara.",
-      "success"
-    );
-
-
-    debug(
-      "MODELO CARGADO CORRECTAMENTE."
-    );
+    status.textContent =
+      "✅ Modelo cargado. " +
+      classCount +
+      " clases encontradas.";
 
 
   } catch(error) {
@@ -1389,54 +862,44 @@ async function cargarModelo() {
     model = null;
 
 
-    statusElement.textContent =
-      "Error";
-
-
-    showMessage(
-      "❌ " +
-      error.message,
-      "error"
-    );
-
-
-    debug(
-      "ERROR: " +
-      error.message
-    );
+    status.textContent =
+      "❌ Error: " +
+      error.message;
 
   }
 
 }
 
 
-/* =================================================
-   CREAR PREDICCIONES
-================================================= */
+/* =====================================================
+   CREAR BARRAS
+===================================================== */
 
-function crearPredicciones() {
+function crearBarras() {
 
-  predictionContainer.innerHTML =
-    "";
+  const container =
+    document.getElementById(
+      "predictions"
+    );
+
+
+  container.innerHTML = "";
 
 
   for (
     let i = 0;
-    i < maxPredictions;
+    i < classCount;
     i++
   ) {
 
-    const div =
-      document.createElement(
-        "div"
-      );
+    const item =
+      document.createElement("div");
 
-
-    div.className =
+    item.className =
       "prediction";
 
 
-    div.innerHTML = `
+    item.innerHTML = `
 
       <div class="prediction-top">
 
@@ -1450,11 +913,11 @@ function crearPredicciones() {
 
       </div>
 
-      <div class="bar">
+      <div class="progress">
 
         <div
-          class="fill"
-          id="bar-${i}">
+          id="bar-${i}"
+          class="progress-bar">
         </div>
 
       </div>
@@ -1462,215 +925,117 @@ function crearPredicciones() {
     `;
 
 
-    predictionContainer
-      .appendChild(div);
+    container.appendChild(item);
 
   }
 
 }
 
 
-/* =================================================
+/* =====================================================
    INICIAR CÁMARA
-================================================= */
+===================================================== */
 
 async function iniciarCamara() {
 
   if (!model) {
 
-    mostrarPantalla("models");
-
-    showMessage(
-      "Carga primero un modelo.",
-      "warning"
-    );
+    document.getElementById(
+      "mobileStatus"
+    ).textContent =
+      "⚠️ Primero carga un modelo.";
 
     return;
 
   }
 
 
+  detenerCamara();
+
+
   try {
 
-    detenerCamara();
+    stream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video: {
+
+          facingMode: {
+            ideal: facingMode
+          },
+
+          width: {
+            ideal: 1280
+          },
+
+          height: {
+            ideal: 720
+          }
+
+        },
+
+        audio: false
+
+      });
 
 
-    debug(
-      "Iniciando cámara..."
-    );
-
-
-    webcam =
-      new tmImage.Webcam(
-        640,
-        480,
-        true
+    const video =
+      document.getElementById(
+        "video"
       );
 
 
-    /*
-      true = espejo.
-      Lo cambiamos después para
-      usar cámara trasera.
-    */
-
-    await webcam.setup({
-      facingMode:
-        facingMode
-    });
+    video.srcObject =
+      stream;
 
 
-    await webcam.play();
+    video.style.display =
+      "block";
+
+
+    document.getElementById(
+      "cameraMessage"
+    ).style.display =
+      "none";
+
+
+    await video.play();
 
 
     running = true;
 
 
-    webcamContainer.innerHTML =
-      "";
+    document.getElementById(
+      "mobileStatus"
+    ).textContent =
+      "🟢 Cámara activa";
 
 
-    /*
-      En móvil mostramos el vídeo.
-    */
-
-    const video =
-      webcam.webcam;
-
-
-    if (video) {
-
-      video.setAttribute(
-        "playsinline",
-        ""
-      );
-
-      video.setAttribute(
-        "webkit-playsinline",
-        ""
-      );
-
-      video.muted = true;
-
-      video.autoplay = true;
-
-      video.style.transform =
-        facingMode === "user"
-          ? "scaleX(-1)"
-          : "none";
-
-
-      webcamContainer
-        .appendChild(video);
-
-    } else {
-
-      webcamContainer
-        .appendChild(
-          webcam.canvas
-        );
-
-    }
-
-
-    statusElement.textContent =
-      "Reconociendo";
-
-
-    resultName.textContent =
-      "Analizando...";
-
-
-    resultConfidence.textContent =
-      "Apunta al objeto";
-
-
-    debug(
-      "Cámara activa."
-    );
-
-
-    requestAnimationFrame(
-      loop
-    );
+    predecir();
 
 
   } catch(error) {
 
-    running = false;
-
-
-    statusElement.textContent =
-      "Error de cámara";
-
-
-    debug(
-      "ERROR CÁMARA: " +
-      error.message
-    );
-
-
-    mostrarPantalla("models");
-
-
-    showMessage(
-      "No se pudo abrir la cámara. Comprueba el permiso de cámara.",
-      "error"
-    );
+    document.getElementById(
+      "mobileStatus"
+    ).textContent =
+      "❌ No se pudo abrir la cámara: " +
+      error.message;
 
   }
 
 }
 
 
-/* =================================================
-   BUCLE
-================================================= */
-
-async function loop() {
-
-  if (!running) {
-    return;
-  }
-
-
-  try {
-
-    webcam.update();
-
-    await predecir();
-
-  } catch(error) {
-
-    debug(
-      "ERROR: " +
-      error.message
-    );
-
-  }
-
-
-  if (running) {
-
-    requestAnimationFrame(
-      loop
-    );
-
-  }
-
-}
-
-
-/* =================================================
-   PREDICCIÓN
-================================================= */
+/* =====================================================
+   RECONOCIMIENTO
+===================================================== */
 
 async function predecir() {
 
   if (
-    predicting ||
-    !model ||
-    !webcam
+    !running ||
+    !model
   ) {
 
     return;
@@ -1678,34 +1043,37 @@ async function predecir() {
   }
 
 
-  predicting = true;
+  const video =
+    document.getElementById(
+      "video"
+    );
 
 
   try {
 
-    const prediction =
+    const predictions =
       await model.predict(
-        webcam.webcam
+        video
       );
 
 
     let best =
-      prediction[0];
+      predictions[0];
 
 
     for (
       let i = 1;
-      i < prediction.length;
+      i < predictions.length;
       i++
     ) {
 
       if (
-        prediction[i].probability >
+        predictions[i].probability >
         best.probability
       ) {
 
         best =
-          prediction[i];
+          predictions[i];
 
       }
 
@@ -1713,35 +1081,30 @@ async function predecir() {
 
 
     const confidence =
-      best.probability *
-      100;
+      best.probability * 100;
 
 
-    resultName.textContent =
+    document.getElementById(
+      "resultName"
+    ).textContent =
       best.className;
 
 
-    resultConfidence.textContent =
+    document.getElementById(
+      "resultConfidence"
+    ).textContent =
       confidence.toFixed(1) +
       "% de confianza";
 
 
-    /*
-      Actualizar barras.
-    */
-
     for (
       let i = 0;
-      i < prediction.length;
+      i < predictions.length;
       i++
     ) {
 
-      const item =
-        prediction[i];
-
-
       const percent =
-        item.probability *
+        predictions[i].probability *
         100;
 
 
@@ -1750,12 +1113,10 @@ async function predecir() {
           "label-" + i
         );
 
-
-      const percentElement =
+      const percentText =
         document.getElementById(
           "percent-" + i
         );
-
 
       const bar =
         document.getElementById(
@@ -1763,62 +1124,59 @@ async function predecir() {
         );
 
 
-      if (label) {
-
+      if (label)
         label.textContent =
-          item.className;
-
-      }
+          predictions[i].className;
 
 
-      if (percentElement) {
-
-        percentElement.textContent =
-          percent.toFixed(1) +
-          "%";
-
-      }
+      if (percentText)
+        percentText.textContent =
+          percent.toFixed(1) + "%";
 
 
-      if (bar) {
-
+      if (bar)
         bar.style.width =
           percent + "%";
 
-      }
-
     }
 
-  } finally {
+  } catch(error) {
 
-    predicting = false;
+    console.log(
+      "Error de reconocimiento:",
+      error
+    );
+
+  }
+
+
+  if (running) {
+
+    predictionLoop =
+      requestAnimationFrame(
+        predecir
+      );
 
   }
 
 }
 
 
-/* =================================================
+/* =====================================================
    CAMBIAR CÁMARA
-================================================= */
+===================================================== */
 
 async function cambiarCamara() {
 
-  if (!model) {
-    return;
+  if (facingMode === "environment") {
+
+    facingMode = "user";
+
+  } else {
+
+    facingMode = "environment";
+
   }
-
-
-  facingMode =
-    facingMode === "environment"
-      ? "user"
-      : "environment";
-
-
-  debug(
-    "Cambiando cámara a: " +
-    facingMode
-  );
 
 
   await iniciarCamara();
@@ -1826,104 +1184,128 @@ async function cambiarCamara() {
 }
 
 
-/* =================================================
+/* =====================================================
    DETENER
-================================================= */
+===================================================== */
 
 function detenerCamara() {
 
   running = false;
 
 
-  if (webcam) {
+  if (predictionLoop) {
 
-    try {
+    cancelAnimationFrame(
+      predictionLoop
+    );
 
-      webcam.stop();
-
-    } catch(error) {
-
-      console.log(error);
-
-    }
+    predictionLoop = null;
 
   }
 
 
-  webcam = null;
+  if (stream) {
+
+    stream
+      .getTracks()
+      .forEach(
+        track => track.stop()
+      );
+
+    stream = null;
+
+  }
 
 
-  webcamContainer.innerHTML =
-    "";
+  const video =
+    document.getElementById(
+      "video"
+    );
 
 
-  resultName.textContent =
-    "Cámara apagada";
+  if (video) {
+
+    video.srcObject = null;
+
+    video.style.display =
+      "none";
+
+  }
 
 
-  resultConfidence.textContent =
-    "Apunta al objeto";
+  const message =
+    document.getElementById(
+      "cameraMessage"
+    );
 
 
-  statusElement.textContent =
+  if (message) {
+
+    message.style.display =
+      "flex";
+
+  }
+
+
+  document.getElementById(
+    "mobileStatus"
+  ).textContent =
     model
-      ? "Modelo listo"
+      ? "🧠 Modelo listo"
       : "Sin modelo";
 
 }
 
 
-/* =================================================
-   INICIO
-================================================= */
+/* =====================================================
+   EVITAR QUE LA CÁMARA QUEDE ENCENDIDA
+===================================================== */
+
+document.addEventListener(
+  "visibilitychange",
+  () => {
+
+    if (
+      document.hidden &&
+      running
+    ) {
+
+      detenerCamara();
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   COMPROBAR LIBRERÍAS
+===================================================== */
 
 window.addEventListener(
   "load",
   () => {
 
-    debug(
-      "IA-Objetos iniciada."
-    );
-
-
     if (
-      typeof tf !== "undefined"
+      typeof tf === "undefined"
     ) {
 
-      debug(
-        "TensorFlow.js OK."
-      );
-
-    } else {
-
-      debug(
-        "ERROR: TensorFlow.js no cargó."
+      console.error(
+        "TensorFlow.js no cargó."
       );
 
     }
 
 
     if (
-      typeof tmImage !== "undefined"
+      typeof tmImage === "undefined"
     ) {
 
-      debug(
-        "Teachable Machine OK."
-      )
-
-    } else {
-
-      debug(
-        "ERROR: Teachable Machine no cargó."
+      console.error(
+        "Teachable Machine no cargó."
       );
 
     }
-
-
-    debug(
-      "Dispositivo: " +
-      navigator.userAgent
-    );
 
   }
 );
@@ -1931,4 +1313,4 @@ window.addEventListener(
 </script>
 
 </body>
-</html>h
+</html>

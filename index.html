@@ -1,273 +1,1556 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>IA de Objetos - iPad</title>
+<meta name="theme-color" content="#111827">
+<title>IA-Objetos — Entrenador de objetos</title>
+
 <style>
-  *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#111;color:#fff}
-  .wrap{max-width:900px;margin:auto;padding:18px}
-  h1{text-align:center;margin:6px 0 4px;font-size:28px}
-  .sub{text-align:center;color:#bbb;margin:0 0 16px}
-  video{width:100%;max-height:52vh;object-fit:cover;border-radius:18px;background:#222;display:block}
-  .panel{background:#1d1d1f;border-radius:18px;padding:16px;margin-top:14px}
-  input{width:100%;padding:14px;border-radius:12px;border:1px solid #555;background:#2b2b2e;color:#fff;font-size:17px}
-  button{border:0;border-radius:14px;padding:15px 18px;font-size:17px;font-weight:700;cursor:pointer}
-  .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-  .primary{background:#0a84ff;color:#fff;flex:1}
-  .green{background:#30d158;color:#071a0b;flex:1;min-height:68px}
-  .red{background:#ff453a;color:#fff}
-  .gray{background:#3a3a3c;color:#fff}
-  button:disabled{opacity:.45}
-  #result{font-size:32px;font-weight:800;text-align:center;margin-top:12px;min-height:42px}
-  #status{text-align:center;color:#aaa;margin:10px 0}
-  .count{font-size:15px;color:#ccc}
-  .bar{height:10px;background:#333;border-radius:10px;overflow:hidden;margin-top:8px}
-  #progress{height:100%;width:0;background:#30d158}
-  .small{font-size:13px;color:#aaa;line-height:1.4}
-  .classbox{border:1px solid #444;border-radius:14px;padding:12px;margin-top:10px}
+:root{
+  --bg:#f5f7fb;
+  --card:#fff;
+  --text:#111827;
+  --muted:#667085;
+  --line:#e4e7ec;
+  --accent:#2563eb;
+  --accent2:#1d4ed8;
+  --good:#16a34a;
+  --danger:#dc2626;
+  --shadow:0 10px 30px rgba(16,24,40,.08);
+  --radius:18px
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,
+  BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:var(--text)
+}
+
+button,input{font:inherit}
+
+button{
+  cursor:pointer;
+  border:0
+}
+
+.top{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  position:sticky;
+  top:0;
+  z-index:10
+}
+
+.nav{
+  max-width:1180px;
+  margin:auto;
+  padding:16px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  font-weight:800;
+  font-size:20px
+}
+
+.logo{
+  width:38px;
+  height:38px;
+  border-radius:12px;
+  background:#111827;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:900
+}
+
+.pill{
+  font-size:12px;
+  padding:6px 10px;
+  border-radius:999px;
+  background:#eef4ff;
+  color:#1d4ed8;
+  font-weight:700
+}
+
+.wrap{
+  max-width:1180px;
+  margin:auto;
+  padding:28px 20px 50px
+}
+
+.hero{
+  margin-bottom:22px
+}
+
+.hero h1{
+  font-size:clamp(30px,5vw,48px);
+  margin:0 0 8px;
+  letter-spacing:-1.5px
+}
+
+.hero p{
+  margin:0;
+  color:var(--muted);
+  font-size:16px
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:20px
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:20px
+}
+
+.card h2{
+  margin:0 0 14px;
+  font-size:18px
+}
+
+.camera{
+  position:relative;
+  background:#0b1020;
+  border-radius:15px;
+  overflow:hidden;
+  aspect-ratio:4/3;
+  display:grid;
+  place-items:center
+}
+
+.camera video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transform:scaleX(-1)
+}
+
+.camera .placeholder{
+  color:#cbd5e1;
+  text-align:center;
+  padding:25px
+}
+
+.camera .badge{
+  position:absolute;
+  left:12px;
+  top:12px;
+  background:rgba(0,0,0,.55);
+  color:#fff;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:12px;
+  backdrop-filter:blur(8px)
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:13px
+}
+
+.btn{
+  padding:11px 15px;
+  border-radius:12px;
+  font-weight:750;
+  transition:.15s transform,.15s opacity
+}
+
+.btn:active{
+  transform:scale(.98)
+}
+
+.btn.primary{
+  background:var(--accent);
+  color:#fff
+}
+
+.btn.primary:hover{
+  background:var(--accent2)
+}
+
+.btn.secondary{
+  background:#eef2f6;
+  color:#1f2937
+}
+
+.btn.green{
+  background:#dcfce7;
+  color:#166534
+}
+
+.btn.danger{
+  background:#fee2e2;
+  color:#991b1b
+}
+
+.btn:disabled{
+  opacity:.45;
+  cursor:not-allowed
+}
+
+.input{
+  width:100%;
+  padding:11px 13px;
+  border:1px solid #d0d5dd;
+  border-radius:12px;
+  outline:0
+}
+
+.input:focus{
+  border-color:#84aefc;
+  box-shadow:0 0 0 3px #dbeafe
+}
+
+.class-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px
+}
+
+.class-list{
+  display:grid;
+  gap:10px
+}
+
+.class-item{
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px;
+  background:#fbfcfe
+}
+
+.class-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px
+}
+
+.class-name{
+  font-weight:800
+}
+
+.count{
+  font-size:12px;
+  color:var(--muted)
+}
+
+.class-actions{
+  display:flex;
+  gap:7px;
+  margin-top:10px
+}
+
+.mini{
+  padding:8px 10px;
+  border-radius:9px;
+  font-size:12px;
+  font-weight:700;
+  background:#eef2f6
+}
+
+.mini.capture{
+  background:#e0ecff;
+  color:#1d4ed8
+}
+
+.mini.remove{
+  background:#fff1f2;
+  color:#be123c
+}
+
+.result{
+  margin-top:14px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:14px
+}
+
+.result-title{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:5px
+}
+
+.prediction{
+  font-size:25px;
+  font-weight:900
+}
+
+.bar{
+  height:9px;
+  background:#edf0f5;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:9px
+}
+
+.fill{
+  height:100%;
+  width:0;
+  background:var(--accent);
+  transition:width .15s
+}
+
+.meter{
+  margin-top:14px
+}
+
+.meter-line{
+  display:flex;
+  justify-content:space-between;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:6px
+}
+
+.status{
+  margin-top:14px;
+  padding:11px 13px;
+  border-radius:12px;
+  background:#f2f4f7;
+  color:#475467;
+  font-size:13px;
+  line-height:1.4
+}
+
+.status.good{
+  background:#ecfdf3;
+  color:#166534
+}
+
+.status.bad{
+  background:#fef2f2;
+  color:#991b1b
+}
+
+.steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:20px 0
+}
+
+.step{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:13px
+}
+
+.step b{
+  display:block;
+  font-size:12px;
+  color:var(--accent);
+  margin-bottom:5px
+}
+
+.step span{
+  font-size:13px;
+  color:#475467
+}
+
+.footer{
+  margin-top:24px;
+  text-align:center;
+  color:#98a2b3;
+  font-size:12px
+}
+
+.hidden{
+  display:none!important
+}
+
+@media(max-width:850px){
+  .grid{
+    grid-template-columns:1fr
+  }
+
+  .steps{
+    grid-template-columns:1fr 1fr
+  }
+}
+
+@media(max-width:520px){
+  .wrap{
+    padding:20px 12px 35px
+  }
+
+  .nav{
+    padding:13px 12px
+  }
+
+  .steps{
+    grid-template-columns:1fr
+  }
+
+  .card{
+    padding:15px
+  }
+
+  .hero h1{
+    font-size:34px
+  }
+}
 </style>
 </head>
+
 <body>
-<div class="wrap">
-  <h1>🤖 IA de Objetos</h1>
-  <p class="sub">Entrena la IA con la cámara y después reconoce lo que pongas enfrente.</p>
 
-  <video id="video" autoplay playsinline muted></video>
-
-  <div class="panel">
-    <h2>1. Cámara</h2>
-    <div class="row">
-      <button id="start" class="primary">📷 Activar cámara</button>
-      <button id="flip" class="gray">🔄 Cambiar cámara</button>
+<header class="top">
+  <div class="nav">
+    <div class="brand">
+      <div class="logo">IA</div>
+      <span>IA-Objetos</span>
     </div>
-    <p id="status">Pulsa “Activar cámara” y acepta el permiso.</p>
+
+    <span class="pill">Entrenamiento local</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+  <h1>Entrena una IA para reconocer objetos</h1>
+  <p>
+    Usa tu cámara, crea clases, toma ejemplos y entrena el modelo
+    directamente en este dispositivo.
+  </p>
+</section>
+
+<div class="steps">
+
+  <div class="step">
+    <b>01</b>
+    <span>Crea tus clases</span>
   </div>
 
-  <div class="panel">
-    <h2>2. Muestras</h2>
-    <input id="label" placeholder="Nombre del objeto, por ejemplo: botella">
-    <div class="row">
-      <button id="hold" class="green" disabled>✋ MANTÉN PRESIONADO PARA TOMAR MUESTRAS</button>
-    </div>
-    <div class="count" id="count">Muestras de esta clase: 0</div>
-    <div class="bar"><div id="progress"></div></div>
-    <div id="classes"></div>
-    <p class="small">Crea al menos 2 clases. Para cada objeto, escribe su nombre y mantén el botón presionado mientras lo muestras a la cámara desde varios ángulos.</p>
+  <div class="step">
+    <b>02</b>
+    <span>Captura ejemplos</span>
   </div>
 
-  <div class="panel">
-    <h2>3. Entrenar</h2>
-    <div class="row">
-      <button id="train" class="primary" disabled>🧠 SUBMIT / ENTRENAR IA</button>
-      <button id="clear" class="red">🗑️ Borrar muestras</button>
-    </div>
-    <p id="trainStatus">Todavía no hay un modelo entrenado.</p><button id="shareLink" class="gray" disabled>🔗 Generar enlace de mi IA</button><p id="shareStatus" class="small"></p>
+  <div class="step">
+    <b>03</b>
+    <span>Entrena el modelo</span>
   </div>
 
-  <div class="panel">
-    <h2>4. Reconocimiento</h2>
-    <div id="result">—</div>
-    <p id="confidence" style="text-align:center;color:#aaa"></p>
+  <div class="step">
+    <b>04</b>
+    <span>Prueba la IA</span>
   </div>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
-<script>
-const video=document.getElementById('video');
-const start=document.getElementById('start');
-const flip=document.getElementById('flip');
-const hold=document.getElementById('hold');
-const train=document.getElementById('train');
-const clear=document.getElementById('clear');
-const label=document.getElementById('label');
-const status=document.getElementById('status');
-const countEl=document.getElementById('count');
-const classesEl=document.getElementById('classes');
-const trainStatus=document.getElementById('trainStatus');
-const shareLink=document.getElementById('shareLink');
-const shareStatus=document.getElementById('shareStatus');
-const result=document.getElementById('result');
-const confidence=document.getElementById('confidence');
-const progress=document.getElementById('progress');
+<section class="grid">
 
-let stream=null, facing='environment', net=null;
-let collecting=false, timer=null, currentLabel='';
-let data=[]; // {x: Float32Array, y: classIndex}
-let labels=[];
-let classifier=null;
-let lastAccuracy=null;
-let trainedAt=null;
-let collectingCount=0;
+<div class="card">
+
+  <h2>Cámara</h2>
+
+  <div class="camera">
+
+    <video
+      id="video"
+      autoplay
+      muted
+      playsinline
+      class="hidden">
+    </video>
+
+    <div id="placeholder" class="placeholder">
+      Pulsa «Activar cámara» para comenzar.
+    </div>
+
+    <span id="cameraBadge" class="badge hidden">
+      ● Cámara activa
+    </span>
+
+  </div>
+
+  <div class="row">
+
+    <button
+      id="startCamera"
+      class="btn primary">
+      Activar cámara
+    </button>
+
+    <button
+      id="stopCamera"
+      class="btn secondary"
+      disabled>
+      Detener
+    </button>
+
+  </div>
+
+  <div id="status" class="status">
+    Cargando TensorFlow.js y MobileNet…
+  </div>
+
+</div>
+
+
+<div class="card">
+
+  <div class="class-head">
+
+    <h2>Clases</h2>
+
+    <button
+      id="addClass"
+      class="btn secondary">
+      + Nueva clase
+    </button>
+
+  </div>
+
+  <div id="classList" class="class-list"></div>
+
+  <div class="row">
+
+    <button
+      id="train"
+      class="btn primary"
+      disabled>
+      Entrenar IA
+    </button>
+
+    <button
+      id="clearAll"
+      class="btn danger">
+      Borrar ejemplos
+    </button>
+
+  </div>
+
+  <div
+    id="trainingInfo"
+    class="status hidden">
+  </div>
+
+</div>
+
+</section>
+
+
+<section class="card" style="margin-top:20px">
+
+  <h2>Predicción en vivo</h2>
+
+  <div class="result">
+
+    <div class="result-title">
+      La IA cree que es:
+    </div>
+
+    <div id="prediction" class="prediction">
+      —
+    </div>
+
+    <div class="bar">
+      <div
+        id="confidenceFill"
+        class="fill">
+      </div>
+    </div>
+
+    <div
+      id="confidence"
+      class="meter-line"
+      style="margin-top:7px">
+
+      <span>Confianza</span>
+      <span>0%</span>
+
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <button
+      id="togglePrediction"
+      class="btn green"
+      disabled>
+      Iniciar predicción
+    </button>
+
+    <button
+      id="saveModel"
+      class="btn secondary"
+      disabled>
+      Guardar modelo
+    </button>
+
+  </div>
+
+</section>
+
+
+<footer class="footer">
+  IA-Objetos · El entrenamiento y las imágenes se procesan localmente
+  en tu navegador.
+</footer>
+
+</main>
+
+
+<!-- TensorFlow.js -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+
+<!-- MobileNet -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
+
+
+<script>
+'use strict';
+
+const $ = id => document.getElementById(id);
+
+const video = $('video');
+const placeholder = $('placeholder');
+const statusEl = $('status');
+const classList = $('classList');
+
+let cameraStream = null;
+let mobilenetModel = null;
+let classifier = null;
+let predicting = false;
+let rafId = null;
+let training = false;
+
+let classes = [
+  {
+    name:'Objeto 1',
+    samples:[]
+  },
+  {
+    name:'Objeto 2',
+    samples:[]
+  }
+];
+
+
+function setStatus(msg,type=''){
+
+  statusEl.textContent = msg;
+
+  statusEl.className =
+    'status' +
+    (type ? ' ' + type : '');
+
+}
+
+
+function escapeHTML(s){
+
+  return s.replace(
+    /[&<>'"]/g,
+    c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      "'":'&#39;',
+      '"':'&quot;'
+    }[c])
+  );
+
+}
+
+
+function renderClasses(){
+
+  classList.innerHTML = '';
+
+  classes.forEach((c,i)=>{
+
+    const el = document.createElement('div');
+
+    el.className = 'class-item';
+
+    el.innerHTML = `
+
+      <div class="class-top">
+
+        <div class="class-name">
+          ${escapeHTML(c.name)}
+        </div>
+
+        <div class="count">
+          ${c.samples.length} ejemplos
+        </div>
+
+      </div>
+
+      <input
+        class="input class-input"
+        value="${escapeHTML(c.name)}"
+        aria-label="Nombre de clase">
+
+      <div class="class-actions">
+
+        <button
+          class="mini capture"
+          data-capture="${i}">
+          📷 Capturar ejemplo
+        </button>
+
+        <button
+          class="mini remove"
+          data-remove="${i}"
+          ${classes.length<=2 ? 'disabled' : ''}>
+          Eliminar
+        </button>
+
+      </div>
+
+    `;
+
+    el
+      .querySelector('.class-input')
+      .addEventListener('input',e=>{
+
+        c.name =
+          e.target.value ||
+          `Clase ${i+1}`;
+
+      });
+
+    classList.appendChild(el);
+
+  });
+
+
+  classList
+    .querySelectorAll('[data-capture]')
+    .forEach(b=>{
+
+      b.onclick = () =>
+        captureSample(
+          Number(b.dataset.capture)
+        );
+
+    });
+
+
+  classList
+    .querySelectorAll('[data-remove]')
+    .forEach(b=>{
+
+      b.onclick = () =>
+        removeClass(
+          Number(b.dataset.remove)
+        );
+
+    });
+
+
+  $('train').disabled =
+    classes.length < 2 ||
+    classes.some(
+      c => c.samples.length < 2
+    ) ||
+    !mobilenetModel ||
+    training;
+
+}
+
+
+function addClass(){
+
+  classes.push({
+    name:`Objeto ${classes.length+1}`,
+    samples:[]
+  });
+
+  renderClasses();
+
+}
+
+
+function removeClass(i){
+
+  if(classes.length <= 2)
+    return;
+
+  classes.splice(i,1);
+
+  renderClasses();
+
+}
+
+
+function clearExamples(){
+
+  classes.forEach(c=>{
+    c.samples = [];
+  });
+
+  classifier = null;
+
+  predicting = false;
+
+  cancelAnimationFrame(rafId);
+
+  $('prediction').textContent = '—';
+
+  $('confidence')
+    .lastElementChild
+    .textContent = '0%';
+
+  $('confidenceFill').style.width = '0%';
+
+  $('togglePrediction').disabled = true;
+
+  $('saveModel').disabled = true;
+
+  renderClasses();
+
+  setStatus(
+    'Ejemplos borrados. Puedes volver a capturar.',
+    'good'
+  );
+
+}
+
 
 async function startCamera(){
-  if(stream) stream.getTracks().forEach(t=>t.stop());
+
   try{
-    stream=await navigator.mediaDevices.getUserMedia({
-      video:{facingMode:{ideal:facing},width:{ideal:1280},height:{ideal:720}},
-      audio:false
-    });
-    video.srcObject=stream;
-    await video.play();
-    hold.disabled=false;
-    status.textContent='Cámara lista. Ya puedes tomar muestras.';
-  }catch(e){
-    status.textContent='No se pudo abrir la cámara. Revisa el permiso de cámara en Safari.';
-    console.error(e);
-  }
-}
-start.onclick=startCamera;
-flip.onclick=async()=>{facing=facing==='environment'?'user':'environment';await startCamera()};
 
-async function loadNet(){
-  if(net) return;
-  status.textContent='Cargando IA base…';
-  net=await mobilenet.load({version:2,alpha:1.0});
-  status.textContent='IA base lista.';
-}
-function getLabel(){
-  return label.value.trim();
-}
-function updateUI(){
-  countEl.textContent=`Muestras de esta clase: ${collectingCount}`;
-  classesEl.innerHTML=labels.map((x,i)=>{
-    const n=data.filter(d=>d.y===i).length;
-    return `<div class="classbox">🏷️ <b>${escapeHtml(x)}</b> — ${n} muestras</div>`;
-  }).join('');
-  train.disabled=labels.length<2 || data.length<20;
-}
-function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+    if(
+      !navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia
+    ){
 
-async function capture(){
-  if(!net || video.readyState<2) return;
-  const activation=tf.tidy(()=>{
-    const img=tf.browser.fromPixels(video);
-    return net.infer(img,'conv_preds');
-  });
-  const arr=await activation.data();
-  activation.dispose();
-  data.push({x:new Float32Array(arr),y:labels.indexOf(currentLabel)});
-  collectingCount++;
-  if(collectingCount%2===0) updateUI();
-  progress.style.width=Math.min(100,(collectingCount/80)*100)+'%';
-}
-function begin(){
-  currentLabel=getLabel();
-  if(!currentLabel){status.textContent='Escribe primero el nombre del objeto.';return;}
-  if(!labels.includes(currentLabel)) labels.push(currentLabel);
-  collectingCount=0;
-  collecting=true;
-  hold.textContent='🟢 GRABANDO… SUELTA PARA PARAR';
-  currentLabel=getLabel();
-  timer=setInterval(capture,120);
-}
-function end(){
-  if(!collecting)return;
-  collecting=false;
-  clearInterval(timer);timer=null;
-  hold.textContent='✋ MANTÉN PRESIONADO PARA TOMAR MUESTRAS';
-  updateUI();
-}
-hold.addEventListener('pointerdown',async(e)=>{e.preventDefault();await loadNet();begin()});
-['pointerup','pointercancel','pointerleave'].forEach(ev=>hold.addEventListener(ev,end));
+      throw new Error(
+        'Este navegador no permite acceso a cámara en este contexto. Usa HTTPS o localhost.'
+      );
 
-function makeModel(inputSize,classes){
-  const m=tf.sequential();
-  m.add(tf.layers.dense({inputShape:[inputSize],units:128,activation:'relu'}));
-  m.add(tf.layers.dropout({rate:.2}));
-  m.add(tf.layers.dense({units:classes,activation:'softmax'}));
-  m.compile({optimizer:tf.train.adam(.001),loss:'sparseCategoricalCrossentropy',metrics:['accuracy']});
-  return m;
-}
-async function doTrain(){
-  if(labels.length<2){trainStatus.textContent='Necesitas al menos 2 objetos/clases.';return;}
-  if(data.length<20){trainStatus.textContent='Toma más muestras primero (mínimo 20).';return;}
-  train.disabled=true;
-  trainStatus.textContent='Entrenando… no cierres esta página.';
-  await tf.nextFrame();
-  const xs=tf.tensor2d(data.map(d=>Array.from(d.x)));
-  const ys=tf.tensor1d(data.map(d=>d.y),'int32');
-  classifier=makeModel(xs.shape[1],labels.length);
-  await classifier.fit(xs,ys,{
-    epochs:20,
-    batchSize:16,
-    shuffle:true,
-    callbacks:{
-      onEpochEnd:(epoch,logs)=>{
-        lastAccuracy=logs.acc;
-        trainStatus.textContent=`Entrenando… ${epoch+1}/20 — precisión ${(logs.acc*100).toFixed(1)}%`;
-      }
     }
-  });
-  xs.dispose();ys.dispose();
-  trainedAt=new Date().toLocaleString();
-  trainStatus.textContent='✅ IA entrenada. Pon un objeto enfrente de la cámara.';
-  train.disabled=false;
-  shareLink.disabled=false;
-  recognize();
-}
-train.onclick=doTrain;
-
-function makeShareUrl(){
-  const info={title:'Mi IA de objetos',labels:[...labels],totalSamples:data.length,
-    samplesByClass:labels.map((name,i)=>({name:name,count:data.filter(d=>d.y===i).length})),
-    accuracy:lastAccuracy,trainedAt:trainedAt||new Date().toLocaleString(),
-    note:'Este enlace comparte el resumen del entrenamiento. El modelo queda en el dispositivo.'};
-  const encoded=btoa(unescape(encodeURIComponent(JSON.stringify(info))));
-  return location.href.split('#')[0]+'#report='+encoded;
-}
-function showReportFromHash(){
-  const hash=location.hash;
-  if(!hash.startsWith('#report=')) return;
-  try{
-    const info=JSON.parse(decodeURIComponent(escape(atob(hash.slice(8)))));
-    document.querySelector('.wrap').innerHTML='<h1>🤖 '+escapeHtml(info.title||'Mi IA de objetos')+'</h1>'+
-      '<p class="sub">Resumen del entrenamiento compartido</p><div class="panel"><h2>Objetos aprendidos</h2>'+ 
-      (info.samplesByClass||[]).map(x=>'<div class="classbox">🏷️ <b>'+escapeHtml(x.name)+'</b> — '+x.count+' muestras</div>').join('')+
-      '<p><b>Total de muestras:</b> '+(info.totalSamples||0)+'</p>'+
-      '<p><b>Precisión final:</b> '+(info.accuracy==null?'No disponible':(info.accuracy*100).toFixed(1)+'%')+'</p>'+
-      '<p><b>Entrenado:</b> '+escapeHtml(info.trainedAt||'')+'</p><p class="small">'+escapeHtml(info.note||'')+'</p>'+ 
-      '<button class="primary" onclick="location.href=location.href.split(\'#\')[0]">📷 Abrir la IA</button></div>';
-  }catch(e){console.warn(e)}
-}
-shareLink.onclick=async()=>{
-  const url=makeShareUrl();
-  try{await navigator.clipboard.writeText(url);shareStatus.textContent='✅ Enlace generado y copiado.'}
-  catch(e){shareStatus.innerHTML='Enlace generado: <a href="'+url+'">Abrir enlace</a>'}
-  if(navigator.share){try{await navigator.share({title:'Mi IA de objetos',text:'Mira mi IA entrenada',url:url})}catch(e){}}
-};
 
 
-let recognizing=false;
-async function recognize(){
-  if(recognizing)return;
-  recognizing=true;
-  while(classifier && video.readyState>=2){
-    const pred=tf.tidy(()=>{
-      const img=tf.browser.fromPixels(video);
-      const emb=net.infer(img,'conv_preds');
-      return classifier.predict(emb);
-    });
-    const vals=await pred.data();
-    pred.dispose();
-    let best=0;
-    for(let i=1;i<vals.length;i++) if(vals[i]>vals[best]) best=i;
-    result.textContent=labels[best] || '—';
-    confidence.textContent=`Confianza: ${(vals[best]*100).toFixed(1)}%`;
-    await new Promise(r=>setTimeout(r,150));
+    cameraStream =
+      await navigator.mediaDevices.getUserMedia({
+
+        video:{
+          facingMode:'environment',
+          width:{ideal:640},
+          height:{ideal:480}
+        },
+
+        audio:false
+
+      });
+
+
+    video.srcObject = cameraStream;
+
+    await video.play();
+
+
+    video.classList.remove('hidden');
+
+    placeholder.classList.add('hidden');
+
+    $('cameraBadge')
+      .classList
+      .remove('hidden');
+
+    $('startCamera').disabled = true;
+
+    $('stopCamera').disabled = false;
+
+
+    setStatus(
+      'Cámara activa. Coloca un objeto delante y captura ejemplos.',
+      'good'
+    );
+
   }
-  recognizing=false;
+  catch(err){
+
+    console.error(err);
+
+    setStatus(
+      'No se pudo abrir la cámara: ' +
+      (err.message || err),
+      'bad'
+    );
+
+  }
+
 }
-clear.onclick=()=>{
-  data=[];labels=[];classifier=null;collectingCount=0;
-  classesEl.innerHTML='';countEl.textContent='Muestras de esta clase: 0';
-  trainStatus.textContent='Muestras borradas.';
-  result.textContent='—';confidence.textContent='';progress.style.width='0%';
-  train.disabled=true;
-};
-window.addEventListener('load',async()=>{showReportFromHash();if(location.hash.startsWith('#report='))return;try{await loadNet()}catch(e){status.textContent='No se pudo cargar la IA. Necesitas internet para esta versión.'}});
+
+
+function stopCamera(){
+
+  if(cameraStream){
+
+    cameraStream
+      .getTracks()
+      .forEach(t=>t.stop());
+
+    cameraStream = null;
+
+  }
+
+
+  video.srcObject = null;
+
+  video.classList.add('hidden');
+
+  placeholder.classList.remove('hidden');
+
+  $('cameraBadge')
+    .classList
+    .add('hidden');
+
+  $('startCamera').disabled = false;
+
+  $('stopCamera').disabled = true;
+
+
+  if(predicting)
+    togglePrediction();
+
+}
+
+
+function captureSample(i){
+
+  if(
+    !cameraStream ||
+    video.readyState < 2
+  ){
+
+    setStatus(
+      'Activa la cámara primero.',
+      'bad'
+    );
+
+    return;
+
+  }
+
+
+  if(!mobilenetModel){
+
+    setStatus(
+      'La IA base todavía está cargando. Espera un momento.',
+      'bad'
+    );
+
+    return;
+
+  }
+
+
+  try{
+
+    const embedding = tf.tidy(() =>
+      mobilenetModel.infer(
+        video,
+        'conv_preds'
+      )
+    );
+
+
+    const data =
+      Array.from(
+        embedding.dataSync()
+      );
+
+
+    embedding.dispose();
+
+
+    classes[i].samples.push(data);
+
+    renderClasses();
+
+
+    setStatus(
+      `Ejemplo capturado para «${classes[i].name}».`,
+      'good'
+    );
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    setStatus(
+      'Error al capturar: ' +
+      err.message,
+      'bad'
+    );
+
+  }
+
+}
+
+
+async function trainModel(){
+
+  if(training)
+    return;
+
+
+  const total =
+    classes.reduce(
+      (n,c) =>
+        n + c.samples.length,
+      0
+    );
+
+
+  if(
+    total < 4 ||
+    classes.some(
+      c => c.samples.length < 2
+    )
+  ){
+
+    setStatus(
+      'Cada clase necesita al menos 2 ejemplos.',
+      'bad'
+    );
+
+    return;
+
+  }
+
+
+  training = true;
+
+  $('train').disabled = true;
+
+  $('trainingInfo')
+    .classList
+    .remove('hidden');
+
+  $('trainingInfo').textContent =
+    'Preparando datos…';
+
+
+  if(classifier){
+
+    classifier.dispose();
+
+    classifier = null;
+
+  }
+
+
+  try{
+
+    const inputSize =
+      classes[0]
+        .samples[0]
+        .length;
+
+
+    const xs = tf.tensor2d(
+      classes.flatMap(
+        c => c.samples
+      ),
+      [total,inputSize]
+    );
+
+
+    const labels = [];
+
+
+    classes.forEach(
+      (c,i)=>{
+
+        c.samples.forEach(
+          () => labels.push(i)
+        );
+
+      }
+    );
+
+
+    const ys = tf.oneHot(
+      tf.tensor1d(
+        labels,
+        'int32'
+      ),
+      classes.length
+    );
+
+
+    classifier =
+      tf.sequential();
+
+
+    classifier.add(
+      tf.layers.dense({
+
+        inputShape:[inputSize],
+
+        units:128,
+
+        activation:'relu'
+
+      })
+    );
+
+
+    classifier.add(
+      tf.layers.dropout({
+        rate:.15
+      })
+    );
+
+
+    classifier.add(
+      tf.layers.dense({
+
+        units:classes.length,
+
+        activation:'softmax'
+
+      })
+    );
+
+
+    classifier.compile({
+
+      optimizer:
+        tf.train.adam(.001),
+
+      loss:
+        'categoricalCrossentropy',
+
+      metrics:
+        ['accuracy']
+
+    });
+
+
+    const epochs = 30;
+
+
+    await classifier.fit(
+      xs,
+      ys,
+      {
+
+        epochs,
+
+        batchSize:
+          Math.min(16,total),
+
+        shuffle:true,
+
+        callbacks:{
+
+          onEpochEnd:
+            async(epoch,logs)=>{
+
+              $('trainingInfo')
+                .textContent =
+                `Entrenando… época ${
+                  epoch+1
+                }/${epochs} · precisión ${
+                  (logs.acc*100).toFixed(1)
+                }%`;
+
+              await tf.nextFrame();
+
+            }
+
+        }
+
+      }
+    );
+
+
+    xs.dispose();
+
+    ys.dispose();
+
+
+    $('trainingInfo')
+      .textContent =
+      'Entrenamiento terminado. Ya puedes probar la predicción en vivo.';
+
+    $('trainingInfo')
+      .className =
+      'status good';
+
+
+    $('togglePrediction')
+      .disabled = false;
+
+    $('saveModel')
+      .disabled = false;
+
+
+    setStatus(
+      'Modelo entrenado correctamente.',
+      'good'
+    );
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    classifier = null;
+
+    $('trainingInfo')
+      .textContent =
+      'El entrenamiento falló: ' +
+      err.message;
+
+    $('trainingInfo')
+      .className =
+      'status bad';
+
+
+    setStatus(
+      'Revisa la consola del navegador para más detalles.',
+      'bad'
+    );
+
+  }
+  finally{
+
+    training = false;
+
+    renderClasses();
+
+  }
+
+}
+
+
+async function predictFrame(){
+
+  if(
+    !predicting ||
+    !classifier ||
+    !cameraStream
+  )
+    return;
+
+
+  try{
+
+    const probs =
+      tf.tidy(()=>{
+
+        const emb =
+          mobilenetModel.infer(
+            video,
+            'conv_preds'
+          );
+
+
+        const out =
+          classifier.predict(emb);
+
+
+        return Array.from(
+          out.dataSync()
+        );
+
+      });
+
+
+    let best = 0;
+
+
+    for(
+      let i=1;
+      i<probs.length;
+      i++
+    ){
+
+      if(
+        probs[i] >
+        probs[best]
+      ){
+
+        best = i;
+
+      }
+
+    }
+
+
+    const p =
+      probs[best] || 0;
+
+
+    const name =
+      classes[best]?.name || '—';
+
+
+    $('prediction')
+      .textContent = name;
+
+
+    $('confidenceFill')
+      .style.width =
+      (p*100).toFixed(1) + '%';
+
+
+    $('confidence')
+      .lastElementChild
+      .textContent =
+      (p*100).toFixed(1) + '%';
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    predicting = false;
+
+  }
+
+
+  if(predicting){
+
+    rafId =
+      requestAnimationFrame(
+        predictFrame
+      );
+
+  }
+
+}
+
+
+function togglePrediction(){
+
+  predicting = !predicting;
+
+
+  $('togglePrediction')
+    .textContent =
+    predicting
+      ? 'Detener predicción'
+      : 'Iniciar predicción';
+
+
+  if(predicting){
+
+    if(!cameraStream){
+
+      predicting = false;
+
+      setStatus(
+        'Activa la cámara antes de predecir.',
+        'bad'
+      );
+
+      $('togglePrediction')
+        .textContent =
+        'Iniciar predicción';
+
+      return;
+
+    }
+
+
+    predictFrame();
+
+  }
+  else{
+
+    cancelAnimationFrame(rafId);
+
+  }
+
+}
+
+
+async function saveModel(){
+
+  if(!classifier)
+    return;
+
+
+  try{
+
+    await classifier.save(
+      'downloads://ia-objetos-modelo'
+    );
+
+
+    const blob =
+      new Blob(
+        [
+          JSON.stringify({
+
+            classes:
+              classes.map(
+                c => c.name
+              ),
+
+            version:1
+
+          })
+
+        ],
+        {
+          type:'application/json'
+        }
+      );
+
+
+    const a =
+      document.createElement('a');
+
+
+    a.href =
+      URL.createObjectURL(blob);
+
+
+    a.download =
+      'ia-objetos-labels.json';
+
+
+    a.click();
+
+
+    setStatus(
+      'Modelo y etiquetas guardados.',
+      'good'
+    );
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    setStatus(
+      'No se pudo guardar el modelo: ' +
+      err.message,
+      'bad'
+    );
+
+  }
+
+}
+
+
+$('startCamera')
+  .onclick = startCamera;
+
+$('stopCamera')
+  .onclick = stopCamera;
+
+$('addClass')
+  .onclick = addClass;
+
+$('clearAll')
+  .onclick = clearExamples;
+
+$('train')
+  .onclick = trainModel;
+
+$('togglePrediction')
+  .onclick = togglePrediction;
+
+$('saveModel')
+  .onclick = saveModel;
+
+
+window.addEventListener(
+  'beforeunload',
+  stopCamera
+);
+
+
+(async function boot(){
+
+  try{
+
+    if(!window.tf){
+
+      throw new Error(
+        'TensorFlow.js no cargó.'
+      );
+
+    }
+
+
+    await tf.ready();
+
+
+    setStatus(
+      `TensorFlow.js ${
+        tf.version.tfjs
+      } listo. Cargando MobileNet…`
+    );
+
+
+    mobilenetModel =
+      await mobilenet.load({
+
+        version:2,
+
+        alpha:1.0
+
+      });
+
+
+    setStatus(
+      'IA base lista. Crea tus clases y captura ejemplos.',
+      'good'
+    );
+
+
+    renderClasses();
+
+  }
+  catch(err){
+
+    console.error(err);
+
+    setStatus(
+      'No se pudo cargar la IA: ' +
+      err.message,
+      'bad'
+    );
+
+    renderClasses();
+
+  }
+
+})();
 </script>
+
 </body>
 </html>
